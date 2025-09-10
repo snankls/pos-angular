@@ -1,0 +1,153 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between flex-wrap">
+          <div>
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              placeholder="Type to filter the code and name column..."
+              (keyup)="updateFilter($event)"
+              style="width: 300px;"
+            />
+          </div>
+          <div class="gap-4">
+            <button type="button" class="btn btn-danger btn-sm me-2" [disabled]="selected.length === 0" (click)="deleteSelectedRecords()">
+              Delete
+            </button>
+            <a href="customers/add" class="btn btn-primary btn-sm">
+              + Add New
+            </a>
+          </div>
+        </div>
+        
+        <div class="table-responsive">
+          <ngx-datatable
+            #table
+            class="bootstrap"
+            [rows]="rows"
+            [loadingIndicator]="loadingIndicator"
+            [columnMode]="ColumnMode.force"
+            [footerHeight]="50"
+            [limit]="10"
+            rowHeight="auto"
+            [scrollbarH]="true"
+          >
+            <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false">
+              <ng-template ngx-datatable-header-template>
+                <input type="checkbox" [checked]="selected.length === rows.length" (change)="selectAll($event)" />
+              </ng-template>
+              <ng-template ngx-datatable-cell-template let-row="row" let-rowIndex="rowIndex">
+                <input type="checkbox" [checked]="isSelected(row)" (change)="toggleSelection(row)" />
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Image" [sortable]="false" [width]="55">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <img [src]="row.employee_image"
+                alt="{{ row.full_name }}"
+                width="30"
+                height="30">
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="ID/Code">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.code }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Employee Name">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.full_name }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Religions">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.religion }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Gender">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.gender }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Department">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.department_name }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Designation">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.designation_name }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Joining Date">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.joining_date | date:'yyyy-MM-dd' }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Resign Date">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.resign_date | date:'yyyy-MM-dd' }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="City">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.city_name }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Total Salary">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.total_salary | number }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Status">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span [ngClass]="row.status == 'Active' ? 'badge bg-success text-white' : 'badge bg-danger text-white'">
+                  {{ row.status }}
+                </span>
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Created By">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <div>
+                  {{ row.created_by }}
+                  <br />
+                  <small>{{ row.created_at | date:'yyyy-MM-dd' }}</small>
+                </div>
+              </ng-template>
+            </ngx-datatable-column>
+        
+            <ngx-datatable-column name="Action" [sortable]="false">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <span class="d-flex align-items-center">
+                  <a href="employees/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
+                    <i class="feather icon-eye"></i>
+                  </a>
+                  
+                  <a href="employees/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
+                    <i class="feather icon-edit"></i>
+                  </a>
+                </span>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

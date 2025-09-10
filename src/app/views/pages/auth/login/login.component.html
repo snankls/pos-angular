@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="row w-100 mx-0 auth-page">
+    <div class="col-md-8 col-xl-6 mx-auto">
+      <div class="card">
+        <div class="row">
+          <div class="col-md-4 pe-md-0">
+            <div class="auth-side-wrapper" [ngStyle]="{ 'background-image': 'url(/images/banner.jpg)' }">
+            </div>
+          </div>
+          <div class="col-md-8 ps-md-0">
+            <div class="auth-form-wrapper px-4 py-5">
+              
+              <div class="logo-mini-wrapper">
+                <img src="images/logo-mini-light.png" class="logo-mini logo-mini-light" alt="Logo">
+                <img src="images/logo-mini-dark.png" class="logo-mini logo-mini-dark" alt="Logo">
+              </div>
+
+              <h5 class="text-secondary fw-normal mb-4">Welcome back! Log in to your account.</h5>
+              <form class="forms-sample" (ngSubmit)="onLogin()" #loginForm="ngForm">
+                <div class="mb-3">
+                  <label class="form-label">Username / Email address</label>
+                  <input type="email" class="form-control" [(ngModel)]="email" name="email">
+                </div>
+                
+                <div class="mb-3">
+                  <label class="form-label">Password</label>
+                  <input type="password" class="form-control" [(ngModel)]="password" name="password">
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                  <div class="form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="authCheck" name="rememberMe" [(ngModel)]="rememberMe">
+                    <label class="form-check-label" for="authCheck">
+                      Remember me
+                    </label>
+                  </div>
+                  <div class="form-check mb-3">
+                    <a href="auth/forgot-password">Forgot Password?</a>
+                  </div>
+                </div>
+
+                <div class="mt-2">
+                  <button type="submit" class="btn btn-primary me-2 mb-2 mb-md-0">
+                    Login
+                  </button>
+                </div>
+
+                <div *ngIf="messageLogin" class="alert alert-danger mt-3">
+                  {{ messageLogin }}
+                </div>
+
+                <div *ngIf="contactInfo">
+                  Contact Support: <a href="mailto:{{ contactInfo }}">{{ contactInfo }}</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

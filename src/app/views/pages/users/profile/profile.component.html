@@ -1,0 +1,113 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-striped view-table w-100 mt-3">
+          <tbody>
+            <tr>
+              <td style="width: 30%;">Pin Code</td>
+              <td style="width: 70%;">{{ currentRecord.pin_code }}</td>
+            </tr>
+            <tr>
+              <td>First Name</td>
+              <td>{{ currentRecord.first_name }}</td>
+            </tr>
+            <tr>
+              <td>Last Name</td>
+              <td>{{ currentRecord.last_name ? currentRecord.last_name : 'N/A' }}</td>
+            </tr>
+            <tr>
+              <td>Username</td>
+              <td>{{ currentRecord.username ? currentRecord.username : 'N/A' }}</td>
+            </tr>
+            <tr>
+              <td>Email Address</td>
+              <td>{{ currentRecord.email }}</td>
+            </tr>
+            <tr>
+              <td>Advance Fee</td>
+              <td>{{ currentRecord.advance_fee ? (currentRecord.advance_fee | number) : 0 }}</td>
+            </tr>
+            <tr>
+              <td>Services Charges</td>
+              <td>{{ currentRecord.service_charges ? (currentRecord.service_charges | number) : 0 }}</td>
+            </tr>
+            <tr>
+              <td>Discount</td>
+              <td>{{ currentRecord.discount ? (currentRecord.discount | number) : 0 }}</td>
+            </tr>
+            <tr>
+              <td>Purchase Date</td>
+              <td>{{ currentRecord.purchase_date }}</td>
+            </tr>
+            <tr>
+              <td>Subscribe Preiod</td>
+              <td>{{ currentRecord.subscribe_start }} - {{ currentRecord.subscribe_end }}</td>
+            </tr>
+            <tr>
+              <td>Gender</td>
+              <td>{{ currentRecord.gender ? currentRecord.gender : 'N/A' }}</td>
+            </tr>
+            <tr>
+              <td>Phone Number</td>
+              <td>{{ currentRecord.phone_number ? currentRecord.phone_number : 'N/A' }}</td>
+            </tr>
+            <tr>
+              <td>Date of Birth</td>
+              <td>{{ currentRecord.date_of_birth ? (currentRecord.date_of_birth | date:'yyyy-MM-dd') : 'N/A' }}</td>
+            </tr>
+            <tr>
+              <td>City</td>
+              <td>{{ currentRecord.city_name ? currentRecord.city_name : 'N/A' }}</td>
+            </tr>
+            <tr>
+              <td>Address</td>
+              <td>{{ currentRecord.address ? currentRecord.address : 'N/A' }}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{ currentRecord.status }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="itemsList.length > 0">
+          <h5 class="mt-5">Subscription Details</h5>
+          <table class="table table-hover w-100 mt-3">
+            <thead>
+              <tr>
+                <th>Subscription Start</th>
+                <th>Subscription End</th>
+                <th>Service Charges</th>
+                <th>Discount</th>
+                <th>Payment Method</th>
+                <th>Reason</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of itemsList; let i = index">
+                <td>{{ item.subscribe_start }}</td>
+                <td>{{ item.subscribe_end }}</td>
+                <td>{{ item.service_charges ? (item.service_charges | number) : 0 }}</td>
+                <td>{{ item.discount ? (item.discount | number) : 0 }}</td>
+                <td>{{ item.payment_method }}</td>
+                <td>{{ item.reason }}</td>
+                <td>{{ item.subscription_status }}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="2"><strong>Grand Total</strong></td>
+                <td><strong>{{ totalServiceCharges | number }}</strong></td>
+                <td colspan="3"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

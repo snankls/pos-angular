@@ -1,0 +1,371 @@
+<div class="d-flex justify-content-between align-items-center flex-wrap grid-margin">
+  <div>
+    <h4 class="mb-3 mb-md-0">Welcome to Dashboard</h4>
+  </div>
+</div>
+
+<!--Counts-->
+<!-- <div class="row">
+  <div class="col-12 col-xl-12 stretch-card">
+    <div class="row flex-grow-1">
+      <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-body-inner">
+              <div class="dash-icon">
+                <i class="feather icon-users"></i>
+              </div>
+              <div class="d-flex justify-content-between align-items-baseline">
+                <h6 class="card-title mb-0">Total Employees</h6>
+                <div ngbDropdown class="mb-2">
+                  <a class="no-dropdown-toggle-icon" ngbDropdownToggle id="dropdownMenuButton1">
+                    <i class="icon-lg text-secondary pb-3px" data-feather="more-horizontal" appFeatherIcon></i>
+                  </a>
+                  <div ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/employees"><i data-feather="eye" appFeatherIcon class="icon-sm me-2"></i> <span class="">View</span></a>
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/reports/employees"><i data-feather="file-text" appFeatherIcon class="icon-sm me-2"></i> <span class="">Reports</span></a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>{{ dashboardData.employees_count ? (dashboardData.employees_count | number) : 0 }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-body-inner">
+              <div class="dash-icon">
+                <i class="feather icon-slack"></i>
+              </div>
+              <div class="d-flex justify-content-between align-items-baseline">
+                <h6 class="card-title mb-0">Company Assets</h6>
+                <div ngbDropdown class="mb-2">
+                  <a class="no-dropdown-toggle-icon" ngbDropdownToggle id="dropdownMenuButton1">
+                    <i class="icon-lg text-secondary pb-3px" data-feather="more-horizontal" appFeatherIcon></i>
+                  </a>
+                  <div ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/company-assets"><i data-feather="eye" appFeatherIcon class="icon-sm me-2"></i> <span class="">View</span></a>
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/reports/company-assets"><i data-feather="download" appFeatherIcon class="icon-sm me-2"></i> <span class="">Download</span></a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>{{ dashboardData.company_asset ? (dashboardData.company_asset | number) : 0 }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-body-inner">
+              <div class="dash-icon">
+                <i class="feather icon-slack"></i>
+              </div>
+              <div class="d-flex justify-content-between align-items-baseline">
+                <h6 class="card-title mb-0">Company Asset Returns</h6>
+                <div ngbDropdown class="mb-2">
+                  <a class="no-dropdown-toggle-icon" ngbDropdownToggle id="dropdownMenuButton1">
+                    <i class="icon-lg text-secondary pb-3px" data-feather="more-horizontal" appFeatherIcon></i>
+                  </a>
+                  <div ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/company-assets"><i data-feather="eye" appFeatherIcon class="icon-sm me-2"></i> <span class="">View</span></a>
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/reports/company-assets"><i data-feather="download" appFeatherIcon class="icon-sm me-2"></i> <span class="">Download</span></a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>{{ dashboardData.company_asset_return ? (dashboardData.company_asset_return | number) : 0 }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-body-inner">
+              <div class="dash-icon">
+                <i class="feather icon-dollar-sign"></i>
+              </div>
+              <div class="d-flex justify-content-between align-items-baseline">
+                <h6 class="card-title mb-0">Total Bank A/C</h6>
+                <div ngbDropdown class="mb-2">
+                  <a class="no-dropdown-toggle-icon" ngbDropdownToggle id="dropdownMenuButton1">
+                    <i class="icon-lg text-secondary pb-3px" data-feather="more-horizontal" appFeatherIcon></i>
+                  </a>
+                  <div ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/company-assets"><i data-feather="eye" appFeatherIcon class="icon-sm me-2"></i> <span class="">View</span></a>
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/reports/company-assets"><i data-feather="download" appFeatherIcon class="icon-sm me-2"></i> <span class="">Download</span></a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>{{ dashboardData.company_asset_return ? (dashboardData.company_asset_return | number) : 0 }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-body-inner">
+              <div class="dash-icon">
+                <i class="feather icon-layers"></i>
+              </div>
+              <div class="d-flex justify-content-between align-items-baseline">
+                <h6 class="card-title mb-0">Total Loans</h6>
+                <div ngbDropdown class="mb-2">
+                  <a class="no-dropdown-toggle-icon" ngbDropdownToggle id="dropdownMenuButton1">
+                    <i class="icon-lg text-secondary pb-3px" data-feather="more-horizontal" appFeatherIcon></i>
+                  </a>
+                  <div ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/company-assets"><i data-feather="eye" appFeatherIcon class="icon-sm me-2"></i> <span class="">View</span></a>
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/reports/company-assets"><i data-feather="download" appFeatherIcon class="icon-sm me-2"></i> <span class="">Download</span></a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>{{ dashboardData.total_loans ? (dashboardData.total_loans | number) : 0 }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-body-inner">
+              <div class="dash-icon">
+                <i class="feather icon-layers"></i>
+              </div>
+              <div class="d-flex justify-content-between align-items-baseline">
+                <h6 class="card-title mb-0">Paid Loans</h6>
+                <div ngbDropdown class="mb-2">
+                  <a class="no-dropdown-toggle-icon" ngbDropdownToggle id="dropdownMenuButton1">
+                    <i class="icon-lg text-secondary pb-3px" data-feather="more-horizontal" appFeatherIcon></i>
+                  </a>
+                  <div ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/company-assets"><i data-feather="eye" appFeatherIcon class="icon-sm me-2"></i> <span class="">View</span></a>
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/reports/company-assets"><i data-feather="download" appFeatherIcon class="icon-sm me-2"></i> <span class="">Download</span></a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>{{ dashboardData.paid_loans ? (dashboardData.paid_loans | number) : 0 }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-body-inner">
+              <div class="dash-icon">
+                <i class="feather icon-layers"></i>
+              </div>
+              <div class="d-flex justify-content-between align-items-baseline">
+                <h6 class="card-title mb-0">Un-Paid Loans</h6>
+                <div ngbDropdown class="mb-2">
+                  <a class="no-dropdown-toggle-icon" ngbDropdownToggle id="dropdownMenuButton1">
+                    <i class="icon-lg text-secondary pb-3px" data-feather="more-horizontal" appFeatherIcon></i>
+                  </a>
+                  <div ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/company-assets"><i data-feather="eye" appFeatherIcon class="icon-sm me-2"></i> <span class="">View</span></a>
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/reports/company-assets"><i data-feather="download" appFeatherIcon class="icon-sm me-2"></i> <span class="">Download</span></a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>{{ dashboardData.unpaid_loans ? (dashboardData.unpaid_loans | number) : 0 }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="card-body-inner">
+              <div class="dash-icon">
+                <i class="feather icon-layers"></i>
+              </div>
+              <div class="d-flex justify-content-between align-items-baseline">
+                <h6 class="card-title mb-0">Remaining Loans</h6>
+                <div ngbDropdown class="mb-2">
+                  <a class="no-dropdown-toggle-icon" ngbDropdownToggle id="dropdownMenuButton1">
+                    <i class="icon-lg text-secondary pb-3px" data-feather="more-horizontal" appFeatherIcon></i>
+                  </a>
+                  <div ngbDropdownMenu aria-labelledby="dropdownMenuButton1">
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/company-assets"><i data-feather="eye" appFeatherIcon class="icon-sm me-2"></i> <span class="">View</span></a>
+                    <a ngbDropdownItem class="d-flex align-items-center" href="/reports/company-assets"><i data-feather="download" appFeatherIcon class="icon-sm me-2"></i> <span class="">Download</span></a>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <h3>{{ dashboardData.remaining_loans ? (dashboardData.remaining_loans | number) : 0 }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+<!-- row -->
+
+<!--Charts-->
+<div class="row">
+  <div class="col-lg-7 col-xl-7 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-baseline mb-2">
+          <h6 class="card-title mb-0">Monthly Attendance</h6>
+          <div ngbDropdown class="mb-2">
+            <a class="no-dropdown-toggle-icon" ngbDropdownToggle id="dropdownMenuButton4">
+              <i class="icon-lg text-secondary pb-3px" data-feather="more-horizontal" appFeatherIcon></i>
+            </a>
+            <div ngbDropdownMenu aria-labelledby="dropdownMenuButton4">
+              <a ngbDropdownItem class="d-flex align-items-center" href="attendances"><i data-feather="eye" appFeatherIcon class="icon-sm me-2"></i> <span class="">View</span></a>
+              <a ngbDropdownItem class="d-flex align-items-center" href="reports/attendances"><i data-feather="download" appFeatherIcon class="icon-sm me-2"></i> <span class="">Download</span></a>
+            </div>
+          </div>
+        </div>
+        <apx-chart
+          [series]="monthlyAttendanceChartOptions.series"
+          [chart]="monthlyAttendanceChartOptions.chart"
+          [colors]="monthlyAttendanceChartOptions.colors"
+          [fill]="monthlyAttendanceChartOptions.fill"
+          [grid]="monthlyAttendanceChartOptions.grid"
+          [xaxis]="monthlyAttendanceChartOptions.xaxis"
+          [yaxis]="monthlyAttendanceChartOptions.yaxis"
+          [legend]="monthlyAttendanceChartOptions.legend"
+          [stroke]="monthlyAttendanceChartOptions.stroke"
+          [dataLabels]="monthlyAttendanceChartOptions.dataLabels"
+          [plotOptions]="monthlyAttendanceChartOptions.plotOptions"
+        ></apx-chart>
+      </div> 
+    </div>
+  </div>
+  <div class="col-lg-5 col-xl-5 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-baseline mb-2">
+          <h6 class="card-title mb-0">Daily Attendance</h6>
+          <div ngbDropdown class="mb-2">
+            <a class="no-dropdown-toggle-icon" ngbDropdownToggle id="dropdownMenuButton4">
+              <i class="icon-lg text-secondary pb-3px" data-feather="more-horizontal" appFeatherIcon></i>
+            </a>
+            <div ngbDropdownMenu aria-labelledby="dropdownMenuButton4">
+              <a ngbDropdownItem class="d-flex align-items-center" href="attendances"><i data-feather="eye" appFeatherIcon class="icon-sm me-2"></i> <span class="">View</span></a>
+              <a ngbDropdownItem class="d-flex align-items-center" href="reports/attendances"><i data-feather="download" appFeatherIcon class="icon-sm me-2"></i> <span class="">Download</span></a>
+            </div>
+          </div>
+        </div>
+        <apx-chart
+          [series]="dailyAttendanceChartOptions.series"
+          [chart]="dailyAttendanceChartOptions.chart"
+          [colors]="dailyAttendanceChartOptions.colors"
+          [fill]="dailyAttendanceChartOptions.fill"
+          [grid]="dailyAttendanceChartOptions.grid"
+          [xaxis]="dailyAttendanceChartOptions.xaxis"
+          [yaxis]="dailyAttendanceChartOptions.yaxis"
+          [legend]="dailyAttendanceChartOptions.legend"
+          [stroke]="dailyAttendanceChartOptions.stroke"
+          [dataLabels]="dailyAttendanceChartOptions.dataLabels"
+          [plotOptions]="dailyAttendanceChartOptions.plotOptions"
+        ></apx-chart>
+      </div> 
+    </div>
+  </div>
+</div> <!-- row -->
+
+<!--Employees List-->
+<div class="row">
+  <div class="col-lg-12 col-xl-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-baseline mb-2">
+          <h6 class="card-title mb-0">Employees</h6>
+          <div ngbDropdown class="mb-2">
+            <a class="no-dropdown-toggle-icon" ngbDropdownToggle id="dropdownMenuButton7">
+              <i class="icon-lg text-secondary pb-3px" data-feather="more-horizontal" appFeatherIcon></i>
+            </a>
+            <div ngbDropdownMenu aria-labelledby="dropdownMenuButton7">
+              <a ngbDropdownItem class="d-flex align-items-center" href="employees"><i data-feather="eye" appFeatherIcon class="icon-sm me-2"></i> <span class="">View</span></a>
+              <a ngbDropdownItem class="d-flex align-items-center" href="reports/employees"><i data-feather="download" appFeatherIcon class="icon-sm me-2"></i> <span class="">Download</span></a>
+            </div>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th class="pt-0">#</th>
+                <th class="pt-0">Image</th>
+                <th class="pt-0">Full Name</th>
+                <th class="pt-0">Department</th>
+                <th class="pt-0">Designation</th>
+                <th class="pt-0">Phone</th>
+                <th class="pt-0">Total Salary</th>
+                <th class="pt-0">City</th>
+                <th class="pt-0">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let employee of employees; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <img [src]="employee.employee_image"
+                  alt="{{ employee.full_name }}"
+                  width="30"
+                  height="30">
+                </td>
+                <td>{{ employee.full_name }}</td>
+                <td>{{ employee.department_name }}</td>
+                <td>{{ employee.designation_name }}</td>
+                <td>{{ employee.phone_number }}</td>
+                <td>{{ employee.total_salary | number }}</td>
+                <td>{{ employee.city_name }}</td>
+                <td>
+                  <span class="d-flex align-items-center">
+                    <a href="employees/view/{{ employee.id }}" class="btn btn-primary me-1 action-btn">
+                      <i class="feather icon-eye"></i>
+                    </a>
+                    
+                    <a href="employees/edit/{{ employee.id }}" class="btn btn-warning me-1 action-btn">
+                      <i class="feather icon-edit"></i>
+                    </a>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div> 
+    </div>
+  </div>
+</div> <!-- row -->

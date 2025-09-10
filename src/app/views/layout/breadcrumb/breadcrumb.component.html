@@ -1,0 +1,25 @@
+<!--Subscription-->
+<ng-container *ngIf="user">
+  <ngb-alert *ngIf="user.status !== 'Trail' && user.remaining_days < 30" [dismissible]="true" [type]="'fill-danger'">
+    Your subscription is going to expire ({{ user.remaining_days ? user.remaining_days : 0 }} days left).<br>
+    Your services charges is <strong>{{ user.subscription?.service_charges ? user.subscription?.service_charges : 0 }}.</strong><br>
+    Please renew your account.
+    <a href="payment-details" class="text-white text-decoration-underline">Click here for payment details</a>
+  </ngb-alert>
+</ng-container>
+
+<!--Trail Version-->
+<ng-container *ngIf="user">
+  <ngb-alert *ngIf="user.status === 'Trail'" [dismissible]="true" [type]="'fill-danger'">
+    Your tail is going to end in ({{ user.remaining_days ? user.remaining_days : 0 }} days left).<br>
+    Please renew your account.
+    <a href="payment-details" class="text-white text-decoration-underline">Click here for payment details</a>
+  </ngb-alert>
+</ng-container>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink=".">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ pageTitle }}</li>
+  </ol>
+</nav>

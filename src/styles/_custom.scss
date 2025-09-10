@@ -1,0 +1,110 @@
+.action-btn {
+    width: 30px;
+    height: 30px;
+    line-height: 27px;
+    border-radius:50%;
+    color: #fff;
+    font-size: 12px;
+    display: inline-block;
+    padding:0;
+}
+
+label.form-label,
+.datatable-header-cell-label {
+    font-weight: 500;
+}
+
+[readonly] {
+    background-color: var(--bs-secondary-bg);
+    pointer-events: none;
+}
+
+.fc-disabled-day {
+    background-color: #f8f9fa !important;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.fc-disabled-day a {
+    color: #adb5bd !important;
+}
+
+.view-table tr td:first-child {
+    font-weight: 500;
+}
+
+.card-body-inner {
+    position: relative;
+    padding-left: 70px;
+}
+
+.dash-icon i {
+    display: inline-block;
+    font-size: 50px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.auth-page img.logo-mini {
+  height: auto;
+  width: 180px;
+  margin-bottom: 30px;
+}
+
+[data-bs-theme=dark] .sidebar-header .logo-mini-wrapper .logo-mini.logo-mini-light,
+[data-bs-theme=dark] .auth-page .logo-mini-wrapper .logo-mini.logo-mini-light {
+  display: none;
+}
+[data-bs-theme=light] .sidebar-header .logo-mini-wrapper .logo-mini.logo-mini-dark,
+[data-bs-theme=light] .auth-page .logo-mini-wrapper .logo-mini.logo-mini-dark {
+  display: none;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+.splash-screen .logo {
+  width: 50px;
+  height: 50px;
+  background-size: 50px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@media only screen and (max-width: 767px){
+  .navbar .logo-mini-wrapper .logo-mini {
+    width: 100px;
+    height: auto;
+  }
+}
+
+.email-list-item {
+  position: relative;
+}
+
+.trash-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: none;
+  color: #000;
+  font-size: 20px;
+  background: #e4e7ec;
+  width: 100px;
+  text-align: right;
+}
+
+.email-list-item:hover .trash-icon {
+  display: inline-block;
+  background: #e4e7ec;
+}
+
+.trash-icon i {
+  color: #000;
+}
+
+.trash-icon i:hover {
+  color: #dc3545;
+}

@@ -1,0 +1,96 @@
+<nav class="navbar">
+  <div class="navbar-content">
+
+    <div class="logo-mini-wrapper">
+      <a routerLink="/" class="sidebar-brand">
+        <img src="images/logo-mini-light.png" class="logo-mini logo-mini-light" alt="logo">
+        <img src="images/logo-mini-dark.png" class="logo-mini logo-mini-dark" alt="logo">
+      </a>
+    </div>
+
+    <ul class="navbar-nav">
+      <li class="theme-switcher-wrapper nav-item">
+        <input type="checkbox" (change)="onThemeCheckboxChange($event)" value="" id="theme-switcher">
+        <label for="theme-switcher">
+          <div class="box">
+            <div class="ball"></div>
+            <div class="icons">
+              <i class="feather icon-sun"></i>
+              <i class="feather icon-moon"></i>
+            </div>
+          </div>
+        </label>
+      </li>
+      
+      <!-- <li class="nav-item" ngbDropdown>
+        <a class="nav-link" ngbDropdownToggle id="languageDropdown" role="button">
+          <img src="images/flags/us.svg" class="w-20px" title="us" alt="us">
+          <span class="ms-2 d-none d-md-inline-block">English</span>
+        </a>
+        <div ngbDropdownMenu aria-labelledby="languageDropdown">
+          <a ngbDropdownItem class="py-2 d-flex"> <img src="images/flags/us.svg" class="w-20px me-1" title="us" alt="us"> <span class="ms-2"> English </span></a>
+          <a ngbDropdownItem class="py-2 d-flex"> <img src="images/flags/fr.svg" class="w-20px me-1" title="fr" alt="fr"> <span class="ms-2"> Arabic </span></a>
+        </div>
+      </li> -->
+
+      <li class="nav-item nav-profile" ngbDropdown>
+        <a class="nav-link" ngbDropdownToggle id="profileDropdown">
+          <img [src]="user?.imagePreview" class="w-30px h-30px ms-1 rounded-circle" alt="{{ user?.full_name }}">
+        </a>
+        <div ngbDropdownMenu class="px-0" aria-labelledby="profileDropdown">
+          <div class="d-flex flex-column align-items-center border-bottom px-5 py-3">
+            <div class="mb-3">
+              <img [src]="user?.imagePreview" class="w-80px h-80px rounded-circle" alt="{{ user?.full_name }}">
+            </div>
+            <div class="text-center">
+              <p class="tx-16 fw-bolder">{{ user?.full_name }}</p>
+              <p class="fs-12px text-secondary">{{ user?.email }}</p>
+              <p class="tx-16 fw-bolder d-flex gap-2" *ngIf="user?.pin_code">
+                <strong>Pin Code:</strong>
+                <span>{{ showPin ? user?.pin_code : '********' }}</span>
+                <i
+                  class="feather"
+                  [ngClass]="showPin ? 'icon-eye-off' : 'icon-eye'"
+                  style="cursor: pointer;"
+                  (click)="togglePinVisibility()"
+                ></i>
+              </p>
+              <p class="tx-16 fw-bolder"><button class="badge bg-success text-white" (click)="generatePin()">Generate Pin</button></p>
+            </div>
+          </div>
+          <ul class="list-unstyled p-1">
+            <li>
+              <a routerLink="/users/profile/{{user?.id}}" class="dropdown-item py-2 d-flex ms-0">
+                <i class="feather icon-user me-2 icon-md"></i>
+                <span>Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="/users/edit/{{user?.id}}" class="dropdown-item py-2 d-flex ms-0">
+                <i class="feather icon-edit me-2 icon-md"></i>
+                <span>Edit Profile</span>
+              </a>
+            </li>
+            <li>
+              <a href="/change-password" class="dropdown-item py-2 d-flex ms-0">
+                <i class="feather icon-lock me-2 icon-md"></i>
+                <span>Change Password</span>
+              </a>
+            </li>
+            <li>
+              <a href="javascript:;" class="dropdown-item py-2 d-flex ms-0" (click)="onSignOut()">
+                <i class="feather icon-log-out me-2 icon-md"></i>
+                <span>Log Out</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+
+    <a href="" class="sidebar-toggler" (click)="toggleSidebar($event)">
+      <i class="feather icon-menu"></i>
+    </a>
+    
+  </div>
+</nav>

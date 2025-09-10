@@ -1,0 +1,48 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-striped view-table w-100 mt-3">
+          <tbody>
+            <tr>
+              <td style="width: 30%;">Employee Name</td>
+              <td style="width: 70%;">{{ currentRecord.employee?.full_name }}</td>
+            </tr>
+            <tr>
+              <td>Issue Date</td>
+              <td>{{ currentRecord.issue_date }}</td>
+            </tr>
+            <tr>
+              <td>Description</td>
+              <td>{{ currentRecord.description }}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{ currentRecord.status }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h5 class="mt-5">Company Asset Details</h5>
+        <table *ngIf="itemsList.length > 0" class="table table-hover w-100 mt-3">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Description</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of itemsList; let i = index">
+              <td>{{ item.asset_type?.name }}</td>
+              <td>{{ item.description }}</td>
+              <td>{{ item.status }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

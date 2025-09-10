@@ -1,0 +1,138 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="forms-sample" (submit)="updateRecord($event)">
+          <input type="hidden" name="update_id" [(ngModel)]="currentRecord.id">
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Select Employee <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" 
+              [value]="currentRecord.employee?.full_name || ''" 
+              name="employee_name" 
+              readonly>
+            </div>
+
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Select Month <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="monthYearOptions"
+                bindLabel="label"
+                bindValue="id"
+                [(ngModel)]="currentRecord.month_year"
+                name="month_year"
+                placeholder="Select month"
+                [searchable]="true"
+                [disabled]="!monthYearOptions.length"
+                (change)="onMonthSelect()">
+              </ng-select>
+            </div>
+
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Status <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="status"
+                bindLabel="name"
+                bindValue="id"
+                [(ngModel)]="currentRecord.status"
+                name="status"
+                placeholder="Select one"
+                [searchable]="false"
+                (change)="clearError('status')">
+              </ng-select>
+              <div class="text-danger mt-1" *ngIf="formErrors.status">{{ formErrors.status[0] }}</div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" name="description" rows="3" [(ngModel)]="currentRecord.description" (ngModelChange)="clearError('description')"></textarea>
+              <div class="text-danger mt-1" *ngIf="formErrors.description">{{ formErrors.description[0] }}</div>
+            </div>
+            
+            <!-- Form Actions -->
+            <div class="col-12 mt-3">
+              <button type="submit" [disabled]="isLoading" class="btn btn-primary">Save Changing</button>
+            </div>
+
+            <div class="col-12 mt-3">
+              <table class="table table-hover w-100 mt-3">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Check-In</th>
+                    <th>Check-Out</th>
+                    <th>Duration</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let day of attendanceDetails; let i = index">
+                    <td>
+                      <input type="hidden" [name]="'attendance_details[' + i + '][id]'" [(ngModel)]="day.id">
+                      
+                      <div class="input-group">
+                        <input class="form-control"
+                        placeholder="yyyy-mm-dd"
+                        name="attendance_date_{{i}}"
+                        ngbDatepicker
+                        [ngModel]="day.attendance_date"
+                        readonly
+                        #attendance_date="ngbDatepicker">
+                      </div>
+                    </td>
+                    <td>
+                      <ngb-timepicker 
+                        [(ngModel)]="day.check_in" 
+                        name="check_in_{{i}}"
+                        (ngModelChange)="updateDuration(i)">
+                      </ngb-timepicker>
+                    </td>
+                    <td>
+                      <ngb-timepicker 
+                        [(ngModel)]="day.check_out" 
+                        name="check_out_{{i}}"
+                        (ngModelChange)="updateDuration(i)">
+                      </ngb-timepicker>
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" [value]="day.duration" readonly>
+                    </td>
+                    <td>
+                      <ng-select
+                        [items]="attendance_status"
+                        bindLabel="name"
+                        bindValue="id"
+                        [(ngModel)]="day.status"
+                        name="status_{{i}}"
+                        [searchable]="false">
+                      </ng-select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- Form Actions -->
+             <div class="col-12 mt-3">
+              <button type="submit" [disabled]="isLoading" class="btn btn-primary">
+                <span *ngIf="!isLoading">Save Changes</span>
+                <span *ngIf="isLoading">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  Saving...
+                </span>
+              </button>
+            </div>
+
+            <div class="col-12 mt-3" *ngIf="globalErrorMessage">
+              <div class="alert alert-danger text-center">
+                {{ globalErrorMessage }}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

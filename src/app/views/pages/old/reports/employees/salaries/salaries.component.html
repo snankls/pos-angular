@@ -1,0 +1,132 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="row mb-3" (submit)="onAdvancedSearch($event)">
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Select Month</label>
+              <ng-select
+                [items]="monthYearOptions"
+                bindLabel="label"
+                bindValue="value"
+                [(ngModel)]="selectedMonthYear"
+                [ngModelOptions]="{ standalone: true }"
+                placeholder="Select month"
+                [searchable]="true"
+                required>
+              </ng-select>
+            </div>
+
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Select Employee</label>
+              <ng-select
+                [items]="employees"
+                bindLabel="employee_label"
+                bindValue="id"
+                [(ngModel)]="searchModel.employee_id"
+                name="employee_id"
+                placeholder="Select one"
+                [searchable]="true"
+                [clearable]="true"
+                [ngModelOptions]="{standalone: false}">
+              </ng-select>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">Salary From</label>
+              <input type="number" class="form-control form-control-sm" 
+                [(ngModel)]="searchModel.salary_start" name="salary_start" 
+                placeholder="Minimum salary" />
+            </div>
+          
+            <div class="col-md-3">
+              <label class="form-label">Salary To</label>
+              <input type="number" class="form-control form-control-sm" 
+                [(ngModel)]="searchModel.salary_end" name="salary_end" 
+                placeholder="Maximum salary" />
+            </div>
+          
+            <div class="col-12 mt-3">
+              <button class="btn btn-primary btn-sm me-2" type="submit">
+                <i class="feather icon-search"></i> Search
+              </button>
+              <button class="btn btn-secondary btn-sm" type="button" (click)="resetSearch()">
+                <i class="feather icon-refresh-ccw"></i> Reset
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        
+        <div class="text-end mb-3">
+          <button class="btn btn-success btn-sm me-2" (click)="downloadFile('excel')">
+            <i class="feather icon-download-cloud"></i> Excel
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="downloadFile('pdf')">
+            <i class="feather icon-download-cloud"></i> PDF
+          </button>
+        </div>
+        
+        <div class="table-responsive">
+          <ngx-datatable
+            class="bootstrap"
+            [rows]="rows"
+            [loadingIndicator]="loadingIndicator"
+            [columnMode]="ColumnMode.force"
+            [footerHeight]="50"
+            [limit]="10"
+            rowHeight="auto"
+            [scrollbarH]="true"
+          > 
+            <ngx-datatable-column name="ID/Code">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.code }}
+              </ng-template>
+            </ngx-datatable-column>
+
+            <ngx-datatable-column name="Employee Name">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.employee_name }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Days" prop="attendance_days">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.attendance_days }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Salary">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.salary | number }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Loan">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.loan_deduction | number }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Net Salary">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                <strong>{{ row.net_salary | number }}</strong>
+              </ng-template>
+            </ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
