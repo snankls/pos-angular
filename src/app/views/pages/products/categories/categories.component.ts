@@ -188,22 +188,6 @@ export class CategoriesComponent implements OnInit {
     this.activeModal = this.modalService.open(this.modalTemplate);
   }
 
-  deleteRecord(row: any): void {
-    if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
-      this.http.delete(`${this.API_URL}/categories/${row.id}`).subscribe({
-        next: () => {
-          this.rows = this.rows.filter(r => r.id !== row.id);
-          this.temp = this.temp.filter(r => r.id !== row.id);
-          this.selected = this.selected.filter(r => r.id !== row.id);
-        },
-        error: (error) => {
-          console.error('Error deleting record:', error);
-          alert('An error occurred while deleting the record.');
-        }
-      });
-    }
-  }
-
   // Remove Image Function
   removeImage(): void {
     // Only clear preview and mark it deleted
@@ -286,6 +270,22 @@ export class CategoriesComponent implements OnInit {
       .catch((error) => {
         console.error('Error deleting selected records:', error);
         alert('An error occurred while deleting records.');
+      });
+    }
+  }
+
+  deleteRecord(row: any): void {
+    if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
+      this.http.delete(`${this.API_URL}/categories/${row.id}`).subscribe({
+        next: () => {
+          this.rows = this.rows.filter(r => r.id !== row.id);
+          this.temp = this.temp.filter(r => r.id !== row.id);
+          this.selected = this.selected.filter(r => r.id !== row.id);
+        },
+        error: (error) => {
+          console.error('Error deleting record:', error);
+          alert('An error occurred while deleting the record.');
+        }
       });
     }
   }

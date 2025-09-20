@@ -1,0 +1,62 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="forms-sample" (submit)="onSubmit($event)">
+          <div class="mb-3">
+            <label class="form-label">Invoice Number Prefix <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="invoice_prefix"
+              [(ngModel)]="currentRecord.invoice_prefix"
+              (input)="clearError('invoice_prefix')"
+            >
+            <div class="text-danger mt-1" *ngIf="formErrors.invoice_prefix">
+              {{ formErrors.invoice_prefix[0] }}
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Invoice Number Total <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="invoice_count"
+              [(ngModel)]="currentRecord.invoice_count"
+              (input)="clearError('invoice_count')"
+            >
+            <div class="text-danger mt-1" *ngIf="formErrors.invoice_count">
+              {{ formErrors.invoice_count[0] }}
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Currency Sign <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="currency_sign"
+              [(ngModel)]="currentRecord.currency_sign"
+              (input)="clearError('currency_sign')"
+            >
+            <div class="text-danger mt-1" *ngIf="formErrors.currency_sign">
+              {{ formErrors.currency_sign[0] }}
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary me-2" [disabled]="isLoading">
+            {{ isLoading ? 'Saving...' : 'Save Changing' }}
+          </button>
+
+          <!-- Success message -->
+          <div class="mt-3 text-success" *ngIf="successMessage">
+            {{ successMessage }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

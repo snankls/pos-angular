@@ -5,38 +5,24 @@ import { NgbDropdownModule, NgbNavContent, NgbNavModule, NgbTooltip, NgbNavOutle
 import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
 import { environment } from '../../../../environments/environment';
 
-interface Employee {
+interface Customer {
   id?: number;
   code: string;
-  first_name: string;
-  last_name: string;
-  email: string;
+  name: string;
+  cnic: string;
+  email_address: string;
   phone_number: string;
-  religion: string | null;
-  gender: string | null;
-  date_of_birth?: string | null;
-  joining_date: string | null;
-  resign_date?: string | null;
-  department_name: number | null;
-  designation_name: number | null;
-  job_type_name: string | number | null;
-  city_name: number | null;
-  bank_name: number | null;
-  account_number: string | null;
-  basic_salary: number;
-  house_rent?: number;
-  medical_allowances?: number;
-  transport_allowances?: number;
-  total_salary: number;
-  status: number | null;
+  mobile_number: string;
+  city_name: string | null;
+  credit_balance: string;
+  credit_limit: string;
   address: string;
+  status: string | null;
   description?: string;
-  image?: File | string | null;
-  image_url?: string;
-  slug?: string;
   images?: {
     image_name: string;
-  };
+    image_path?: string;
+  } | null;
 }
 
 @Component({
@@ -56,31 +42,20 @@ export class CustomersViewComponent {
   private API_URL = environment.API_URL;
   private IMAGE_URL = environment.IMAGE_URL;
 
-  currentRecord: Employee = {
+  currentRecord: Customer = {
     code: '',
-    first_name: '',
-    last_name: '',
-    email: '',
+    name: '',
+    cnic: '',
+    email_address: '',
     phone_number: '',
-    religion: '',
-    gender: null,
-    date_of_birth: '',
-    joining_date: '',
-    resign_date: '',
-    department_name: null,
-    designation_name: null,
-    job_type_name: null,
+    mobile_number: '',
     city_name: null,
-    bank_name: null,
-    account_number: null,
-    basic_salary: 0,
-    house_rent: 0,
-    medical_allowances: 0,
-    transport_allowances: 0,
-    total_salary: 0,
-    status: null,
+    credit_balance: '',
+    credit_limit: '',
     address: '',
-    image: ''
+    status: 'Active',
+    description: '',
+    images: null
   };
 
   isLoading: boolean = false;
@@ -88,7 +63,7 @@ export class CustomersViewComponent {
   defaultNavActiveId = 1;
   rows: any[] = [];
   loadingIndicator = false;
-  employee_status: string = '';
+  //customer_status: string = '';
   imagePreview: string | ArrayBuffer | null = null;
 
   constructor(
@@ -102,24 +77,24 @@ export class CustomersViewComponent {
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.fetchProducts(+id);
+        this.fetchCustomers(+id);
       }
     });
   }
 
-  fetchProducts(id: number): void {
+  fetchCustomers(id: number): void {
     this.isLoading = true;
     this.errorMessage = '';
     
-    this.http.get<Employee>(`${this.API_URL}/employee/${id}`).subscribe({
-      next: (employee) => {
+    this.http.get<Customer>(`${this.API_URL}/customers/${id}`).subscribe({
+      next: (customer) => {
         this.currentRecord = {
           ...this.currentRecord,
-          ...employee,
+          ...customer,
         };
     
-        if (employee.images && employee.images.image_name) {
-          this.imagePreview = `${this.IMAGE_URL}/uploads/products/${employee.images.image_name}`;
+        if (customer.images && customer.images.image_name) {
+          this.imagePreview = `${this.IMAGE_URL}/uploads/customers/${customer.images.image_name}`;
         }
         this.isLoading = false;
       },
@@ -131,8 +106,8 @@ export class CustomersViewComponent {
           this.router.navigate(['/dashboard']);
         } else {
           // Handle other errors
-          this.errorMessage = 'Failed to load employee details. Please try again.';
-          console.error('Error fetching employee:', error);
+          this.errorMessage = 'Failed to load customer details. Please try again.';
+          console.error('Error fetching customer:', error);
         }
       }
     });

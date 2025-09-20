@@ -1,0 +1,228 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="forms-sample" (submit)="onSubmit($event)">
+          <input type="hidden" name="update_id" [(ngModel)]="currentRecord.id">
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Invoice Number</label>
+              <input type="text" class="form-control"
+              placeholder="will be generate on save."
+              readonly>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Customers <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="customers"
+                bindLabel="customer_label"
+                bindValue="id"
+                [(ngModel)]="currentRecord.customer_id"
+                name="customer_id"
+                placeholder="Select one"
+                [searchable]="true"
+                (change)="clearError('customer_id')"
+                [ngModelOptions]="{standalone: false}">
+              </ng-select>
+              <div class="text-danger mt-1" *ngIf="formErrors.customer_id">
+                {{ formErrors.customer_id[0] }}
+              </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Invoice Date <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="invoice_date" ngbDatepicker #idate="ngbDatepicker" [(ngModel)]="currentRecord.invoice_date" (ngModelChange)="clearError('invoice_date')">
+                <button class="input-group-text" type="button" (click)="idate.toggle()">
+                  <i class="feather icon-calendar icon-md text-secondary"></i>
+                </button>
+              </div>
+              <div class="text-danger mt-1" *ngIf="formErrors.invoice_date">
+                {{ formErrors.invoice_date[0] }}
+              </div>
+            </div>
+        
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Status <span class="text-danger">*</span></label>
+              <ng-select
+                [items]="status"
+                bindLabel="name"
+                bindValue="id"
+                [(ngModel)]="currentRecord.status"
+                name="status"
+                placeholder="Select one"
+                [searchable]="false"
+                (change)="clearError('status')">
+              </ng-select>
+              <div class="text-danger mt-1" *ngIf="formErrors.status">{{ formErrors.status[0] }}</div>
+            </div>
+        
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" name="description" rows="3" [(ngModel)]="currentRecord.description" (ngModelChange)="clearError('description')"></textarea>
+              <div class="text-danger mt-1" *ngIf="formErrors.description">{{ formErrors.description[0] }}</div>
+            </div>
+            
+            <div class="col-md-12 mb-3">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th [width]="30">#</th>
+                      <th>Products <span class="text-danger">*</span></th>
+                      <th>Quantity <span class="text-danger">*</span></th>
+                      <th>Unit <span class="text-danger">*</span></th>
+                      <th>Discount <span class="text-danger">*</span></th>
+                      <th>Price <span class="text-danger">*</span></th>
+                      <th>Total <span class="text-danger">*</span></th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let item of itemsList; let i = index">
+                      <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td [width]="250">
+                          <ng-select
+                            [items]="getAvailableProducts(i)"
+                            bindLabel="product_label"
+                            bindValue="id"
+                            [trackByFn]="trackByProductId"
+                            [(ngModel)]="item.product_id"
+                            name="product_id_{{i}}"
+                            placeholder="Select one"
+                            [searchable]="true"
+                            (change)="onProductChange($event, i)"
+                            [ngClass]="{'border-danger': item.product_id && !isProductAvailable(item.product_id, i)}">
+                          </ng-select>
+                          <div class="text-danger mt-1" *ngIf="formErrors.product_id">
+                            {{ formErrors.product_id[0] }}
+                          </div>
+                        </td>
+                        <td>
+                          <input type="number" class="form-control"
+                          [(ngModel)]="item.quantity"
+                          name="quantity_{{i}}"
+                          (change)="updateTotals()"
+                          (ngModelChange)="updateRowTotal(i)">
+                        </td>
+                        <td>
+                          <input type="hidden" class="form-control" [(ngModel)]="item.unit_id" name="unit_id_{{i}}" readonly>
+                          <input type="text" class="form-control" [(ngModel)]="item.unit_name" name="unit_name_{{i}}" readonly>
+                        </td>
+                        <td>
+                          <div class="d-flex gap-2">
+                            <ng-select [items]="discount"
+                              [searchable]="true"
+                              placeholder="Select one"
+                              [(ngModel)]="item.discountType"
+                              name="discount_type_{{i}}"
+                              (change)="updateRowTotal(i); updateTotals()">
+                            </ng-select>
+                            <input type="number" class="form-control w-50"
+                            [(ngModel)]="item.discountValue"
+                            name="discount_value_{{i}}"
+                            (ngModelChange)="updateRowTotal(i); updateTotals()">
+                          </div>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" [(ngModel)]="item.price" name="price_{{i}}" (ngModelChange)="updateRowTotal(i)" readonly>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control"
+                          [(ngModel)]="item.total_amount"
+                          name="total_amount_{{i}}"
+                          (keydown)="onTabKey($event, i)"
+                          readonly>
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-sm btn-danger" (click)="deleteItemRow(i)">
+                            <i class="feather icon-trash-2"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+                
+                <div class="col-md-4 mt-3 d-flex gap-2">
+                  <button class="btn btn-success btn-xs" type="button" (click)="addItemRow()">
+                    + Add Item
+                  </button>
+                </div>
+
+                <div class="container-fluid mt-5 w-100">
+                  <div class="row">
+                    <div class="col-md-5 ms-auto">
+                      <div class="table-responsive">
+                        <table class="table fw-bold">
+                          <tbody>
+                            <tr>
+                              <td>Discount</td>
+                              <td>
+                                <div class="d-flex gap-2">
+                                  <ng-select
+                                    [items]="discount"
+                                    name="discount_type"
+                                    [searchable]="false"
+                                    [(ngModel)]="selectedDiscount"
+                                    (change)="updateTotals()"
+                                    class="flex-grow-1 w-50">
+                                  </ng-select>
+
+                                  <input
+                                    type="number"
+                                    name="discount_value"
+                                    class="form-control w-50"
+                                    [(ngModel)]="discountValue"
+                                    (ngModelChange)="updateTotals()">
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Total Quantity</td>
+                              <td class="text-end">{{ totalQuantity | number:'1.2-2' }}</td>
+                            </tr>
+                            <tr>
+                              <td>Total Price</td>
+                              <td class="text-end">{{ currencySign }}{{ totalPrice | number:'1.2-2' }}</td>
+                            </tr>
+                            <tr>
+                              <td>Total Discount</td>
+                              <td class="text-end">{{ currencySign }}{{ totalDiscount | number:'1.2-2' }}</td>
+                            </tr>
+                            <tr>
+                              <td>Grand Total</td>
+                              <td class="text-end">{{ currencySign }}{{ grandTotal | number:'1.2-2' }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+            <!-- Form Actions -->
+            <div class="col-12 mt-3">
+              <!-- <button type="submit" [disabled]="isLoading" class="btn btn-primary">Save Changing</button> -->
+              <button type="submit" [disabled]="isLoading || (!isAmountValid && itemsList.length > 0)" class="btn btn-primary">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
+                Save Changes
+              </button>
+            </div>
+
+            <div class="col-12 mt-3" *ngIf="globalErrorMessage">
+              <div class="alert alert-danger text-center">
+                {{ globalErrorMessage }}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

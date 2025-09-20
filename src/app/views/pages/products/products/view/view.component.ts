@@ -5,38 +5,22 @@ import { NgbDropdownModule, NgbNavContent, NgbNavModule, NgbTooltip, NgbNavOutle
 import { BreadcrumbComponent } from '../../../../layout/breadcrumb/breadcrumb.component';
 import { environment } from '../../../../../environments/environment';
 
-interface Employee {
+interface Product {
   id?: number;
-  code: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone_number: string;
-  religion: string | null;
-  gender: string | null;
-  date_of_birth?: string | null;
-  joining_date: string | null;
-  resign_date?: string | null;
-  department_name: number | null;
-  designation_name: number | null;
-  job_type_name: string | number | null;
-  city_name: number | null;
-  bank_name: number | null;
-  account_number: string | null;
-  basic_salary: number;
-  house_rent?: number;
-  medical_allowances?: number;
-  transport_allowances?: number;
-  total_salary: number;
-  status: number | null;
-  address: string;
+  sku: string;
+  name: string;
+  category_name: number | null;
+  brand_name: number | null;
+  unit_name: number | null;
+  cost_price: number | null;
+  sale_price: number | null;
+  stock: number | null;
+  status: string | null;
   description?: string;
-  image?: File | string | null;
-  image_url?: string;
-  slug?: string;
   images?: {
     image_name: string;
-  };
+    image_path?: string;
+  } | null;
 }
 
 @Component({
@@ -56,31 +40,18 @@ export class ProductsViewComponent {
   private API_URL = environment.API_URL;
   private IMAGE_URL = environment.IMAGE_URL;
 
-  currentRecord: Employee = {
-    code: '',
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone_number: '',
-    religion: '',
-    gender: null,
-    date_of_birth: '',
-    joining_date: '',
-    resign_date: '',
-    department_name: null,
-    designation_name: null,
-    job_type_name: null,
-    city_name: null,
-    bank_name: null,
-    account_number: null,
-    basic_salary: 0,
-    house_rent: 0,
-    medical_allowances: 0,
-    transport_allowances: 0,
-    total_salary: 0,
-    status: null,
-    address: '',
-    image: ''
+  currentRecord: Product = {
+    sku: '',
+    name: '',
+    category_name: null,
+    brand_name: null,
+    unit_name: null,
+    cost_price: null,
+    sale_price: null,
+    stock: null,
+    status: 'Active',
+    description: '',
+    images: null
   };
 
   isLoading: boolean = false;
@@ -111,7 +82,7 @@ export class ProductsViewComponent {
     this.isLoading = true;
     this.errorMessage = '';
     
-    this.http.get<Employee>(`${this.API_URL}/employee/${id}`).subscribe({
+    this.http.get<Product>(`${this.API_URL}/products/${id}`).subscribe({
       next: (employee) => {
         this.currentRecord = {
           ...this.currentRecord,

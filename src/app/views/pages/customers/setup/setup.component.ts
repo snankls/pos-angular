@@ -7,22 +7,25 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 import { environment } from '../../../../environments/environment';
 import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
 
-interface Product {
+interface Customer {
   id?: number;
   code: string;
   name: string;
-  category_id: number | null;
-  brand_id: number | null;
-  cost_price: number | null;
-  selling_price: number | null;
-  wholesale_price?: number | null;
-  tax?: number | null;
-  stock: number | null;
-  min_stock?: number | null;
-  unit_id: number | null;
+  cnic: string;
+  email_address: string;
+  phone_number: string;
+  mobile_number: string;
+  city_id: number | null;
+  credit_balance: string;
+  credit_limit: string;
+  address: string;
   status: string | null;
   description?: string;
-  image?: File | string | null;
+  //image?: File | string | null;
+  images?: {
+    image_name: string;
+    image_path?: string;
+  } | null;
 }
 
 @Component({
@@ -35,21 +38,20 @@ export class CustomersSetupComponent {
   private API_URL = environment.API_URL;
   private IMAGE_URL = environment.IMAGE_URL;
 
-  currentRecord: Product = {
+  currentRecord: Customer = {
     code: '',
     name: '',
-    category_id: null,
-    brand_id: null,
-    cost_price: null,
-    selling_price: null,
-    wholesale_price: null,
-    tax: null,
-    stock: null,
-    min_stock: null,
-    unit_id: null,
+    cnic: '',
+    email_address: '',
+    phone_number: '',
+    mobile_number: '',
+    city_id: null,
+    credit_balance: '',
+    credit_limit: '',
+    address: '',
     status: 'Active',
     description: '',
-    image: null
+    images: null
   };
 
   isEditMode = false;
@@ -58,25 +60,25 @@ export class CustomersSetupComponent {
   globalErrorMessage: string = '';
   imagePreview: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
+  isImageDeleted = false;
 
-  categories: any[] = [];
-  brands: any[] = [];
-  units: any[] = [];
+  selected: { id: number; [key: string]: any }[] = [];
+  rows: { id: number; [key: string]: any }[] = [];
+  temp: { id: number; [key: string]: any }[] = [];
+  cities: { id: string; name: string }[] = [];
   status: { id: string; name: string }[] = [];
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    this.fetchCategories();
-    this.fetchBrands();
-    this.fetchUnits();
+    this.fetchCities();
     this.fetchStatus();
 
     // check if we are editing
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.loadProduct(+id);
+        this.loadCustomer(+id);
       }
     });
   }
@@ -87,24 +89,10 @@ export class CustomersSetupComponent {
     }
   }
 
-  fetchCategories(): void {
-    this.http.get<any[]>(`${this.API_URL}/categories`).subscribe({
-      next: (res) => this.categories = res,
-      error: (err) => console.error('Failed to fetch categories:', err)
-    });
-  }
-
-  fetchBrands(): void {
-    this.http.get<any[]>(`${this.API_URL}/brands`).subscribe({
-      next: (res) => this.brands = res,
-      error: (err) => console.error('Failed to fetch brands:', err)
-    });
-  }
-
-  fetchUnits(): void {
-    this.http.get<any[]>(`${this.API_URL}/units`).subscribe({
-      next: (res) => this.units = res,
-      error: (err) => console.error('Failed to fetch units:', err)
+  fetchCities(): void {
+    this.http.get<any[]>(`${this.API_URL}/active/cities`).subscribe({
+      next: (res) => this.cities = res,
+      error: (err) => console.error('Failed to fetch cities:', err)
     });
   }
 
@@ -117,18 +105,23 @@ export class CustomersSetupComponent {
     });
   }
 
-  loadProduct(id: number): void {
+  loadCustomer(id: number): void {
     this.isLoading = true;
-    this.http.get<Product>(`${this.API_URL}/product/${id}`).subscribe({
-      next: (product) => {
-        this.currentRecord = { ...this.currentRecord, ...product };
-        if (product.image) {
-          this.imagePreview = `${this.IMAGE_URL}/uploads/products/${product.image}`;
+    this.http.get<Customer>(`${this.API_URL}/customers/${id}`).subscribe({
+      next: (customer: any) => {
+        this.currentRecord = { ...this.currentRecord, ...customer };
+
+        // ✅ Fix image handling
+        if (customer.images && customer.images.image_name) {
+          this.imagePreview = `${this.IMAGE_URL}/uploads/customers/${customer.images.image_name}`;
         }
+
         this.isEditMode = true;
       },
       error: (err: HttpErrorResponse) => {
-        this.globalErrorMessage = err.status === 404 ? 'Product not found' : 'Failed to load product details';
+        this.globalErrorMessage = err.status === 404
+          ? 'Customer not found'
+          : 'Failed to load customer details';
       },
       complete: () => this.isLoading = false
     });
@@ -144,64 +137,57 @@ export class CustomersSetupComponent {
     }
   }
 
-  private buildFormData(): FormData {
-    const formData = new FormData();
-    for (const [key, value] of Object.entries(this.currentRecord)) {
-      if (value !== null && value !== undefined && value !== '') {
-        formData.append(key, value as any);
-      }
-    }
-    if (this.selectedFile) {
-      formData.append('product_image', this.selectedFile);
-    }
-    return formData;
+  // Remove Image Function
+  removeImage(): void {
+    this.imagePreview = null;
+    this.currentRecord.images = null;
+    this.selectedFile = null;
+    this.isImageDeleted = true;
   }
 
-  /** ✅ Add new product */
   onSubmit(event: Event): void {
     event.preventDefault();
     this.isLoading = true;
-    this.formErrors = {};
-    this.globalErrorMessage = '';
 
-    const formData = this.buildFormData();
+    const formData = new FormData();
 
-    this.http.post(`${this.API_URL}/products`, formData).subscribe({
+    // Only append primitive values (string, number, boolean)
+    for (const [key, value] of Object.entries(this.currentRecord)) {
+      if (
+        value !== null &&
+        value !== undefined &&
+        value !== '' &&
+        typeof value !== 'object' // 👈 skip objects like "images"
+      ) {
+        formData.append(key, value as any);
+      }
+    }
+
+    // If a new file is selected
+    if (this.selectedFile) {
+      formData.append('customer_image', this.selectedFile);
+    }
+
+    // If image was deleted
+    if (this.isImageDeleted) {
+      formData.append('isImageDeleted', '1');
+    }
+
+    const request$ = this.currentRecord.id
+      ? this.http.post(`${this.API_URL}/customers/${this.currentRecord.id}?_method=PUT`, formData)
+      : this.http.post(`${this.API_URL}/customers`, formData);
+
+    request$.subscribe({
       next: () => {
-        this.router.navigate(['/products']);
-      },
-      error: (err) => {
         this.isLoading = false;
-        this.formErrors = err.error?.errors || {};
-        this.globalErrorMessage = 'Please fix errors before submitting.';
+        this.router.navigate(['/customers']);
       },
-      complete: () => this.isLoading = false
+      error: (error) => {
+        this.isLoading = false;
+        this.formErrors = error.error?.errors || {};
+        this.globalErrorMessage = 'Please check the highlighted fields.';
+      }
     });
   }
 
-  /** ✅ Update existing product */
-  updateRecord(event: Event): void {
-    event.preventDefault();
-    if (!this.currentRecord.id) return;
-
-    this.isLoading = true;
-    this.formErrors = {};
-    this.globalErrorMessage = '';
-
-    const formData = this.buildFormData();
-
-    this.http.post(`${this.API_URL}/products/${this.currentRecord.id}`, formData).subscribe({
-      // if backend supports PUT instead of POST, use this:
-      // this.http.put(`${this.API_URL}/products/${this.currentRecord.id}`, formData)
-      next: () => {
-        this.router.navigate(['/products']);
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.formErrors = err.error?.errors || {};
-        this.globalErrorMessage = 'Please fix errors before submitting.';
-      },
-      complete: () => this.isLoading = false
-    });
-  }
 }

@@ -18,7 +18,7 @@
             <button type="button" class="btn btn-danger btn-sm me-2" [disabled]="selected.length === 0" (click)="deleteSelectedRecords()">
               Delete
             </button>
-            <a href="employees/add" class="btn btn-primary btn-sm">
+            <a href="products/add" class="btn btn-primary btn-sm">
               + Add New
             </a>
           </div>
@@ -54,63 +54,51 @@
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="ID/Code">
+            <ngx-datatable-column name="SKU">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.code }}
+                {{ row.sku }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Employee Name">
+            <ngx-datatable-column name="Name">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.full_name }}
+                {{ row.name }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Religions">
+            <ngx-datatable-column name="Brand">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.religion }}
+                {{ row.brand_name }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Gender">
+            <ngx-datatable-column name="Category">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.gender }}
+                {{ row.category_name }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Department">
+            <ngx-datatable-column name="Unit">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.department_name }}
+                {{ row.unit_name }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Designation">
+            <ngx-datatable-column name="Stock">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.designation_name }}
+                {{ row.stock }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Joining Date">
+            <ngx-datatable-column name="Cost Price">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.joining_date | date:'yyyy-MM-dd' }}
+                {{ row.cost_price }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Resign Date">
+            <ngx-datatable-column name="Sale Price">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.resign_date | date:'yyyy-MM-dd' }}
-              </ng-template>
-            </ngx-datatable-column>
-            
-            <ngx-datatable-column name="City">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.city_name }}
-              </ng-template>
-            </ngx-datatable-column>
-            
-            <ngx-datatable-column name="Total Salary">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.total_salary | number }}
+                {{ row.sale_price }}
               </ng-template>
             </ngx-datatable-column>
             
@@ -135,13 +123,17 @@
             <ngx-datatable-column name="Action" [sortable]="false">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span class="d-flex align-items-center">
-                  <a href="employees/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
+                  <a href="products/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
                     <i class="feather icon-eye"></i>
                   </a>
                   
-                  <a href="employees/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
+                  <a href="products/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
                     <i class="feather icon-edit"></i>
                   </a>
+
+                  <button class="btn btn-danger me-1 action-btn" (click)="deleteRecord(row)">
+                    <i class="feather icon-trash-2"></i>
+                  </button>
                 </span>
               </ng-template>
             </ngx-datatable-column>

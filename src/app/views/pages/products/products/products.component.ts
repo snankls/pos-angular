@@ -34,9 +34,9 @@ export class ProductsComponent {
     private http: HttpClient
   ) { }
 
-  // ngOnInit(): void {
-  //   this.fetchProducts();
-  // }
+  ngOnInit(): void {
+    this.fetchProducts();
+  }
 
   updateFilter(event: KeyboardEvent) {
     const val = (event.target as HTMLInputElement).value.toLowerCase();
@@ -67,27 +67,27 @@ export class ProductsComponent {
     }
   }
 
-  // fetchProducts(): void {
-  //   this.loadingIndicator = true;
+  fetchProducts(): void {
+    this.loadingIndicator = true;
   
-  //   this.http.get<any[]>(`${this.API_URL}/products`).subscribe({
-  //     next: (response) => {
-  //       this.rows = response;
-  //       this.temp = [...response];
-  //       this.loadingIndicator = false;
+    this.http.get<any[]>(`${this.API_URL}/products`).subscribe({
+      next: (response) => {
+        this.rows = response;
+        this.temp = [...response];
+        this.loadingIndicator = false;
 
-  //       // Optionally, you can process image_url if necessary (e.g., fallback for missing images)
-  //       this.rows.forEach((employee) => {
-  //         employee.employee_image = employee.image_url
-  //           ? `${this.IMAGE_URL}/uploads/products/${employee.image_url}`
-  //           : 'images/placeholder.png';
-  //       });
-  //     },
-  //     error: (error) => {
-  //       this.loadingIndicator = false;
-  //     }
-  //   });
-  // }
+        // Optionally, you can process image_url if necessary (e.g., fallback for missing images)
+        this.rows.forEach((employee) => {
+          employee.employee_image = employee.image_url
+            ? `${this.IMAGE_URL}/uploads/products/${employee.image_url}`
+            : 'images/placeholder.jpg';
+        });
+      },
+      error: (error) => {
+        this.loadingIndicator = false;
+      }
+    });
+  }
 
   deleteSelectedRecords(): void {
     if (confirm('Are you sure you want to permanent delete the selected record(s)?')) {
@@ -104,6 +104,22 @@ export class ProductsComponent {
           console.error('Error deleting selected records:', error);
           alert('An error occurred while deleting records.');
         });
+    }
+  }
+
+  deleteRecord(row: any): void {
+    if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
+      this.http.delete(`${this.API_URL}/products/${row.id}`).subscribe({
+        next: () => {
+          this.rows = this.rows.filter(r => r.id !== row.id);
+          this.temp = this.temp.filter(r => r.id !== row.id);
+          this.selected = this.selected.filter(r => r.id !== row.id);
+        },
+        error: (error) => {
+          console.error('Error deleting record:', error);
+          alert('An error occurred while deleting the record.');
+        }
+      });
     }
   }
 

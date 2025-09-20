@@ -18,7 +18,7 @@
             <button type="button" class="btn btn-danger btn-sm me-2" [disabled]="selected.length === 0" (click)="deleteSelectedRecords()">
               Delete
             </button>
-            <a href="loans/add" class="btn btn-primary btn-sm">
+            <a href="invoices/add" class="btn btn-primary btn-sm">
               + Add New
             </a>
           </div>
@@ -45,45 +45,45 @@
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Employee Name">
+            <ngx-datatable-column name="Invoice #">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.employee_name }}
+                {{ row.invoice_number }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Issue Date">
+            <ngx-datatable-column name="Customer Name">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.issue_date }}
+                {{ row.customer_name }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Total Loan">
+            <ngx-datatable-column name="Invoice Date">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.loan_amount | number }}
+                {{ row.invoice_date | date:'yyyy-MM-dd' }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Paid Loan">
+            <ngx-datatable-column name="Total Quantity">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.paid_amount | number }}
+                {{ row.total_quantity | number }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Unpaid Loan">
+            <ngx-datatable-column name="Total Price">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.unpaid_amount | number }}
+                {{ currencySign }}{{ row.total_price | number }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Remaining Loan">
+            <ngx-datatable-column name="Total Discount">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.remaining_amount | number }}
+                {{ currencySign }}{{ row.total_discount | number }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Description">
+            <ngx-datatable-column name="Grand Total">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.description }}
+                {{ currencySign }}{{ row.grand_total | number }}
               </ng-template>
             </ngx-datatable-column>
             
@@ -108,13 +108,17 @@
             <ngx-datatable-column name="Action" [sortable]="false">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span class="d-flex align-items-center">
-                  <a href="loans/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
+                  <a href="invoices/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
                     <i class="feather icon-eye"></i>
                   </a>
                   
-                  <a href="loans/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
+                  <a href="invoices/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
                     <i class="feather icon-edit"></i>
                   </a>
+
+                  <button class="btn btn-danger me-1 action-btn" (click)="deleteRecord(row)">
+                    <i class="feather icon-trash-2"></i>
+                  </button>
                 </span>
               </ng-template>
             </ngx-datatable-column>

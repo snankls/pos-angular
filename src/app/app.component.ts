@@ -13,7 +13,7 @@ import { filter, map, mergeMap } from 'rxjs/operators';
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-  title = 'Payroll';
+  title = 'Point of Sale';
 
   constructor(
     private themeModeService: ThemeModeService,
@@ -42,8 +42,8 @@ export class AppComponent implements OnInit {
       mergeMap(route => route.data)
     ).subscribe(data => {
       const pageTitle = data['title']
-        ? `${data['title']} - Payroll Management System`
-        : 'Payroll Management System';
+        ? `${data['title']} - Point of Sale`
+        : 'Point of Sale';
       this.titleService.setTitle(pageTitle);
     });
   }

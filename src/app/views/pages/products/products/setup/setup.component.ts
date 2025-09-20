@@ -9,20 +9,20 @@ import { BreadcrumbComponent } from '../../../../layout/breadcrumb/breadcrumb.co
 
 interface Product {
   id?: number;
-  code: string;
+  sku: string;
   name: string;
   category_id: number | null;
   brand_id: number | null;
-  cost_price: number | null;
-  selling_price: number | null;
-  wholesale_price?: number | null;
-  tax?: number | null;
-  stock: number | null;
-  min_stock?: number | null;
   unit_id: number | null;
+  cost_price: number | null;
+  sale_price: number | null;
+  stock: number | null;
   status: string | null;
   description?: string;
-  image?: File | string | null;
+  images?: {
+    image_name: string;
+    image_path?: string;
+  } | null;
 }
 
 @Component({
@@ -36,20 +36,17 @@ export class ProductsSetupComponent {
   private IMAGE_URL = environment.IMAGE_URL;
 
   currentRecord: Product = {
-    code: '',
+    sku: '',
     name: '',
     category_id: null,
     brand_id: null,
-    cost_price: null,
-    selling_price: null,
-    wholesale_price: null,
-    tax: null,
-    stock: null,
-    min_stock: null,
     unit_id: null,
+    cost_price: null,
+    sale_price: null,
+    stock: null,
     status: 'Active',
     description: '',
-    image: null
+    images: null
   };
 
   isEditMode = false;
@@ -58,7 +55,12 @@ export class ProductsSetupComponent {
   globalErrorMessage: string = '';
   imagePreview: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
+  isImageDeleted = false;
 
+  selected: { id: number; [key: string]: any }[] = [];
+  rows: { id: number; [key: string]: any }[] = [];
+  temp: { id: number; [key: string]: any }[] = [];
+  
   categories: any[] = [];
   brands: any[] = [];
   units: any[] = [];
@@ -88,21 +90,21 @@ export class ProductsSetupComponent {
   }
 
   fetchCategories(): void {
-    this.http.get<any[]>(`${this.API_URL}/categories`).subscribe({
+    this.http.get<any[]>(`${this.API_URL}/active/categories`).subscribe({
       next: (res) => this.categories = res,
       error: (err) => console.error('Failed to fetch categories:', err)
     });
   }
 
   fetchBrands(): void {
-    this.http.get<any[]>(`${this.API_URL}/brands`).subscribe({
+    this.http.get<any[]>(`${this.API_URL}/active/brands`).subscribe({
       next: (res) => this.brands = res,
       error: (err) => console.error('Failed to fetch brands:', err)
     });
   }
 
   fetchUnits(): void {
-    this.http.get<any[]>(`${this.API_URL}/units`).subscribe({
+    this.http.get<any[]>(`${this.API_URL}/active/units`).subscribe({
       next: (res) => this.units = res,
       error: (err) => console.error('Failed to fetch units:', err)
     });
@@ -119,16 +121,21 @@ export class ProductsSetupComponent {
 
   loadProduct(id: number): void {
     this.isLoading = true;
-    this.http.get<Product>(`${this.API_URL}/product/${id}`).subscribe({
-      next: (product) => {
+    this.http.get<Product>(`${this.API_URL}/products/${id}`).subscribe({
+      next: (product: any) => {
         this.currentRecord = { ...this.currentRecord, ...product };
-        if (product.image) {
-          this.imagePreview = `${this.IMAGE_URL}/uploads/products/${product.image}`;
+
+        // ✅ Fix image handling
+        if (product.images && product.images.image_name) {
+          this.imagePreview = `${this.IMAGE_URL}/uploads/products/${product.images.image_name}`;
         }
+
         this.isEditMode = true;
       },
       error: (err: HttpErrorResponse) => {
-        this.globalErrorMessage = err.status === 404 ? 'Product not found' : 'Failed to load product details';
+        this.globalErrorMessage = err.status === 404
+          ? 'Product not found'
+          : 'Failed to load product details';
       },
       complete: () => this.isLoading = false
     });
@@ -144,64 +151,58 @@ export class ProductsSetupComponent {
     }
   }
 
-  private buildFormData(): FormData {
-    const formData = new FormData();
-    for (const [key, value] of Object.entries(this.currentRecord)) {
-      if (value !== null && value !== undefined && value !== '') {
-        formData.append(key, value as any);
-      }
-    }
-    if (this.selectedFile) {
-      formData.append('product_image', this.selectedFile);
-    }
-    return formData;
+  // Remove Image Function
+  removeImage(): void {
+    this.imagePreview = null;
+    this.currentRecord.images = null;
+    this.selectedFile = null;
+    this.isImageDeleted = true;
   }
 
-  /** ✅ Add new product */
   onSubmit(event: Event): void {
     event.preventDefault();
     this.isLoading = true;
-    this.formErrors = {};
-    this.globalErrorMessage = '';
+    
+    const formData = new FormData();
 
-    const formData = this.buildFormData();
+    // Only append primitive values (string, number, boolean)
+    for (const [key, value] of Object.entries(this.currentRecord)) {
+      if (
+        value !== null &&
+        value !== undefined &&
+        value !== '' &&
+        typeof value !== 'object' // 👈 skip objects like "images"
+      ) {
+        formData.append(key, value as any);
+      }
+    }
 
-    this.http.post(`${this.API_URL}/products`, formData).subscribe({
+    // If a new file is selected
+    if (this.selectedFile) {
+      formData.append('product_image', this.selectedFile);
+    }
+
+    // If image was deleted
+    if (this.isImageDeleted) {
+      formData.append('isImageDeleted', '1');
+    }
+
+    const request$ = this.currentRecord.id
+      ? this.http.post(`${this.API_URL}/products/${this.currentRecord.id}?_method=PUT`, formData)
+      : this.http.post(`${this.API_URL}/products`, formData);
+
+    request$.subscribe({
       next: () => {
+        this.isLoading = false;
         this.router.navigate(['/products']);
       },
-      error: (err) => {
+      error: (error) => {
         this.isLoading = false;
-        this.formErrors = err.error?.errors || {};
-        this.globalErrorMessage = 'Please fix errors before submitting.';
-      },
-      complete: () => this.isLoading = false
+        this.formErrors = error.error?.errors || {};
+        this.globalErrorMessage = 'Please check the highlighted fields.';
+      }
     });
   }
 
-  /** ✅ Update existing product */
-  updateRecord(event: Event): void {
-    event.preventDefault();
-    if (!this.currentRecord.id) return;
-
-    this.isLoading = true;
-    this.formErrors = {};
-    this.globalErrorMessage = '';
-
-    const formData = this.buildFormData();
-
-    this.http.post(`${this.API_URL}/products/${this.currentRecord.id}`, formData).subscribe({
-      // if backend supports PUT instead of POST, use this:
-      // this.http.put(`${this.API_URL}/products/${this.currentRecord.id}`, formData)
-      next: () => {
-        this.router.navigate(['/products']);
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.formErrors = err.error?.errors || {};
-        this.globalErrorMessage = 'Please fix errors before submitting.';
-      },
-      complete: () => this.isLoading = false
-    });
-  }
 }
+  

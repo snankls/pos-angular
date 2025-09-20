@@ -7,7 +7,7 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Dashboard',
-    icon: 'home',
+    icon: 'disc',
     link: '/dashboard'
   },
   {
@@ -16,8 +16,14 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Company',
-    icon: 'users',
+    icon: 'home',
     link: '/companies',
+  },
+  
+  {
+    label: 'Invoices',
+    icon: 'grid',
+    link: '/invoices',
   },
 
   {
@@ -125,7 +131,7 @@ export const MENU: MenuItem[] = [
   // Customers
   {
     label: 'Customers',
-    icon: 'disc',
+    icon: 'users',
     link: '/customers',
   },
 
@@ -151,7 +157,12 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Import / Export',
-    icon: 'map',
+    icon: 'git-pull-request',
     link: '/import-export',
+  },
+  {
+    label: 'Settings',
+    icon: 'settings',
+    link: '/settings',
   },
 ];

@@ -46,6 +46,35 @@ export const routes: Routes = [
         data: { title: 'Companies' },
       },
 
+      
+      // Invoices
+      {
+        path: 'invoices',
+        loadComponent: () => import('./views/pages/invoices/invoices.component').then(c => c.InvoicesComponent),
+        data: { title: 'Invoices' },
+      },
+
+      // Invoices Add
+      {
+        path: 'invoices/add',
+        loadComponent: () => import('./views/pages/invoices/setup/setup.component').then(c => c.InvoicesSetupComponent),
+        data: { title: 'Invoices Add' },
+      },
+
+      // Invoices Edit
+      {
+        path: 'invoices/edit/:id',
+        loadComponent: () => import('./views/pages/invoices/setup/setup.component').then(c => c.InvoicesSetupComponent),
+        data: { title: 'Invoices Edit' },
+      },
+
+      // Invoices View
+      {
+        path: 'invoices/view/:id',
+        loadComponent: () => import('./views/pages/invoices/view/view.component').then(c => c.InvoicesViewComponent),
+        data: { title: 'Invoices View' },
+      },
+
       // Products
       {
         path: 'products',
@@ -269,33 +298,6 @@ export const routes: Routes = [
       //   data: { title: 'Company Asset Returns View' },
       // },
 
-      // // Loans
-      // {
-      //   path: 'loans',
-      //   loadComponent: () => import('./views/pages/loans/loans.component').then(c => c.LoansComponent),
-      //   data: { title: 'Loans' },
-      // },
-
-      // // Loans Add
-      // {
-      //   path: 'loans/add',
-      //   loadComponent: () => import('./views/pages/loans/setup/setup.component').then(c => c.LoansSetupComponent),
-      //   data: { title: 'Loans Add' },
-      // },
-
-      // // Loans Edit
-      // {
-      //   path: 'loans/edit/:id',
-      //   loadComponent: () => import('./views/pages/loans/setup/setup.component').then(c => c.LoansSetupComponent),
-      //   data: { title: 'Loans Edit' },
-      // },
-
-      // // Loans View
-      // {
-      //   path: 'loans/view/:id',
-      //   loadComponent: () => import('./views/pages/loans/view/view.component').then(c => c.LoansViewComponent),
-      //   data: { title: 'Loans View' },
-      // },
 
       // Banks A/C
       {
@@ -309,6 +311,13 @@ export const routes: Routes = [
         path: 'cities',
         loadComponent: () => import('./views/pages/cities/cities.component').then(c => c.CitiesComponent),
         data: { title: 'Cities' },
+      },
+
+      // Settings
+      {
+        path: 'settings',
+        loadComponent: () => import('./views/pages/settings/settings.component').then(c => c.SettingsComponent),
+        data: { title: 'Settings' },
       },
 
       // // Users Edit

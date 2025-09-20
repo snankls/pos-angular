@@ -60,57 +60,21 @@
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Employee Name">
+            <ngx-datatable-column name="Customer Name">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.full_name }}
+                {{ row.name }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Religions">
+            <ngx-datatable-column name="Phone Number">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.religion }}
-              </ng-template>
-            </ngx-datatable-column>
-            
-            <ngx-datatable-column name="Gender">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.gender }}
-              </ng-template>
-            </ngx-datatable-column>
-            
-            <ngx-datatable-column name="Department">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.department_name }}
-              </ng-template>
-            </ngx-datatable-column>
-            
-            <ngx-datatable-column name="Designation">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.designation_name }}
-              </ng-template>
-            </ngx-datatable-column>
-            
-            <ngx-datatable-column name="Joining Date">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.joining_date | date:'yyyy-MM-dd' }}
-              </ng-template>
-            </ngx-datatable-column>
-            
-            <ngx-datatable-column name="Resign Date">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.resign_date | date:'yyyy-MM-dd' }}
+                {{ row.phone_number }}
               </ng-template>
             </ngx-datatable-column>
             
             <ngx-datatable-column name="City">
               <ng-template ngx-datatable-cell-template let-row="row">
                 {{ row.city_name }}
-              </ng-template>
-            </ngx-datatable-column>
-            
-            <ngx-datatable-column name="Total Salary">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.total_salary | number }}
               </ng-template>
             </ngx-datatable-column>
             
@@ -135,13 +99,17 @@
             <ngx-datatable-column name="Action" [sortable]="false">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span class="d-flex align-items-center">
-                  <a href="employees/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
+                  <a href="customers/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
                     <i class="feather icon-eye"></i>
                   </a>
                   
-                  <a href="employees/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
+                  <a href="customers/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
                     <i class="feather icon-edit"></i>
                   </a>
+
+                  <button class="btn btn-danger me-1 action-btn" (click)="deleteRecord(row)">
+                    <i class="feather icon-trash-2"></i>
+                  </button>
                 </span>
               </ng-template>
             </ngx-datatable-column>

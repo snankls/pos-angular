@@ -7,7 +7,7 @@ import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.componen
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-attendances',
+  selector: 'app-invoices',
   standalone: true,
   imports: [
     BreadcrumbComponent,
@@ -15,11 +15,12 @@ import { environment } from '../../../environments/environment';
     NgxDatatableModule,
     CommonModule,
   ],
-  templateUrl: './attendances.component.html'
+  templateUrl: './invoices.component.html'
 })
-export class AttendancesComponent {
+export class InvoicesComponent {
   private API_URL = environment.API_URL;
 
+  currencySign: string = '';
   selected: { id: number; [key: string]: any }[] = [];
   rows: { id: number; [key: string]: any }[] = [];
   temp: { id: number; [key: string]: any }[] = [];
@@ -34,18 +35,22 @@ export class AttendancesComponent {
   ) { }
 
   ngOnInit(): void {
-    this.fetchAttendances();
+    this.fetchInvoices();
+    this.fetchCurrencySign();
   }
 
   updateFilter(event: KeyboardEvent) {
-    const val = (event.target as HTMLInputElement).value.toLowerCase();
-  
-    this.rows = this.temp.filter(d =>
-      (d.employee_name && d.employee_name.toLowerCase().includes(val)) ||
-      (d.code && d.code.toLowerCase().includes(val))
-    );
-  
-    // Reset pagination to first page
+    const val = (event.target as HTMLInputElement).value.toLocaleLowerCase();
+    
+    // filter our data
+    const temp = this.temp.filter(function(d: any) {
+      return d.employee_name.toLocaleLowerCase().indexOf(val) !== -1 || !val;
+    })
+
+    // update the rows
+    this.rows = temp;
+
+    // whenever the filter changes, always go back to the first page
     this.table.offset = 0;
   }
 
@@ -66,24 +71,35 @@ export class AttendancesComponent {
     }
   }
 
-  fetchAttendances(): void {
-    this.http.get<[]>(`${this.API_URL}/attendances`).subscribe({
+  fetchInvoices(): void {
+    this.loadingIndicator = true;
+  
+    this.http.get<any[]>(`${this.API_URL}/invoices`).subscribe({
       next: (response) => {
         this.rows = response;
         this.temp = [...response];
         this.loadingIndicator = false;
       },
       error: (error) => {
-        console.error('Error fetching cities:', error);
         this.loadingIndicator = false;
       }
+    });
+  }
+
+  fetchCurrencySign(): void {
+    this.http.get<any>(`${this.API_URL}/settings`).subscribe({
+      next: (response) => {
+        console.log(response)
+        this.currencySign = response.currency_sign.data_value || '';
+      },
+      error: (err) => console.error('Failed to fetch currency sign:', err)
     });
   }
 
   deleteSelectedRecords(): void {
     if (confirm('Are you sure you want to permanent delete the selected record(s)?')) {
       const ids = this.selected.map(row => row.id);
-      const deleteRequests = ids.map(id => this.http.delete(`${this.API_URL}/attendances/${id}`).toPromise());
+      const deleteRequests = ids.map(id => this.http.delete(`${this.API_URL}/invoices/${id}`).toPromise());
 
       Promise.all(deleteRequests)
         .then(() => {
@@ -95,6 +111,22 @@ export class AttendancesComponent {
           console.error('Error deleting selected records:', error);
           alert('An error occurred while deleting records.');
         });
+    }
+  }
+
+  deleteRecord(row: any): void {
+    if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
+      this.http.delete(`${this.API_URL}/invoices/${row.id}`).subscribe({
+        next: () => {
+          this.rows = this.rows.filter(r => r.id !== row.id);
+          this.temp = this.temp.filter(r => r.id !== row.id);
+          this.selected = this.selected.filter(r => r.id !== row.id);
+        },
+        error: (error) => {
+          console.error('Error deleting record:', error);
+          alert('An error occurred while deleting the record.');
+        }
+      });
     }
   }
 
