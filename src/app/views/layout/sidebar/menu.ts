@@ -19,11 +19,24 @@ export const MENU: MenuItem[] = [
     icon: 'home',
     link: '/companies',
   },
-  
+
   {
     label: 'Invoices',
     icon: 'grid',
-    link: '/invoices',
+    subItems: [
+      {
+        label: 'Listing',
+        link: '/invoices',
+      },
+      {
+        label: 'Add New',
+        link: '/invoices/add'
+      },
+      {
+        label: 'Returns',
+        link: '/invoices/returns'
+      },
+    ]
   },
 
   {
@@ -49,6 +62,10 @@ export const MENU: MenuItem[] = [
       {
         label: 'Units',
         link: '/products/units'
+      },
+      {
+        label: 'Stocks',
+        link: '/products/stocks'
       },
     ]
   },

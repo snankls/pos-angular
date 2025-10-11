@@ -1,0 +1,86 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="container-fluid d-flex justify-content-end w-100">
+            <a routerLink="." class="btn btn-outline-primary text-end">
+              <i data-feather="printer" appFeatherIcon class="me-2 icon-md"></i>
+              Print
+            </a>
+          </div>
+
+          <div class="container-fluid mt-2 d-flex justify-content-center w-100">
+            <table class="table table-hover view-table w-100">
+              <tbody>
+                <tr>
+                  <td style="width: 30%;">Stock Date</td>
+                  <td style="width: 70%;">{{ currentRecord?.stock_date }}</td>
+                </tr>
+                <tr>
+                  <td>Status</td>
+                  <td>{{ currentRecord?.status }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Items Table -->
+          <div class="container-fluid mt-4 d-flex justify-content-center w-100">
+            <div class="table-responsive w-100">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th [width]="30">#</th>
+                    <th>Products</th>
+                    <th>Stock</th>
+                    <th>Unit</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of itemsList; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ item?.product_name }}</td>
+                    <td>{{ item?.stock }}</td>
+                    <td>{{ item?.unit_name }}</td>
+                    <td>{{ item?.price }}</td>
+                    <td>{{ item?.total_amount }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Totals -->
+          <div class="container-fluid mt-5 w-100">
+            <div class="row">
+              <div class="col-md-4 ms-auto">
+                <div class="table-responsive">
+                  <table class="table fw-bold">
+                    <tbody>
+                      <tr>
+                        <td>Total Stocks</td>
+                        <td class="text-end">{{ currentRecord?.total_stock }}</td>
+                      </tr>
+                      <tr>
+                        <td>Total Price</td>
+                        <td class="text-end">
+                          {{ currencySign }}{{ currentRecord?.total_price }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -45,7 +45,13 @@
                   </button>
                 </div>
 
-                <div *ngIf="messageLogin" class="alert alert-danger mt-3">
+                <span *ngIf="loadingLogin" class="spinner-border spinner-border-sm me-1 mt-3"></span>
+                <div *ngIf="messageLogin" class="mt-3"
+                  [ngClass]="{
+                    'success-message': messageTypeLogin === 'success',
+                    'danger-message': messageTypeLogin === 'error'
+                  }"
+                >
                   {{ messageLogin }}
                 </div>
 

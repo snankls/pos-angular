@@ -9,16 +9,16 @@
             <input
               type="text"
               class="form-control form-control-sm"
-              placeholder="Type to filter the code and name column..."
+              placeholder="Type to filter the name column..."
               (keyup)="updateFilter($event)"
-              style="width: 300px;"
+              style="width: 250px;"
             />
           </div>
           <div class="gap-4">
             <button type="button" class="btn btn-danger btn-sm me-2" [disabled]="selected.length === 0" (click)="deleteSelectedRecords()">
               Delete
             </button>
-            <a href="customers/add" class="btn btn-primary btn-sm">
+            <a href="invoices/returns/add" class="btn btn-primary btn-sm">
               + Add New
             </a>
           </div>
@@ -45,42 +45,45 @@
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Image" [sortable]="false" [width]="55">
+            <ngx-datatable-column name="Invoice #">
               <ng-template ngx-datatable-cell-template let-row="row">
-                <img [src]="row.employee_image"
-                alt="{{ row.full_name }}"
-                width="30"
-                height="30">
-              </ng-template>
-            </ngx-datatable-column>
-
-            <ngx-datatable-column name="ID" [width]="55" [canAutoResize]="false">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.id }}
-              </ng-template>
-            </ngx-datatable-column>
-            
-            <ngx-datatable-column name="ID/Code" [width]="80" [canAutoResize]="false">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.code }}
+                {{ row.invoice_number }}
               </ng-template>
             </ngx-datatable-column>
             
             <ngx-datatable-column name="Customer Name">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.name }}
+                {{ row.customer_name }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Phone Number">
+            <ngx-datatable-column name="Return Date">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.phone_number }}
+                {{ row.return_date | date:'yyyy-MM-dd' }}
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="City">
+            <ngx-datatable-column name="Total Quantity">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.city_name }}
+                {{ row.total_quantity | number }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Total Price">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ currencySign }}{{ row.total_price | number }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Total Discount">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ currencySign }}{{ row.total_discount | number }}
+              </ng-template>
+            </ngx-datatable-column>
+            
+            <ngx-datatable-column name="Grand Total">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ currencySign }}{{ row.grand_total | number }}
               </ng-template>
             </ngx-datatable-column>
             
@@ -105,11 +108,11 @@
             <ngx-datatable-column name="Action" [sortable]="false">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span class="d-flex align-items-center">
-                  <a href="customers/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
+                  <a href="invoices/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
                     <i class="feather icon-eye"></i>
                   </a>
                   
-                  <a href="customers/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
+                  <a href="invoices/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
                     <i class="feather icon-edit"></i>
                   </a>
 

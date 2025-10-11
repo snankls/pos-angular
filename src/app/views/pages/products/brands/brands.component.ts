@@ -161,8 +161,8 @@ export class BrandsComponent implements OnInit {
       status: 'Active',
       image: null,
     };
-    this.imagePreview = null;   // ✅ reset preview
-    this.selectedFile = null;   // ✅ reset file
+    this.imagePreview = null;
+    this.selectedFile = null;
     this.isImageDeleted = false;
     this.activeModal = this.modalService.open(this.modalTemplate, { ariaLabelledBy: 'exampleModalLabel' });
   }
@@ -178,7 +178,7 @@ export class BrandsComponent implements OnInit {
       status: String(row.status)
     };
 
-    // ✅ Only set preview if actual image exists (not placeholder)
+    // Only set preview if actual image exists (not placeholder)
     if (row.image_url && !row.image_url.includes('placeholder.jpg')) {
       this.imagePreview = row.image_url;
     } else {

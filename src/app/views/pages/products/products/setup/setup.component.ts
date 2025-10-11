@@ -56,11 +56,9 @@ export class ProductsSetupComponent {
   imagePreview: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
   isImageDeleted = false;
-
   selected: { id: number; [key: string]: any }[] = [];
   rows: { id: number; [key: string]: any }[] = [];
   temp: { id: number; [key: string]: any }[] = [];
-  
   categories: any[] = [];
   brands: any[] = [];
   units: any[] = [];
@@ -125,7 +123,7 @@ export class ProductsSetupComponent {
       next: (product: any) => {
         this.currentRecord = { ...this.currentRecord, ...product };
 
-        // ✅ Fix image handling
+        // Fix image handling
         if (product.images && product.images.image_name) {
           this.imagePreview = `${this.IMAGE_URL}/uploads/products/${product.images.image_name}`;
         }

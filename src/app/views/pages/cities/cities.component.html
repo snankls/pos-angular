@@ -44,6 +44,12 @@
                 <input type="checkbox" [checked]="isSelected(row)" (change)="toggleSelection(row)" />
               </ng-template>
             </ngx-datatable-column>
+
+            <ngx-datatable-column name="ID" [width]="55" [canAutoResize]="false">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.id }}
+              </ng-template>
+            </ngx-datatable-column>
             
             <ngx-datatable-column name="City Name">
               <ng-template ngx-datatable-cell-template let-row="row">

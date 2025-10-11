@@ -154,8 +154,8 @@ export class UnitsComponent implements OnInit {
       name: '',
       status: 'Active',
     };
-    this.imagePreview = null;   // ✅ reset preview
-    this.selectedFile = null;   // ✅ reset file
+    this.imagePreview = null;   // reset preview
+    this.selectedFile = null;   // reset file
     this.isImageDeleted = false;
     this.activeModal = this.modalService.open(this.modalTemplate, { ariaLabelledBy: 'exampleModalLabel' });
   }
@@ -171,7 +171,7 @@ export class UnitsComponent implements OnInit {
       status: String(row.status)
     };
 
-    // ✅ Only set preview if actual image exists (not placeholder)
+    // Only set preview if actual image exists (not placeholder)
     if (row.image_url && !row.image_url.includes('placeholder.jpg')) {
       this.imagePreview = row.image_url;
     } else {

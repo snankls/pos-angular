@@ -171,42 +171,6 @@ export class CitiesComponent implements OnInit {
     });
   }
 
-  // onSubmit(event: Event): void {
-  //   event.preventDefault();
-  //   this.isLoading = true;
-    
-  //   this.http.post(`${this.API_URL}/cities`, this.currentRecord).subscribe({
-  //     next: (response) => {
-  //       this.isLoading = false;
-  //       this.fetchCities();
-  //       this.activeModal?.close();
-  //       this.resetForm();
-  //     },
-  //     error: (error) => {
-  //       this.isLoading = false;
-  //       this.handleError(error);
-  //     }
-  //   });
-  // }
-
-  // updateRecord(event: Event): void {
-  //   event.preventDefault();
-  //   this.isLoading = true;
-    
-  //   this.http.put(`${this.API_URL}/cities/${this.currentRecord.id}`, this.currentRecord).subscribe({
-  //     next: (response) => {
-  //       this.isLoading = false;
-  //       this.fetchCities();
-  //       this.activeModal?.close();
-  //       this.resetForm();
-  //     },
-  //     error: (error) => {
-  //       this.isLoading = false;
-  //       this.handleError(error);
-  //     }
-  //   });
-  // }
-
   private handleError(error: any): void {
     if (error.error?.errors) {
       this.formErrors = error.error.errors;

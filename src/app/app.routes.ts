@@ -50,29 +50,57 @@ export const routes: Routes = [
       // Invoices
       {
         path: 'invoices',
-        loadComponent: () => import('./views/pages/invoices/invoices.component').then(c => c.InvoicesComponent),
+        loadComponent: () => import('./views/pages/invoices/invoices/invoices.component').then(c => c.InvoicesComponent),
         data: { title: 'Invoices' },
       },
 
       // Invoices Add
       {
         path: 'invoices/add',
-        loadComponent: () => import('./views/pages/invoices/setup/setup.component').then(c => c.InvoicesSetupComponent),
+        loadComponent: () => import('./views/pages/invoices/invoices/setup/setup.component').then(c => c.InvoicesSetupComponent),
         data: { title: 'Invoices Add' },
       },
 
       // Invoices Edit
       {
         path: 'invoices/edit/:id',
-        loadComponent: () => import('./views/pages/invoices/setup/setup.component').then(c => c.InvoicesSetupComponent),
+        loadComponent: () => import('./views/pages/invoices/invoices/setup/setup.component').then(c => c.InvoicesSetupComponent),
         data: { title: 'Invoices Edit' },
       },
 
       // Invoices View
       {
         path: 'invoices/view/:id',
-        loadComponent: () => import('./views/pages/invoices/view/view.component').then(c => c.InvoicesViewComponent),
+        loadComponent: () => import('./views/pages/invoices/invoices/view/view.component').then(c => c.InvoicesViewComponent),
         data: { title: 'Invoices View' },
+      },
+
+      // Invoice Returns
+      {
+        path: 'invoices/returns',
+        loadComponent: () => import('./views/pages/invoices/returns/returns.component').then(c => c.ReturnsComponent),
+        data: { title: 'Invoice Returns' },
+      },
+
+      // Invoice Returns Add
+      {
+        path: 'invoices/returns/add',
+        loadComponent: () => import('./views/pages/invoices/returns/setup/setup.component').then(c => c.ReturnsSetupComponent),
+        data: { title: 'Invoice Returns Add' },
+      },
+
+      // Invoice Returns Edit
+      {
+        path: 'invoices/returns/edit/:id',
+        loadComponent: () => import('./views/pages/invoices/returns/setup/setup.component').then(c => c.ReturnsSetupComponent),
+        data: { title: 'Invoice Returns Edit' },
+      },
+
+      // Invoice Returns View
+      {
+        path: 'invoices/returns/view/:id',
+        loadComponent: () => import('./views/pages/invoices/returns/view/view.component').then(c => c.ReturnsViewComponent),
+        data: { title: 'Invoice Returns View' },
       },
 
       // Products
@@ -124,6 +152,34 @@ export const routes: Routes = [
         data: { title: 'Units' },
       },
 
+      // Stocks
+      {
+        path: 'products/stocks',
+        loadComponent: () => import('./views/pages/products/stocks/stocks.component').then(c => c.StocksComponent),
+        data: { title: 'Stocks' },
+      },
+
+      // Stocks Add
+      {
+        path: 'stocks/add',
+        loadComponent: () => import('./views/pages/products/stocks/setup/setup.component').then(c => c.StocksSetupComponent),
+        data: { title: 'Stocks Add' },
+      },
+
+      // Stocks Edit
+      {
+        path: 'stocks/edit/:id',
+        loadComponent: () => import('./views/pages/products/stocks/setup/setup.component').then(c => c.StocksSetupComponent),
+        data: { title: 'Stocks Edit' },
+      },
+
+      // Stocks View
+      {
+        path: 'stocks/view/:id',
+        loadComponent: () => import('./views/pages/products/stocks/view/view.component').then(c => c.StocksViewComponent),
+        data: { title: 'Stocks View' },
+      },
+
       // Customers
       {
         path: 'customers',
@@ -152,153 +208,6 @@ export const routes: Routes = [
         data: { title: 'Customers View' },
       },
 
-
-      // // Departments
-      // {
-      //   path: 'organizations/departments',
-      //   loadComponent: () => import('./views/pages/organizations/departments/departments.component').then(c => c.DepartmentsComponent),
-      //   data: { title: 'Departments' },
-      // },
-
-      // // Designations
-      // {
-      //   path: 'organizations/designations',
-      //   loadComponent: () => import('./views/pages/organizations/designations/designations.component').then(c => c.DesignationsComponent),
-      //   data: { title: 'Designations' },
-      // },
-
-      // // Job Types
-      // {
-      //   path: 'organizations/job-types',
-      //   loadComponent: () => import('./views/pages/organizations/job-types/job-types.component').then(c => c.JobTypesComponent),
-      //   data: { title: 'Job Types' },
-      // },
-
-      // // Attendances
-      // {
-      //   path: 'attendances',
-      //   loadComponent: () => import('./views/pages/attendances/attendances.component').then(c => c.AttendancesComponent),
-      //   data: { title: 'Attendances' },
-      // },
-
-      // // Attendances Add
-      // {
-      //   path: 'attendances/add',
-      //   loadComponent: () => import('./views/pages/attendances/add/add.component').then(c => c.AttendancesAddComponent),
-      //   data: { title: 'Attendances Add' },
-      // },
-
-      // // Attendances Edit
-      // {
-      //   path: 'attendances/edit/:id',
-      //   loadComponent: () => import('./views/pages/attendances/edit/edit.component').then(c => c.AttendancesEditComponent),
-      //   data: { title: 'Attendances Edit' },
-      // },
-
-      // // Attendances View
-      // {
-      //   path: 'attendances/view/:id',
-      //   loadComponent: () => import('./views/pages/attendances/view/view.component').then(c => c.AttendancesViewComponent),
-      //   data: { title: 'Attendances View' },
-      // },
-
-      // // Leave Applications
-      // {
-      //   path: 'leave-applications',
-      //   loadComponent: () => import('./views/pages/leave-applications/leave-applications.component').then(c => c.LeaveApplicationsComponent),
-      //   data: { title: 'Leave Applications' },
-      // },
-
-      // // Leave Types
-      // {
-      //   path: 'leave-applications/leave-types',
-      //   loadComponent: () => import('./views/pages/leave-applications/leave-types/leave-types.component').then(c => c.LeaveTypesComponent),
-      //   data: { title: 'Leave Types' },
-      // },
-
-      // // Salary Wizards
-      // {
-      //   path: 'salary-wizards',
-      //   loadComponent: () => import('./views/pages/salary-wizards/salary-wizards.component').then(c => c.SalaryWizardsComponent),
-      //   data: { title: 'Salary Wizards' },
-      // },
-
-      // // Reports
-      // {
-      //   path: 'reports/employees/card',
-      //   loadComponent: () => import('./views/pages/reports/employees/cards/cards.component').then(c => c.ReportsCardsComponent),
-      //   data: { title: 'Employee Cards' },
-      // },
-      // {
-      //   path: 'reports/employees/salaries',
-      //   loadComponent: () => import('./views/pages/reports/employees/salaries/salaries.component').then(c => c.ReportsSalariesComponent),
-      //   data: { title: 'Employee Salaries' },
-      // },
-
-      // // Company Assets
-      // {
-      //   path: 'company-assets',
-      //   loadComponent: () => import('./views/pages/company-assets/company-assets.component').then(c => c.CompanyAssetsComponent),
-      //   data: { title: 'Company Assets' },
-      // },
-
-      // // Company Assets Add
-      // {
-      //   path: 'company-assets/add',
-      //   loadComponent: () => import('./views/pages/company-assets/setup/setup.component').then(c => c.CompanyAssetsSetupComponent),
-      //   data: { title: 'Company Assets Add' },
-      // },
-
-      // // Company Assets Edit
-      // {
-      //   path: 'company-assets/edit/:id',
-      //   loadComponent: () => import('./views/pages/company-assets/setup/setup.component').then(c => c.CompanyAssetsSetupComponent),
-      //   data: { title: 'Company Assets Edit' },
-      // },
-
-      // // Company Assets View
-      // {
-      //   path: 'company-assets/view/:id',
-      //   loadComponent: () => import('./views/pages/company-assets/view/view.component').then(c => c.CompanyAssetsViewComponent),
-      //   data: { title: 'Company Assets View' },
-      // },
-
-      // // Assets Types
-      // {
-      //   path: 'company-assets/asset-types',
-      //   loadComponent: () => import('./views/pages/company-assets/asset-types/asset-types.component').then(c => c.AssetTypesComponent),
-      //   data: { title: 'Asset Types' },
-      // },
-
-      // // Company Asset Returns
-      // {
-      //   path: 'company-asset-returns',
-      //   loadComponent: () => import('./views/pages/company-asset-returns/company-asset-returns.component').then(c => c.CompanyAssetRetunsComponent),
-      //   data: { title: 'Company Asset Returns' },
-      // },
-
-      // // Company Asset Returns Add
-      // {
-      //   path: 'company-asset-returns/add',
-      //   loadComponent: () => import('./views/pages/company-asset-returns/setup/setup.component').then(c => c.CompanyAssetsSetupComponent),
-      //   data: { title: 'Company Asset Returns Add' },
-      // },
-
-      // // Company Asset Returns Edit
-      // {
-      //   path: 'company-asset-returns/edit/:id',
-      //   loadComponent: () => import('./views/pages/company-asset-returns/setup/setup.component').then(c => c.CompanyAssetsSetupComponent),
-      //   data: { title: 'Company Asset Returns Edit' },
-      // },
-
-      // // Company Asset Returns View
-      // {
-      //   path: 'company-asset-returns/view/:id',
-      //   loadComponent: () => import('./views/pages/company-asset-returns/view/view.component').then(c => c.CompanyAssetReturnsViewComponent),
-      //   data: { title: 'Company Asset Returns View' },
-      // },
-
-
       // Banks A/C
       {
         path: 'banks',
@@ -311,6 +220,13 @@ export const routes: Routes = [
         path: 'cities',
         loadComponent: () => import('./views/pages/cities/cities.component').then(c => c.CitiesComponent),
         data: { title: 'Cities' },
+      },
+
+      // Import/Export
+      {
+        path: 'import-export',
+        loadComponent: () => import('./views/pages/import-export/import-export.component').then(c => c.ImportExportComponent),
+        data: { title: 'Import/Export' },
       },
 
       // Settings
@@ -341,26 +257,26 @@ export const routes: Routes = [
       //   data: { title: 'Change Password' },
       // },
 
-      // // Support
-      // {
-      //   path: 'support',
-      //   loadComponent: () => import('./views/pages/support/support.component').then(c => c.SupportComponent),
-      //   data: { title: 'Support' },
-      // },
+      // Support
+      {
+        path: 'support',
+        loadComponent: () => import('./views/pages/support/support.component').then(c => c.SupportComponent),
+        data: { title: 'Support' },
+      },
 
-      // // Documentation
-      // {
-      //   path: 'documentation',
-      //   loadComponent: () => import('./views/pages/documentation/documentation.component').then(c => c.DocumentationComponent),
-      //   data: { title: 'Documentation' },
-      // },
+      // Documentation
+      {
+        path: 'documentation',
+        loadComponent: () => import('./views/pages/documentation/documentation.component').then(c => c.DocumentationComponent),
+        data: { title: 'Documentation' },
+      },
 
-      // // Payment Details
-      // {
-      //   path: 'payment-details',
-      //   loadComponent: () => import('./views/pages/payment-details/payment-details.component').then(c => c.PaymentDetailsComponent),
-      //   data: { title: 'Payment Details' },
-      // },
+      // Payment Details
+      {
+        path: 'payment-details',
+        loadComponent: () => import('./views/pages/payment-details/payment-details.component').then(c => c.PaymentDetailsComponent),
+        data: { title: 'Payment Details' },
+      },
 
       // // 404 Page
       // {

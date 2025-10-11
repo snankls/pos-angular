@@ -1,0 +1,145 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="container-fluid d-flex justify-content-between">
+          <!-- Left side: Company Info -->
+          <div class="col-lg-3 ps-0">
+            <a routerLink="." class="nobleui-logo d-block mt-3">Noble<span>UI</span></a>                 
+            
+            <p>108,<br> Great Russell St,<br>London, WC1B 3NA.</p>
+
+            <h5 class="mt-5 mb-2 text-secondary">Invoice to :</h5>
+            <p>
+              {{ currentRecord?.customer_name }} <br>
+              {{ currentRecord?.customer_address }}
+            </p>
+          </div>
+
+          <!-- Right side: Invoice Info -->
+          <div class="col-lg-3 pe-0">
+            <h4 class="fw-bold text-uppercase text-end mt-4 mb-2">Invoice</h4>
+            <h6 class="text-end mb-5 pb-4"># {{ currentRecord?.invoice_number }}</h6>
+            <p class="text-end mb-1">Balance Due</p>
+            <h4 class="text-end fw-normal">
+              {{ currencySign }}{{ currentRecord?.grand_total }}
+            </h4>
+            <h6 class="mb-0 mt-3 text-end fw-normal mb-2">
+              <span class="text-secondary">Invoice Date :</span> 
+              {{ currentRecord?.invoice_date | date }}
+            </h6>
+          </div>
+        </div>
+
+        <!-- Items Table -->
+        <div class="container-fluid mt-5 d-flex justify-content-center w-100">
+          <div class="table-responsive w-100">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th [width]="30">#</th>
+                  <th>Products</th>
+                  <th>Quantity</th>
+                  <th>Unit</th>
+                  <th>Discount</th>
+                  <th>Price</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of itemsList; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ item?.product_name }}</td>
+                  <td>{{ item?.quantity }}</td>
+                  <td>{{ item?.unit_name }}</td>
+                  <td>{{ item?.discount_type }}: {{ item?.discount_value }}</td>
+                  <td>{{ item?.sale_price }}</td>
+                  <td>{{ item?.total }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Totals -->
+        <div class="container-fluid mt-5 w-100">
+          <div class="row">
+            <div class="col-md-6 ms-auto">
+              <div class="table-responsive">
+                <table class="table fw-bold">
+                  <tbody>
+                    <tr>
+                      <td>Invoice Discount</td>
+                      <td class="text-end">{{ currentRecord?.discount_type }}: {{ currentRecord?.discount_value }}</td>
+                    </tr>
+                    <tr>
+                      <td>Total Quantity</td>
+                      <td class="text-end">{{ currentRecord?.total_quantity }}</td>
+                    </tr>
+                    <tr>
+                      <td>Sub Total</td>
+                      <td class="text-end">
+                        {{ currencySign }}{{ currentRecord?.total_price }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Total Discount</td>
+                      <td class="text-end">
+                        {{ currencySign }}{{ currentRecord?.total_discount }}
+                      </td>
+                    </tr>
+                    <tr class="bg-light">
+                      <td class="text-bold-800">Grand Total</td>
+                      <td class="text-bold-800 text-end">
+                        {{ currencySign }}{{ currentRecord?.grand_total }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="container-fluid w-100">
+          <a routerLink="." class="btn btn-primary float-end mt-4 ms-2" (click)="openModal()">
+            <i data-feather="send" appFeatherIcon class="me-2 icon-md"></i>
+            Send Invoice
+          </a>
+          <a routerLink="." class="btn btn-outline-primary float-end mt-4">
+            <i data-feather="printer" appFeatherIcon class="me-2 icon-md"></i>
+            Print
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<ng-template #modalTemplate let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">Send Invoice</h5>
+    <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
+  </div>
+
+  <div class="modal-body">
+    <form class="forms-sample">
+      <div class="mb-3">
+        <label class="form-label">Email Address <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" name="email_address" [(ngModel)]="emailAddress" (input)="clearError('email_address')">
+        <small>you can add more emails wtih comma (,) seperate.</small>
+        <div class="text-danger mt-1" *ngIf="formErrors.email_address">
+          {{ formErrors.email_address[0] }}
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="saveInvoiceSend(modal)">Send</button>
+  </div>
+</ng-template>

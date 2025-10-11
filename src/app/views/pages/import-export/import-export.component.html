@@ -1,0 +1,300 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <!-- CSV Documentation -->
+  <div class="col-lg-12 col-xl-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-baseline mb-2">
+          <h6 class="card-title mb-0">Documentation</h6>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+          <button class="btn btn-dark" (click)="documentationCSV('products')">Products</button>
+          <button class="btn btn-dark" (click)="documentationCSV('categories')">Categories</button>
+          <button class="btn btn-dark" (click)="documentationCSV('brands')">Brands</button>
+          <button class="btn btn-dark" (click)="documentationCSV('units')">Units</button>
+          <button class="btn btn-dark" (click)="documentationCSV('stocks')">Stocks</button>
+          <button class="btn btn-dark" (click)="documentationCSV('customers')">Customers</button>
+          <button class="btn btn-dark" (click)="documentationCSV('banks')">Banks</button>
+          <button class="btn btn-dark" (click)="documentationCSV('cities')">Cities</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CSV Format -->
+  <div class="col-lg-12 col-xl-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-baseline mb-2">
+          <h6 class="card-title mb-0">CSV File Format</h6>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2">
+          <button class="btn btn-warning" (click)="downloadCSV('products')">Products</button>
+          <button class="btn btn-warning" (click)="downloadCSV('categories')">Categories</button>
+          <button class="btn btn-warning" (click)="downloadCSV('brands')">Brands</button>
+          <button class="btn btn-warning" (click)="downloadCSV('units')">Units</button>
+          <button class="btn btn-warning" (click)="downloadCSV('stocks')">Stocks</button>
+          <button class="btn btn-warning" (click)="downloadCSV('customers')">Customers</button>
+          <button class="btn btn-warning" (click)="downloadCSV('banks')">Banks</button>
+          <button class="btn btn-warning" (click)="downloadCSV('cities')">Cities</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Import -->
+  <div class="col-lg-12 col-xl-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-baseline mb-2">
+          <h6 class="card-title mb-0">Import</h6>
+        </div>
+
+        <form class="forms-sample" (submit)="onSubmit($event)">
+          <div class="row">
+            <!-- File Upload -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Upload CSV File</label>
+              <input type="file" name="file" accept=".csv" class="form-control" (change)="onFileSelected($event)">
+              <div class="text-danger mt-1" *ngIf="formErrors.file">{{ formErrors.file[0] }}</div>
+            </div>
+
+            <!-- Submit -->
+            <div class="col-12 mt-3">
+              <button type="submit" [disabled]="isLoading" class="btn btn-primary">
+                {{ isLoading ? 'Importing...' : 'Import' }}
+              </button>
+            </div>
+
+            <!-- Success or Error Messages -->
+            <div class="col-12 mt-3">
+              <div *ngIf="successMessage" class="success-message py-2">
+                {{ successMessage }}
+              </div>
+
+              <div *ngIf="globalErrorMessage" class="danger-message py-2">
+                {{ globalErrorMessage }}
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Export -->
+  <div class="col-lg-12 col-xl-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-baseline mb-2">
+          <h6 class="card-title mb-0">Export</h6>
+        </div>
+
+        <form class="forms-sample" (submit)="onSubmit($event)">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Select One <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" name="code">
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- File Upload -->
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Upload Image</label>
+              <input type="file" name="customer_image" class="form-control">
+              <div class="text-danger mt-1" *ngIf="formErrors.image">{{ formErrors.image[0] }}</div>
+            </div>
+
+            <div class="col-12 mt-3">
+              <button type="submit" [disabled]="isLoading" class="btn btn-primary">Export</button>
+            </div>
+
+            <div class="col-12 mt-3" *ngIf="globalErrorMessage">
+              <div class="alert alert-danger text-center">
+                {{ globalErrorMessage }}
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<ng-template #modalTemplate let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ modalTitle }}</h5>
+    <button type="button" class="btn-close" (click)="modal.close()" aria-label="Close"></button>
+  </div>
+
+  <div class="modal-body">
+    <!-- 🧾 PRODUCTS -->
+    <div *ngIf="selectedDoc === 'products'">
+      <h4 class="mb-3">📦 Products Import Format</h4>
+      <p>Your CSV file must include the following columns:</p>
+      <ul>
+        <li><code>sku</code>- Unique product code (required)</li>
+        <li><code>name</code>- Product name</li>
+        <li><code>brand_id</code>- Related brand ID (get id from Brands table column name is ID)</li>
+        <li><code>category_id</code>- Related category ID (get id from Categories table column name is ID)</li>
+        <li><code>unit_id</code>- Related unit ID (get id from Units table column name is ID)</li>
+        <li><code>cost_price</code>- Purchase price</li>
+        <li><code>sale_price</code>- Selling price</li>
+        <li><code>stock</code>- Available quantity</li>
+        <li><code>description</code>- product description</li>
+      </ul>
+      <strong>Example:</strong>
+      <pre><code>sku, name, category_id, unit_id, cost_price, sale_price, stock, description
+  P-101, Pepsi, 2, 1, 60, 80, 50, Soft drink bottle
+  P-102, Lays, 3, 1, 40, 60, 100, Potato chips</code></pre>
+
+      <strong>Image:</strong>
+      <p>products.csv</p>
+      <figure><img src="images/import-export/products-csv.jpg" alt="products" class="w-100"></figure>
+      <p class="mb-3">get Brand, Category and Unit ID from brands table, screenshot given below for example.</p>
+      
+      <strong>Brand Table</strong>
+      <figure><img src="images/import-export/brands.jpg" alt="brands"></figure>
+      
+      <strong>Category Table</strong>
+      <figure><img src="images/import-export/categories.jpg" alt="categories"></figure>
+      
+      <strong>Unit Table</strong>
+      <figure><img src="images/import-export/units.jpg" alt="units"></figure>
+    </div>
+
+    <!-- 🏷️ CATEGORIES -->
+    <div *ngIf="selectedDoc === 'categories'">
+      <h4 class="mb-3">🏷️ Categories Import Format</h4>
+      <p>Columns required in your CSV:</p>
+      <ul>
+        <li><code>name</code>- Category name (required)</li>
+      </ul>
+      <pre><code>name
+  Beverages
+  Snacks</code></pre>
+
+      <strong>Image:</strong>
+      <p>categories.csv</p>
+      <figure><img src="images/import-export/categories-csv.jpg" alt="categories" class="w-100"></figure>
+    </div>
+
+    <!-- 🏭 BRANDS -->
+    <div *ngIf="selectedDoc === 'brands'">
+      <h4 class="mb-3">🏭 Brands Import Format</h4>
+      <p>Columns required:</p>
+      <ul>
+        <li><code>name</code>- Brand name (required)</li>
+      </ul>
+      <pre><code>name
+  PepsiCo
+  Nestle</code></pre>
+
+      <strong>Image:</strong>
+      <p>brands.csv</p>
+      <figure><img src="images/import-export/brands-csv.jpg" alt="brands" class="w-100"></figure>
+    </div>
+
+    <!-- ⚖️ UNITS -->
+    <div *ngIf="selectedDoc === 'units'">
+      <h4 class="mb-3">⚖️ Units Import Format</h4>
+      <ul>
+        <li><code>name</code>- Unit name (required)</li>
+      </ul>
+      <pre><code>name
+  Bottle
+  Packet
+  Kg</code></pre>
+
+      <strong>Image:</strong>
+      <p>units.csv</p>
+      <figure><img src="images/import-export/units-csv.jpg" alt="units" class="w-100"></figure>
+    </div>
+
+    <!-- 📦 STOCKS -->
+    <div *ngIf="selectedDoc === 'stocks'">
+      <h4 class="mb-3">📦 Stocks Import Format</h4>
+      <p>Used to import stock quantities or adjustments.</p>
+      <ul>
+        <li><strong>product_id</strong>- Related product ID (required)</li>
+        <li><strong>quantity</strong>- Stock quantity (required)</li>
+        <li><strong>warehouse_id</strong>- Warehouse or location (optional)</li>
+      </ul>
+      <pre><code>product_id,quantity,warehouse_id
+1,100,2
+2,50,2</code></pre>
+    </div>
+
+    <!-- 👤 CUSTOMERS -->
+    <div *ngIf="selectedDoc === 'customers'">
+      <h4 class="mb-3">👤 Customers Import Format</h4>
+      <p>Your CSV file should include these columns:</p>
+      <ul>
+        <li><code>code</code>- Unique customer code (required)</li>
+        <li><code>name</code>- Full name</li>
+        <li><code>cnic</code>- CNIC / National ID</li>
+        <li><code>email_address</code>- Email address</li>
+        <li><code>mobile_number</code>- Mobile phone number</li>
+        <li><code>phone_number</code>- Landline (optional)</li>
+        <li><code>whatsapp</code>- WhatsApp number</li>
+        <li><code>city_id</code>- Related city ID</li>
+        <li><code>credit_balance</code>- Current balance</li>
+        <li><code>credit_limit</code>- Maximum credit limit</li>
+        <li><code>address</code>- Full address</li>
+      </ul>
+      <pre><code>code, name, cnic, email_address, mobile_number, phone_number, whatsapp, city_id, credit_balance, credit_limit, address
+  CT-001, Ali Khan, 12345-6789012-3, ali&#64;gmail.com, 03123456789, , 03123456789, 12, 5000, 10000, Lahore Cantt
+  CT-002, Ahmed Raza, 98765-4321098-7, ahmed&#64;gmail.com, 03451234567, , 03451234567, 15, 2000, 5000, Karachi</code></pre>
+
+      <strong>Image:</strong>
+      <p>customers.csv</p>
+      <figure><img src="images/import-export/customers-csv.jpg" alt="customers" class="w-100"></figure>
+    </div>
+
+    <!-- 🏦 BANKS -->
+    <div *ngIf="selectedDoc === 'banks'">
+      <h4 class="mb-3">🏦 Banks Import Format</h4>
+      <p>CSV Columns:</p>
+      <ul>
+        <li><code>account_title</code>- Account title</li>
+        <li><code>bank_name</code>- Bank name (required)</li>
+        <li><code>account_number</code>- Account number</li>
+        <li><code>iban_number</code>- IBAN number (optional)</li>
+        <li><code>swift_code</code>- Swift code (optional)</li>
+        <li><code>address</code>- Branch address (optional)</li>
+      </ul>
+      <pre><code>name, account_title, account_number, branch_code, iban
+  HBL, Ahmad Traders, 1234567890, 1101, PK12HABB0001234567890
+  UBL, Ali Store, 0987654321, 2201, PK12UNIL0001234567890</code></pre>
+
+      <strong>Image:</strong>
+      <p>banks.csv</p>
+      <figure><img src="images/import-export/banks-csv.jpg" alt="banks" class="w-100"></figure>
+    </div>
+
+    <!-- 🌆 CITIES -->
+    <div *ngIf="selectedDoc === 'cities'">
+      <h4 class="mb-3">🌆 Cities Import Format</h4>
+      <p>Only one required column:</p>
+      <ul>
+        <li><code>name</code>- City name (required)</li>
+      </ul>
+      <pre><code>name
+    Lahore
+    Karachi
+    Islamabad
+    Multan</code></pre>
+
+      <strong>Image:</strong>
+      <p>cities.csv</p>
+      <figure><img src="images/import-export/cities-csv.jpg" alt="cities" class="w-100"></figure>
+    </div>
+  </div>
+</ng-template>

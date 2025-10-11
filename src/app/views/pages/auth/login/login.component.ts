@@ -106,6 +106,8 @@ export class LoginComponent implements OnInit {
       },
       error: (error) => {
         this.loadingLogin = false;
+        this.messageTypeLogin = 'error';
+        
         if (error.status === 403) {
           this.messageLogin = error.error?.error || 'Access denied.';
           this.contactInfo = error.error?.contact || '';

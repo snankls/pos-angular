@@ -111,7 +111,7 @@ export class CustomersSetupComponent {
       next: (customer: any) => {
         this.currentRecord = { ...this.currentRecord, ...customer };
 
-        // ✅ Fix image handling
+        // Fix image handling
         if (customer.images && customer.images.image_name) {
           this.imagePreview = `${this.IMAGE_URL}/uploads/customers/${customer.images.image_name}`;
         }

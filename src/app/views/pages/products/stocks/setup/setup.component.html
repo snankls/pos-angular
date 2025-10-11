@@ -1,0 +1,166 @@
+<app-breadcrumb></app-breadcrumb>
+
+<div class="row">
+  <div class="col-md-12 stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <form class="forms-sample" (submit)="onSubmit($event)">
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Stock Date <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="stock_date" ngbDatepicker #idate="ngbDatepicker" [(ngModel)]="currentRecord.stock_date" (ngModelChange)="clearError('stock_date')">
+                <button class="input-group-text" type="button" (click)="idate.toggle()">
+                  <i class="feather icon-calendar icon-md text-secondary"></i>
+                </button>
+              </div>
+              <div class="text-danger mt-1" *ngIf="formErrors.stock_date">
+                {{ formErrors.stock_date[0] }}
+              </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Status <span class="text-danger">*</span></label>
+              <ng-select
+  [items]="status"
+  bindLabel="name"
+  bindValue="id"
+  [(ngModel)]="currentRecord.status"
+  name="status"
+  placeholder="Select one"
+  [searchable]="false"
+  [disabled]="statusDisabled"
+  (change)="clearError('status')">
+</ng-select>
+
+              <div class="text-danger mt-1" *ngIf="formErrors.status">{{ formErrors.status[0] }}</div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th [width]="30">#</th>
+                      <th>Products <span class="text-danger">*</span></th>
+                      <th>Stocks <span class="text-danger">*</span></th>
+                      <th>Unit <span class="text-danger">*</span></th>
+                      <th>Price <span class="text-danger">*</span></th>
+                      <th>Total <span class="text-danger">*</span></th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let item of itemsList; let i = index">
+                      <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td [width]="250">
+                          <ng-select
+                            [items]="getAvailableProducts(i)"
+                            bindLabel="product_label"
+                            bindValue="id"
+                            [trackByFn]="trackByProductId"
+                            [(ngModel)]="item.product_id"
+                            name="product_id_{{i}}"
+                            placeholder="Select one"
+                            [searchable]="true"
+                            (change)="onProductChange($event, i)"
+                            [ngClass]="{'border-danger': item.product_id && !isProductAvailable(item.product_id, i)}">
+                          </ng-select>
+                          <div class="text-danger mt-1" *ngIf="formErrors.product_id">
+                            {{ formErrors.product_id[0] }}
+                          </div>
+                        </td>
+                        <td>
+                          <input type="number" class="form-control"
+                          [(ngModel)]="item.stock"
+                          name="stock_{{i}}"
+                          (change)="updateTotals()"
+                          (ngModelChange)="updateRowTotal(i)">
+                        </td>
+                        <td>
+                          <input type="hidden" class="form-control" [(ngModel)]="item.unit_id" name="unit_id_{{i}}" readonly>
+                          <input type="text" class="form-control" [(ngModel)]="item.unit_name" name="unit_name_{{i}}" readonly>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control" [(ngModel)]="item.price" name="price_{{i}}" (ngModelChange)="updateRowTotal(i)" readonly>
+                        </td>
+                        <td>
+                          <input type="text" class="form-control"
+                          [(ngModel)]="item.total_amount"
+                          name="total_amount_{{i}}"
+                          (keydown)="onTabKey($event, i)"
+                          readonly>
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-sm btn-danger" (click)="deleteItemRow(i)">
+                            <i class="feather icon-trash-2"></i>
+                          </button>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+                
+                <div class="col-md-4 mt-3 d-flex gap-2">
+                  <button class="btn btn-success btn-xs" type="button" (click)="addItemRow()">
+                    + Add Item
+                  </button>
+                </div>
+
+                <div class="container-fluid mt-5 w-100">
+                  <div class="row">
+                    <div class="col-md-4 ms-auto">
+                      <div class="table-responsive">
+                        <table class="table fw-bold">
+                          <tbody>
+                            <tr>
+                              <td>Total Stock</td>
+                              <td class="text-end">{{ totalStock | number:'1.2-2' }}</td>
+                            </tr>
+                            <tr>
+                              <td>Total Price</td>
+                              <td class="text-end">{{ currencySign }}{{ totalPrice | number:'1.2-2' }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 mt-3">
+              <!-- Save Changes -->
+              <button type="submit"
+                      class="btn btn-primary me-3"
+                      [disabled]="isLoading || (!isAmountValid && itemsList.length > 0) || currentRecord?.status === 'Posted'"
+                      (click)="onSubmit($event, false)">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
+                Save Changes
+              </button>
+
+              <!-- Stock Post -->
+              <button type="button"
+                      class="btn btn-dark"
+                      [disabled]="isLoading || currentRecord?.status !== 'Active'"
+                      (click)="onSubmit($event, true)">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
+                Stock Post
+              </button>
+              
+              <div class="alert alert-danger text-center" *ngIf="globalErrorMessage">
+                {{ globalErrorMessage }}
+              </div>
+              
+              <div class="alert alert-danger text-center" *ngIf="currentRecord?.status === 'Posted'">
+                <p>Stock has been posted and cannot be changed.</p>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
