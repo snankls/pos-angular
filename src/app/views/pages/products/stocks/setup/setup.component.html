@@ -135,7 +135,7 @@
               <!-- Save Changes -->
               <button type="submit"
                       class="btn btn-primary me-3"
-                      [disabled]="isLoading || (!isAmountValid && itemsList.length > 0) || currentRecord?.status === 'Posted'"
+                      [disabled]="isLoading || (!isAmountValid && itemsList.length > 0) || currentRecord.status === 'Posted'"
                       (click)="onSubmit($event, false)">
                 <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
                 Save Changes
@@ -144,7 +144,7 @@
               <!-- Stock Post -->
               <button type="button"
                       class="btn btn-dark"
-                      [disabled]="isLoading || currentRecord?.status !== 'Active'"
+                      [disabled]="isLoading || currentRecord.status !== 'Active'"
                       (click)="onSubmit($event, true)">
                 <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
                 Stock Post

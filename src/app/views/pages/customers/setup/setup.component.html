@@ -51,7 +51,7 @@
             </div>
             
             <div class="col-md-3 mb-3">
-              <label class="form-label">City <span class="text-danger">*</span></label>
+              <label class="form-label">Select City <span class="text-danger">*</span></label>
               <ng-select
                 [items]="cities"
                 bindLabel="name"
@@ -59,7 +59,7 @@
                 [(ngModel)]="currentRecord.city_id"
                 name="city_id"
                 placeholder="Select one"
-                [searchable]="false"
+                [searchable]="true"
                 (change)="clearError('city_id')">
               </ng-select>
               <div class="text-danger mt-1" *ngIf="formErrors.city_id">{{ formErrors.city_id[0] }}</div>

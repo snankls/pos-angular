@@ -38,10 +38,8 @@
               <button type="submit" [disabled]="isLoading" class="btn btn-primary">Save Changing</button>
             </div>
 
-            <div class="col-12 mt-3" *ngIf="globalErrorMessage">
-              <div class="alert alert-danger text-center">
-                {{ globalErrorMessage }}
-              </div>
+            <div class="col-12 mt-3 alert alert-danger text-center" *ngIf="globalErrorMessage">
+              {{ globalErrorMessage }}
             </div>
 
             <div *ngIf="successMessage" class="col-12 mt-3 text-success alert alert-success">

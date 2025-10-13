@@ -1,4 +1,12 @@
-<!--Subscription-->
+<!-- Notice Boards -->
+<ng-container *ngIf="notice_board && notice_board.title">
+  <ngb-alert [type]="'fill-success'" [dismissible]="false">
+    <strong>{{ notice_board.title }}</strong>
+    <p>{{ notice_board.description }}</p>
+  </ngb-alert>
+</ng-container>
+
+<!-- Subscription -->
 <ng-container *ngIf="user">
   <ngb-alert *ngIf="user.status !== 'Trail' && user.remaining_days < 30" [dismissible]="true" [type]="'fill-danger'">
     Your subscription is going to expire ({{ user.remaining_days ? user.remaining_days : 0 }} days left).<br>
@@ -8,7 +16,7 @@
   </ngb-alert>
 </ng-container>
 
-<!--Trail Version-->
+<!-- Trail Version -->
 <ng-container *ngIf="user">
   <ngb-alert *ngIf="user.status === 'Trail'" [dismissible]="true" [type]="'fill-danger'">
     Your tail is going to end in ({{ user.remaining_days ? user.remaining_days : 0 }} days left).<br>

@@ -10,16 +10,16 @@ import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.componen
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../../auth/auth.service';
 
-// interface Company {
-//   name: string | null;
-//   id?: number;
-//   description: string;
-//   image?: File | string | null;
-//   image_url?: string;
-//   images?: {
-//     image_name: string;
-//   };
-// }
+interface Company {
+  name: string | null;
+  id?: number;
+  description: string;
+  image?: File | string | null;
+  image_url?: string;
+  images?: {
+    image_name: string;
+  };
+}
 
 @Component({
   selector: 'app-setup',
@@ -47,20 +47,9 @@ export class CompaniesSetupComponent {
   isEditMode = false;
   isLoading = false;
   errorMessage: any;
-  //selected: any[] = [];
   formErrors: any = {};
-  //cities: any[] = [];
-  //gender: { id: string; name: string }[] = [];
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
-  //companies: any[] = [];
-  //user: any = null;
-  
-  rows = [];
-  temp = [];
-  loadingIndicator = true;
-  reorderable = true;
-  ColumnMode = ColumnMode;
 
   constructor(
     private authService: AuthService,
@@ -80,7 +69,7 @@ export class CompaniesSetupComponent {
   }
 
   loadCompany() {
-    this.http.get<any>(`${this.API_URL}/company`).subscribe({
+    this.http.get<any>(`${this.API_URL}/companies`).subscribe({
       next: (user) => {
         this.currentRecord = { ...user };
 

@@ -122,25 +122,6 @@ export const MENU: MenuItem[] = [
   //   link: '/salary-wizards',
   // },
   // {
-  //   label: 'Reports',
-  //   icon: 'file-text',
-  //   subItems: [
-  //     {
-  //       label: 'Employees',
-  //       subItems: [
-  //         {
-  //           label: 'Card',
-  //           link: '/reports/employees/card'
-  //         },
-  //         {
-  //           label: 'Salaries',
-  //           link: '/reports/employees/salaries'
-  //         },
-  //       ]
-  //     },
-  //   ]
-  // },
-  // {
   //   label: 'Allowances / Benefits',
   //   isTitle: true
   // },
@@ -171,6 +152,29 @@ export const MENU: MenuItem[] = [
     label: 'Cities',
     icon: 'map',
     link: '/cities',
+  },
+  {
+    label: 'Reports',
+    icon: 'file-text',
+    subItems: [
+      {
+        label: 'Customers',
+        link: '/reports/customers',
+      },
+      {
+        label: 'Customers',
+        subItems: [
+          {
+            label: 'Card',
+            link: '/reports/employees/card'
+          },
+          {
+            label: 'Salaries',
+            link: '/reports/employees/salaries'
+          },
+        ]
+      },
+    ]
   },
   {
     label: 'Import / Export',

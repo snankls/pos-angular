@@ -208,6 +208,13 @@ export const routes: Routes = [
         data: { title: 'Customers View' },
       },
 
+      // Reports
+      {
+        path: 'reports/customers',
+        loadComponent: () => import('./views/pages/reports/customers/customers.component').then(c => c.ReportsCustomersComponent),
+        data: { title: 'Customer Report' },
+      },
+
       // Banks A/C
       {
         path: 'banks',
