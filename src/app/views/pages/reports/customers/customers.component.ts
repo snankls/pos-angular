@@ -106,6 +106,6 @@ export class ReportsCustomersComponent {
     if (this.searchModel.phone_number) params.append('phone_number', this.searchModel.phone_number);
     if (this.searchModel.city) params.append('city', this.searchModel.city);
   
-    window.open(`${this.LIVE_URL}/api/download/customers/${type}?${params.toString()}`, '_blank');
+    window.open(`${this.LIVE_URL}/download/customers/${type}?${params.toString()}`, '_blank');
   }
 }

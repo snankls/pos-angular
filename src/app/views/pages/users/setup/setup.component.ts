@@ -31,7 +31,7 @@ interface User {
 }
 
 @Component({
-  selector: 'app-edit',
+  selector: 'app-setup',
   standalone: true,
   imports: [
     BreadcrumbComponent,
@@ -42,9 +42,9 @@ interface User {
     NgbDatepickerModule,
     MyNgSelectComponent,
   ],
-  templateUrl: './edit.component.html'
+  templateUrl: './setup.component.html'
 })
-export class UsersEditComponent {
+export class UsersSetupComponent {
   private API_URL = environment.API_URL;
   private IMAGE_URL = environment.IMAGE_URL;
 
@@ -77,6 +77,7 @@ export class UsersEditComponent {
   imagePreview: string | ArrayBuffer | null = null;
   companies: any[] = [];
   user: any = null;
+  isImageDeleted = false;
   
   rows = [];
   temp = [];
@@ -92,7 +93,6 @@ export class UsersEditComponent {
   ) {}
 
   ngOnInit(): void {
-    this.fetchCompanies();
     this.fetchCities();
 
     this.gender = [
@@ -121,18 +121,6 @@ export class UsersEditComponent {
     if (this.formErrors[field]) {
       delete this.formErrors[field];
     }
-  }
-
-  fetchCompanies(): void {
-    this.http.get<any[]>(`${this.API_URL}/active/companies`).subscribe({
-      next: (response) => {
-        // Map each asset type to add a custom label
-        this.companies = response.map((companies) => ({
-          ...companies
-        }));
-      },
-      error: (error) => console.error('Failed to fetch employees:', error)
-    });
   }
 
   fetchCities(): void {
@@ -169,31 +157,12 @@ export class UsersEditComponent {
         if (error.status === 403 && error.error?.redirect) {
           // Unauthorized access - redirect to dashboard
           this.router.navigate(['/dashboard']);
-        } else if (error.status === 404) {
-        } else {
+          
           console.error('Error isLoading user:', error);
         }
       }
     });
   }
-  // loadUsers(id: number) {
-  //   this.http.get<User>(`${this.API_URL}/user/${id}`).subscribe(user => {
-  //     this.currentRecord = {
-  //       ...this.currentRecord,
-  //       ...user,
-        
-  //       date_of_birth: this.parseDateFromBackend(
-  //         typeof user.date_of_birth === 'string' ? user.date_of_birth : undefined
-  //       ),
-  //     };
-  
-  //     if (user.images && user.images.image_name) {
-  //       this.imagePreview = `${this.IMAGE_URL}/uploads/users/${user.images.image_name}`;
-  //     }
-  
-  //     this.isEditMode = true;
-  //   });
-  // }
 
   // Add these methods to your component class
   onFileSelected(event: Event): void {
@@ -217,53 +186,13 @@ export class UsersEditComponent {
     return `${date.year}-${String(date.month).padStart(2, '0')}-${String(date.day).padStart(2, '0')}`;
   }
   
-  // updateRecord(event: Event): void {
-  //   event.preventDefault();
-  //   this.isLoading = true;
-  //   this.globalError = '';
-  
-  //   const formData = new FormData();
-  
-  //   // Add the form data
-  //   const entries = Object.entries(this.currentRecord) as [keyof User, any][];
-  //   for (const [key, value] of entries) {
-  //     if (value !== null && value !== undefined && value !== '') {
-  //       if (key === 'date_of_birth') {
-  //         formData.append(key, this.formatDate(value));
-  //       } else {
-  //         formData.append(key, value);
-  //       }
-  //     }
-  //   }
-  
-  //   // Check if the file is selected and append it
-  //   if (this.selectedFile) {
-  //     formData.append('user_image', this.selectedFile);
-  //   }
-  
-  //   // Proceed with the API request to update employee data
-  //   this.http.post(`${this.API_URL}/users`, formData).subscribe({
-  //     next: (response) => {
-  //       this.isLoading = false;
-  //       this.router.navigate(['/users']);
-  //     },
-  //     error: (error) => {
-  //       this.isLoading = false;
-  //       // Check if the error is related to a duplicate value like code, email, etc.
-  //       if (error?.error?.errors) {
-  //         this.formErrors = error.error.errors;
-  //       }
-  //     }
-  //   });
-  // }
-
   updateRecord(event: Event): void {
     event.preventDefault();
     this.isLoading = true;
-  
+
     const formData = new FormData();
     const entries = Object.entries(this.currentRecord) as [keyof User, any][];
-  
+
     for (const [key, value] of entries) {
       if (value !== null && value !== undefined && value !== '') {
         if (key === 'date_of_birth') {
@@ -273,57 +202,29 @@ export class UsersEditComponent {
         }
       }
     }
-  
+
     if (this.selectedFile) {
       formData.append('user_image', this.selectedFile);
     }
-  
-    // Proceed with the API request to update user data
+
+    if (this.isImageDeleted) {
+      formData.append('delete_image', '1');
+    }
+
     this.http.post(`${this.API_URL}/users/${this.currentRecord.id}?_method=PUT`, formData).subscribe({
       next: (response) => {
         this.isLoading = false;
         this.successMessage = 'Record updated successfully!';
+        this.isImageDeleted = false;
       },
       error: (error) => {
         this.isLoading = false;
-        // Check if the error is related to a duplicate value like email, etc.
         if (error?.error?.errors) {
           this.formErrors = error.error.errors;
         }
       }
     });
   }
-
-  // Add this error handling method
-  // private handleError(error: any): void {
-  //   if (error.error?.errors) {
-  //     // Format errors to match what the template expects
-  //     this.formErrors = error.error.errors;
-  //   } else if (error.error?.message) {
-  //     this.errorMessage = error.error.message;
-  //   } else {
-  //     this.errorMessage = 'An unknown error occurred';
-  //   }
-    
-  //   // Scroll to the first error
-  //   setTimeout(() => {
-  //     const firstErrorElement = document.querySelector('.text-danger');
-  //     if (firstErrorElement) {
-  //       firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  //     }
-  //   }, 100);
-  // }
-
-  // Convert to yyyy-mm-dd string for backend
-  // private formatDateForBackend(date: NgbDateStruct | string | undefined): string | null {
-  //   if (!date) return null;
-    
-  //   // If already a string, return it directly
-  //   if (typeof date === 'string') return date;
-    
-  //   // If NgbDateStruct, format it
-  //   return `${date.year}-${date.month.toString().padStart(2, '0')}-${date.day.toString().padStart(2, '0')}`;
-  // }
 
   // Convert from backend string to NgbDateStruct
   private parseDateFromBackend(dateString: string | undefined): NgbDateStruct | null {
@@ -341,6 +242,14 @@ export class UsersEditComponent {
       month: parseInt(parts[1], 10),
       day: parseInt(parts[2], 10)
     };
+  }
+
+  // Remove Image Function
+  removeImage(): void {
+    this.imagePreview = null;
+    this.currentRecord.image = null;
+    this.selectedFile = null;
+    this.isImageDeleted = true;
   }
 
 }

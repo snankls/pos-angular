@@ -30,21 +30,10 @@ export class ChangePasswordComponent {
   messageProfile = '';
   messageTypePassword = '';
   messagePassword = '';
-  //loadingPassword = false;
-  // messageTypeProfile = '';
-
   loading = false;
   message: string = '';
   messageType: string = '';
-  // token: string = '';
-  
-  // globalError: string = '';
-  // globalErrorMessage: string = '';
-  // isEditMode = false;
   isLoading = false;
-  // errorMessage: any;
-  // selected: any[] = [];
-  // 
 
   constructor(
     private http: HttpClient,
@@ -53,23 +42,19 @@ export class ChangePasswordComponent {
   
   // Add your onSubmit method
   onchangePassword(): void {
-    // Reset messages
     this.messagePassword = '';
     this.messageTypePassword = '';
-    //this.loadingPassword = true;
 
     // Validate input fields
     if (!this.users.old_password || !this.users.new_password || !this.users.new_password_confirmation) {
       this.messagePassword = 'All fields are required.';
       this.messageTypePassword = 'error';
-      //this.loadingPassword = false;
       return;
     }
 
     if (this.users.new_password !== this.users.new_password_confirmation) {
       this.messagePassword = 'New password and confirmation do not match.';
       this.messageTypePassword = 'error';
-      //this.loadingPassword = false;
       return;
     }
 
@@ -80,14 +65,12 @@ export class ChangePasswordComponent {
       new_password_confirmation: this.users.new_password_confirmation
     };    
     
-    this.http.put(`${this.API_URL}/change-password`, data).subscribe(
+    this.http.put(`${this.API_URL}/users/change-password`, data).subscribe(
       (response: any) => {
-        //this.loadingPassword = false;
         this.messagePassword = response.message || 'Password updated successfully';
         this.messageTypePassword = 'success';
       },
       (error) => {
-        //this.loadingPassword = false;
         if (error.error.errors) {
           this.messagePassword = Object.values(error.error.errors).join(', ');
         } else {

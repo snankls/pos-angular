@@ -243,26 +243,26 @@ export const routes: Routes = [
         data: { title: 'Settings' },
       },
 
-      // // Users Edit
-      // {
-      //   path: 'users/edit/:id',
-      //   loadComponent: () => import('./views/pages/users/edit/edit.component').then(c => c.UsersEditComponent),
-      //   data: { title: 'Users Edit' },
-      // },
+      // Users Edit
+      {
+        path: 'user/edit/:id',
+        loadComponent: () => import('./views/pages/users/setup/setup.component').then(c => c.UsersSetupComponent),
+        data: { title: 'User Edit' },
+      },
 
-      // // User Profile
-      // {
-      //   path: 'users/profile/:id',
-      //   loadComponent: () => import('./views/pages/users/profile/profile.component').then(c => c.ProfileComponent),
-      //   data: { title: 'User Profile' },
-      // },
+      // User Profile
+      {
+        path: 'user/profile/:id',
+        loadComponent: () => import('./views/pages/users/profile/profile.component').then(c => c.ProfileComponent),
+        data: { title: 'User Profile' },
+      },
 
-      // // Change Password
-      // {
-      //   path: 'change-password',
-      //   loadComponent: () => import('./views/pages/users/change-password/change-password.component').then(c => c.ChangePasswordComponent),
-      //   data: { title: 'Change Password' },
-      // },
+      // Change Password
+      {
+        path: 'user/change-password',
+        loadComponent: () => import('./views/pages/users/change-password/change-password.component').then(c => c.ChangePasswordComponent),
+        data: { title: 'Change Password' },
+      },
 
       // Support
       {
@@ -285,16 +285,16 @@ export const routes: Routes = [
         data: { title: 'Payment Details' },
       },
 
-      // // 404 Page
-      // {
-      //   path: 'error',
-      //   loadComponent: () => import('./views/pages/error/error.component').then(c => c.ErrorComponent),
-      // },
-      // {
-      //   path: 'error/:type',
-      //   loadComponent: () => import('./views/pages/error/error.component').then(c => c.ErrorComponent)
-      // },
-      // { path: '**', redirectTo: 'error/404', pathMatch: 'full' }
+      // 404 Page
+      {
+        path: 'error',
+        loadComponent: () => import('./views/pages/error/error.component').then(c => c.ErrorComponent),
+      },
+      {
+        path: 'error/:type',
+        loadComponent: () => import('./views/pages/error/error.component').then(c => c.ErrorComponent)
+      },
+      { path: '**', redirectTo: 'error/404', pathMatch: 'full' }
     ]
   },
 ];

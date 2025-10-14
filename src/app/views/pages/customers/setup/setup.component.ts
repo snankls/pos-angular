@@ -21,7 +21,6 @@ interface Customer {
   address: string;
   status: string | null;
   description?: string;
-  //image?: File | string | null;
   images?: {
     image_name: string;
     image_path?: string;
@@ -157,7 +156,7 @@ export class CustomersSetupComponent {
         value !== null &&
         value !== undefined &&
         value !== '' &&
-        typeof value !== 'object' // 👈 skip objects like "images"
+        typeof value !== 'object'
       ) {
         formData.append(key, value as any);
       }
