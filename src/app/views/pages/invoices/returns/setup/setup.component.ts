@@ -495,20 +495,29 @@ export class ReturnsSetupComponent {
   }
 
   // Delete a single row by index (if saved on server, call API)
-  deleteItemRow(index: number) {
+  
+
+  // Delete a single row by index (if saved on server, call API)
+  deleteItemRow(index: number): void {
     const item = this.itemsList[index];
     if (!item) return;
 
-    if (!confirm('Are you sure do you want to delete this row permanently?')) return;
+    if (!confirm('Are you sure you want to delete this item?')) return;
 
-    try {
-      if (item.id) {
-        //await lastValueFrom(this.http.delete(`${this.API_URL}/loan-details/${item.id}`));
-      }
+    // If the item exists in the backend (has an ID)
+    if (item.id) {
+      this.http.delete(`${this.API_URL}/invoice-returns/items/${item.id}`).subscribe({
+        next: (response: any) => {
+          this.itemsList.splice(index, 1);
+        },
+        error: (error) => {
+          console.error('Error deleting item:', error);
+          alert('Failed to delete item. Please try again.');
+        }
+      });
+    } else {
+      // Just remove from UI if it's a new unsaved item
       this.itemsList.splice(index, 1);
-    } catch (err) {
-      console.error('Error deleting item:', err);
-      alert('An error occurred while deleting the item.');
     }
   }
 

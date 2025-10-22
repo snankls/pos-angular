@@ -17,8 +17,6 @@ interface Invoice {
   invoice_date?: NgbDateStruct | string | null;
   status?: string | null;
   description?: string | null;
-  discount_type: string | null,
-  discount_value: string | number | null,
 }
 
 @Component({
@@ -44,8 +42,6 @@ export class InvoicesSetupComponent {
     invoice_date: '',
     status: 'Active',
     description: '',
-    discount_type: 'Fixed',
-    discount_value: 0,
   };
   
   selected: number[] = []; 
@@ -251,8 +247,6 @@ export class InvoicesSetupComponent {
         this.updateTotals();
 
         // invoice-level summary fields
-        this.selectedDiscount = response.discount_type ?? 'Fixed';
-        this.discountValue = response.discount_value ?? 0;
         this.totalQuantity = response.total_quantity ?? 0;
         this.totalPrice = response.total_price ?? 0;
         this.totalDiscount = response.total_discount ?? 0;
@@ -431,8 +425,6 @@ export class InvoicesSetupComponent {
       description: this.currentRecord.description || '',
 
       // Add missing summary fields
-      discount_type: this.selectedDiscount || null,
-      discount_value: this.discountValue || 0,
       total_quantity: this.totalQuantity,
       total_price: this.totalPrice,
       total_discount: this.totalDiscount,
@@ -480,20 +472,26 @@ export class InvoicesSetupComponent {
   }
 
   // Delete a single row by index (if saved on server, call API)
-  deleteItemRow(index: number) {
+  deleteItemRow(index: number): void {
     const item = this.itemsList[index];
     if (!item) return;
 
-    if (!confirm('Are you sure do you want to delete this row permanently?')) return;
+    if (!confirm('Are you sure you want to delete this item?')) return;
 
-    try {
-      if (item.id) {
-        //await lastValueFrom(this.http.delete(`${this.API_URL}/loan-details/${item.id}`));
-      }
+    // If the item exists in the backend (has an ID)
+    if (item.id) {
+      this.http.delete(`${this.API_URL}/invoices/items/${item.id}`).subscribe({
+        next: (response: any) => {
+          this.itemsList.splice(index, 1);
+        },
+        error: (error) => {
+          console.error('Error deleting item:', error);
+          alert('Failed to delete item. Please try again.');
+        }
+      });
+    } else {
+      // Just remove from UI if it's a new unsaved item
       this.itemsList.splice(index, 1);
-    } catch (err) {
-      console.error('Error deleting item:', err);
-      alert('An error occurred while deleting the item.');
     }
   }
 

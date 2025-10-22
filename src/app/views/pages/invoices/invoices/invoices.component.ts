@@ -115,7 +115,7 @@ export class InvoicesComponent {
   }
 
   deleteRecord(row: any): void {
-    if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
+    if (confirm(`Are you sure you want to delete "${row.invoice_number}"?`)) {
       this.http.delete(`${this.API_URL}/invoices/${row.id}`).subscribe({
         next: () => {
           this.rows = this.rows.filter(r => r.id !== row.id);

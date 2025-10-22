@@ -69,7 +69,7 @@ export class CompaniesSetupComponent {
   }
 
   loadCompany() {
-    this.http.get<any>(`${this.API_URL}/companies`).subscribe({
+    this.http.get<any>(`${this.API_URL}/user/companies`).subscribe({
       next: (user) => {
         this.currentRecord = { ...user };
 
