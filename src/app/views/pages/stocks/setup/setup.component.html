@@ -22,17 +22,16 @@
             <div class="col-md-3 mb-3">
               <label class="form-label">Status <span class="text-danger">*</span></label>
               <ng-select
-  [items]="status"
-  bindLabel="name"
-  bindValue="id"
-  [(ngModel)]="currentRecord.status"
-  name="status"
-  placeholder="Select one"
-  [searchable]="false"
-  [disabled]="statusDisabled"
-  (change)="clearError('status')">
-</ng-select>
-
+                [items]="status"
+                bindLabel="name"
+                bindValue="id"
+                [(ngModel)]="currentRecord.status"
+                name="status"
+                placeholder="Select one"
+                [searchable]="false"
+                [disabled]="statusDisabled"
+                (change)="clearError('status')">
+              </ng-select>
               <div class="text-danger mt-1" *ngIf="formErrors.status">{{ formErrors.status[0] }}</div>
             </div>
 

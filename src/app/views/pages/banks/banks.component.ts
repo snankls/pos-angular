@@ -245,4 +245,20 @@ export class BanksComponent implements OnInit {
     }
   }
 
+  deleteRecord(row: any): void {
+    if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
+      this.http.delete(`${this.API_URL}/banks/${row.id}`).subscribe({
+        next: () => {
+          this.rows = this.rows.filter(r => r.id !== row.id);
+          this.temp = this.temp.filter(r => r.id !== row.id);
+          this.selected = this.selected.filter(r => r.id !== row.id);
+        },
+        error: (error) => {
+          console.error('Error deleting record:', error);
+          alert('An error occurred while deleting the record.');
+        }
+      });
+    }
+  }
+
 }

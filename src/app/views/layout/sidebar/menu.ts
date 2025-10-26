@@ -2,43 +2,37 @@ import { MenuItem } from './menu.model';
 
 export const MENU: MenuItem[] = [
   {
-    label: 'Main',
-    isTitle: true
-  },
-  {
     label: 'Dashboard',
     icon: 'disc',
     link: '/dashboard'
   },
+
+  // Sales
   {
-    label: 'Companies',
+    label: 'Sales',
     isTitle: true
   },
   {
-    label: 'Company',
-    icon: 'home',
-    link: '/companies',
-  },
-
-  {
     label: 'Invoices',
     icon: 'grid',
-    subItems: [
-      {
-        label: 'Listing',
-        link: '/invoices',
-      },
-      {
-        label: 'Add New',
-        link: '/invoices/add'
-      },
-      {
-        label: 'Returns',
-        link: '/invoices/returns'
-      },
-    ]
+    link: '/invoices'
+  },
+  {
+    label: 'Returns',
+    icon: 'grid',
+    link: '/invoices/returns'
+  },
+  {
+    label: 'Customers',
+    icon: 'users',
+    link: '/customers',
   },
 
+  // Inventory
+  {
+    label: 'Inventory',
+    isTitle: true
+  },
   {
     label: 'Products',
     icon: 'codesandbox',
@@ -63,86 +57,24 @@ export const MENU: MenuItem[] = [
         label: 'Units',
         link: '/products/units'
       },
-      {
-        label: 'Stocks',
-        link: '/products/stocks'
-      },
     ]
   },
-
-  // {
-  //   label: 'Employees',
-  //   isTitle: true
-  // },
-  // {
-  //   label: 'Employees',
-  //   icon: 'users',
-  //   link: '/employees',
-  // },
-  // {
-  //   label: 'Organizations',
-  //   icon: 'codesandbox',
-  //   subItems: [
-  //     {
-  //       label: 'Departments',
-  //       link: '/organizations/departments',
-  //     },
-  //     {
-  //       label: 'Designations',
-  //       link: '/organizations/designations'
-  //     },
-  //     {
-  //       label: 'Job Types',
-  //       link: '/organizations/job-types'
-  //     },
-  //   ]
-  // },
-  // {
-  //   label: 'Attendances',
-  //   icon: 'calendar',
-  //   link: '/attendances',
-  // },
-  // {
-  //   label: 'Leave Applications',
-  //   icon: 'mail',
-  //   subItems: [
-  //     {
-  //       label: 'Leave Applications',
-  //       link: '/leave-applications',
-  //     },
-  //     {
-  //       label: 'Leave Types',
-  //       link: '/leave-applications/leave-types'
-  //     },
-  //   ]
-  // },
-  // {
-  //   label: 'Salary Wizards',
-  //   icon: 'sunrise',
-  //   link: '/salary-wizards',
-  // },
-  // {
-  //   label: 'Allowances / Benefits',
-  //   isTitle: true
-  // },
-
-  // Customers
   {
-    label: 'Customers',
-    icon: 'users',
-    link: '/customers',
+    label: 'Stocks',
+    icon: 'home',
+    link: '/products/stocks',
   },
 
-  // // General
-  // {
-  //   label: 'General',
-  //   isTitle: true
-  // },
-  // {
-  //   label: 'Loans',
-  //   icon: 'layers',
-  //   link: '/loans',
-  // },
+  // Administration
+  {
+    label: 'Administration',
+    isTitle: true
+  },
+  {
+    label: 'Company',
+    icon: 'home',
+    link: '/companies',
+  },
   {
     label: 'Bank A/C',
     icon: 'dollar-sign',
@@ -152,6 +84,17 @@ export const MENU: MenuItem[] = [
     label: 'Cities',
     icon: 'map',
     link: '/cities',
+  },
+  {
+    label: 'Import / Export',
+    icon: 'git-pull-request',
+    link: '/import-export',
+  },
+
+  // Reports & Analytics
+  {
+    label: 'Reports & Analytics',
+    isTitle: true
   },
   {
     label: 'Reports',
@@ -176,10 +119,11 @@ export const MENU: MenuItem[] = [
       },
     ]
   },
+
+  // System
   {
-    label: 'Import / Export',
-    icon: 'git-pull-request',
-    link: '/import-export',
+    label: 'System',
+    isTitle: true
   },
   {
     label: 'Settings',

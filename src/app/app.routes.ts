@@ -155,28 +155,28 @@ export const routes: Routes = [
       // Stocks
       {
         path: 'products/stocks',
-        loadComponent: () => import('./views/pages/products/stocks/stocks.component').then(c => c.StocksComponent),
+        loadComponent: () => import('./views/pages/stocks/stocks.component').then(c => c.StocksComponent),
         data: { title: 'Stocks' },
       },
 
       // Stocks Add
       {
         path: 'stocks/add',
-        loadComponent: () => import('./views/pages/products/stocks/setup/setup.component').then(c => c.StocksSetupComponent),
+        loadComponent: () => import('./views/pages/stocks/setup/setup.component').then(c => c.StocksSetupComponent),
         data: { title: 'Stocks Add' },
       },
 
       // Stocks Edit
       {
         path: 'stocks/edit/:id',
-        loadComponent: () => import('./views/pages/products/stocks/setup/setup.component').then(c => c.StocksSetupComponent),
+        loadComponent: () => import('./views/pages/stocks/setup/setup.component').then(c => c.StocksSetupComponent),
         data: { title: 'Stocks Edit' },
       },
 
       // Stocks View
       {
         path: 'stocks/view/:id',
-        loadComponent: () => import('./views/pages/products/stocks/view/view.component').then(c => c.StocksViewComponent),
+        loadComponent: () => import('./views/pages/stocks/view/view.component').then(c => c.StocksViewComponent),
         data: { title: 'Stocks View' },
       },
 

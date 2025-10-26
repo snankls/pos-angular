@@ -6,8 +6,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
 import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
-import { environment } from '../../../../../environments/environment';
-import { BreadcrumbComponent } from '../../../../layout/breadcrumb/breadcrumb.component';
+import { environment } from '../../../../environments/environment';
+import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
 
 interface Stock {
   id?: number | null;

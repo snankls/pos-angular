@@ -4,8 +4,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbNavContent, NgbNavModule, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
-import { BreadcrumbComponent } from '../../../../layout/breadcrumb/breadcrumb.component';
-import { environment } from '../../../../../environments/environment';
+import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
+import { environment } from '../../../../environments/environment';
 
 interface StockRecord {
   id: number;

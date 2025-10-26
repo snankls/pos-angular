@@ -18,8 +18,6 @@ interface Invoice {
   customer_name?: string | null;
   return_date?: NgbDateStruct | string | null;
   status?: string | null;
-  discount_type: string | null,
-  discount_value: string | number | null,
 }
 
 @Component({
@@ -46,8 +44,6 @@ export class ReturnsSetupComponent {
     invoice_numbers: null,
     return_date: '',
     status: 'Active',
-    discount_type: '',
-    discount_value: 0,
   };
   
   selected: number[] = []; 
@@ -239,8 +235,6 @@ export class ReturnsSetupComponent {
         this.updateTotals();
 
         // fill footer summary
-        this.selectedDiscount = response.discount_type ?? '';
-        this.discountValue = response.discount_value ?? 0;
         this.totalQuantity = response.total_quantity ?? 0;
         this.totalPrice = response.total_price ?? 0;
         this.totalDiscount = response.total_discount ?? 0;
@@ -264,8 +258,6 @@ export class ReturnsSetupComponent {
       invoice_numbers: null,
       return_date: returnDate,
       status: 'Active',
-      discount_type: '',
-      discount_value: 0,
     };
 
     this.itemsList = [{
@@ -446,8 +438,6 @@ export class ReturnsSetupComponent {
       status: this.currentRecord.status,
 
       // Add missing summary fields
-      discount_type: this.selectedDiscount || null,
-      discount_value: this.discountValue || 0,
       total_quantity: this.totalQuantity,
       total_price: this.totalPrice,
       total_discount: this.totalDiscount,
@@ -493,9 +483,6 @@ export class ReturnsSetupComponent {
       }
     });
   }
-
-  // Delete a single row by index (if saved on server, call API)
-  
 
   // Delete a single row by index (if saved on server, call API)
   deleteItemRow(index: number): void {

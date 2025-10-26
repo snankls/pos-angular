@@ -3,8 +3,8 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ColumnMode, DatatableComponent, NgxDatatableModule } from '@siemens/ngx-datatable';
-import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
-import { environment } from '../../../../environments/environment';
+import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-stocks',
