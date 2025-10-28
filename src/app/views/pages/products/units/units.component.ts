@@ -105,11 +105,18 @@ export class UnitsComponent implements OnInit {
   fetchStatus(): void {
     this.http.get<any>(`${this.API_URL}/status`).subscribe({
       next: (response) => {
-        this.status = Object.entries(response)
-          .filter(([key]) => key !== '')
-          .map(([key, value]) => ({ id: key, name: value as string }));
+        if (response && response.data) {
+          this.status = Object.entries(response.data)
+            .filter(([key]) => key !== '')
+            .map(([key, value]) => ({
+              id: key,
+              name: value as string
+            }));
+        } else {
+          console.error('Invalid response format:', response);
+        }
       },
-      error: (error) => console.error('Failed to fetch status:', error)
+      error: (error) => console.error('Failed to fetch record:', error)
     });
   }
 

@@ -25,7 +25,6 @@ export class CustomersComponent {
   rows: { id: number; [key: string]: any }[] = [];
   temp: { id: number; [key: string]: any }[] = [];
   loadingIndicator = true;
-  // reorderable = true;
   ColumnMode = ColumnMode;
 
   @ViewChild('table') table: DatatableComponent
@@ -76,10 +75,10 @@ export class CustomersComponent {
         this.temp = [...response];
         this.loadingIndicator = false;
 
-        // Optionally, you can process image_url if necessary (e.g., fallback for missing images)
+        // Optionally, you can process image_url if necessary
         this.rows.forEach((employee) => {
           employee.employee_image = employee.image_url
-            ? `${this.IMAGE_URL}/uploads/customers/${employee.image_url}`
+            ? `${this.IMAGE_URL}/customers/${employee.image_url}`
             : 'images/placeholder.png';
         });
       },

@@ -5,8 +5,8 @@ import { NgScrollbar } from 'ngx-scrollbar';
 import MetisMenu from 'metismenujs';
 import { MENU } from './menu';
 import { MenuItem } from './menu.model';
-
 import { FeatherIconDirective } from '../../../core/feather-icon/feather-icon.directive';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-sidebar',
@@ -21,6 +21,7 @@ import { FeatherIconDirective } from '../../../core/feather-icon/feather-icon.di
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
+  private LIVE_URL = environment.IMAGE_URL;
 
   @ViewChild('sidebarToggler') sidebarToggler: ElementRef;
 
@@ -235,5 +236,49 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
   };
 
+  apkUrl = this.LIVE_URL + '/apps/android.apk';
+  private isMobileDevice(): boolean {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  }
+  
+  private isAndroid(): boolean {
+    return /Android/i.test(navigator.userAgent);
+  }
+
+  private triggerMobileDownload() {
+    // Create temporary link for download
+    const link = document.createElement('a');
+    link.href = this.apkUrl;
+    link.download = 'android_app.apk';
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    this.showDownloadMessage();
+  }
+
+  private showDownloadMessage() {
+    // Use alert or implement a better notification system
+    alert('APK download started! Check your notifications or downloads folder.');
+
+  }
+
+  downloadAPK(event: Event) {
+    const isMobile = this.isMobileDevice();
+    
+    if (isMobile) {
+      event.preventDefault();
+      
+      if (this.isAndroid()) {
+        this.triggerMobileDownload();
+      } else {
+        // For iOS or other mobile devices
+        window.open(this.apkUrl, '_blank');
+        this.showDownloadMessage();
+      }
+    }
+    // For desktop, let default behavior continue
+  }
 
 }

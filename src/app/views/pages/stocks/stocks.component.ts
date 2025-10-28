@@ -79,7 +79,7 @@ export class StocksComponent {
         // Optionally, you can process image_url if necessary (e.g., fallback for missing images)
         this.rows.forEach((employee) => {
           employee.employee_image = employee.image_url
-            ? `${this.IMAGE_URL}/uploads/stocks/${employee.image_url}`
+            ? `${this.IMAGE_URL}/stocks/${employee.image_url}`
             : 'images/placeholder.jpg';
         });
       },

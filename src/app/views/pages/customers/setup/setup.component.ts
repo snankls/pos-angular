@@ -97,10 +97,19 @@ export class CustomersSetupComponent {
 
   fetchStatus(): void {
     this.http.get<any>(`${this.API_URL}/status`).subscribe({
-      next: (res) => {
-        this.status = Object.entries(res).map(([key, value]) => ({ id: key, name: value as string }));
+      next: (response) => {
+        if (response && response.data) {
+          this.status = Object.entries(response.data)
+            .filter(([key]) => key !== '')
+            .map(([key, value]) => ({
+              id: key,
+              name: value as string
+            }));
+        } else {
+          console.error('Invalid response format:', response);
+        }
       },
-      error: (err) => console.error('Failed to fetch status:', err)
+      error: (error) => console.error('Failed to fetch record:', error)
     });
   }
 
@@ -112,7 +121,7 @@ export class CustomersSetupComponent {
 
         // Fix image handling
         if (customer.images && customer.images.image_name) {
-          this.imagePreview = `${this.IMAGE_URL}/uploads/customers/${customer.images.image_name}`;
+          this.imagePreview = `${this.IMAGE_URL}/customers/${customer.images.image_name}`;
         }
 
         this.isEditMode = true;

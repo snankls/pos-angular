@@ -394,7 +394,7 @@ export class DashboardComponent implements OnInit {
           // Optionally, you can process image_url if necessary (e.g., fallback for missing images)
           this.products.forEach((product) => {
             product.product_image = product.image_url
-              ? `${this.IMAGE_URL}/uploads/products/${product.image_url}`
+              ? `${this.IMAGE_URL}/products/${product.image_url}`
               : 'images/placeholder.png';
           });
       },
@@ -413,7 +413,7 @@ export class DashboardComponent implements OnInit {
           // Optionally, you can process image_url if necessary (e.g., fallback for missing images)
           this.customers.forEach((customer) => {
             customer.customer_image = customer.image_url
-              ? `${this.IMAGE_URL}/uploads/customers/${customer.image_url}`
+              ? `${this.IMAGE_URL}/customers/${customer.image_url}`
               : 'images/placeholder.png';
           });
       },

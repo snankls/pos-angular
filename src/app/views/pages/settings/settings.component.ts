@@ -8,8 +8,8 @@ import { environment } from '../../../environments/environment';
 
 interface Invoice {
   invoice_prefix?: string | null;
-  invoice_count?: number | null;
-  currency_sign?: string | null;
+  invoice_limit?: number | null;
+  currency?: string | null;
   [key: string]: any;
 }
 
@@ -29,8 +29,8 @@ export class SettingsComponent {
 
   currentRecord: Invoice = {
     invoice_prefix: 'INV',
-    invoice_count: 6,
-    currency_sign: 'Rs.',
+    invoice_limit: 6,
+    currency: 'Rs.',
   };
 
   isLoading = false;

@@ -145,7 +145,7 @@ export class UsersSetupComponent {
         };
 
         if (user.images?.image_name) {
-          this.imagePreview = `${this.IMAGE_URL}/uploads/users/${user.images.image_name}`;
+          this.imagePreview = `${this.IMAGE_URL}/users/${user.images.image_name}`;
         }
 
         this.isEditMode = true;

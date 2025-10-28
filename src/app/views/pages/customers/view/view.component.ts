@@ -94,7 +94,7 @@ export class CustomersViewComponent {
         };
     
         if (customer.images && customer.images.image_name) {
-          this.imagePreview = `${this.IMAGE_URL}/uploads/customers/${customer.images.image_name}`;
+          this.imagePreview = `${this.IMAGE_URL}/customers/${customer.images.image_name}`;
         }
         this.isLoading = false;
       },

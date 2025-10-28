@@ -90,7 +90,7 @@ export class ProductsViewComponent {
         };
     
         if (employee.images && employee.images.image_name) {
-          this.imagePreview = `${this.IMAGE_URL}/uploads/products/${employee.images.image_name}`;
+          this.imagePreview = `${this.IMAGE_URL}/products/${employee.images.image_name}`;
         }
         this.isLoading = false;
       },

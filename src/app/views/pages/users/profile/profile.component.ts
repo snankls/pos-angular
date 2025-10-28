@@ -62,7 +62,7 @@ export class ProfileComponent {
 
       // If user has image
       if (user.user_image) {
-        this.imagePreview = `${this.IMAGE_URL}/uploads/users/${user.user_image}`;
+        this.imagePreview = `${this.IMAGE_URL}/users/${user.user_image}`;
       }
 
       this.isEditMode = true;

@@ -74,7 +74,7 @@ export class CompaniesSetupComponent {
         this.currentRecord = { ...user };
 
         if (user.images?.image_name) {
-          this.imagePreview = `${this.IMAGE_URL}/uploads/companies/${user.images.image_name}`;
+          this.imagePreview = `${this.IMAGE_URL}/companies/${user.images.image_name}`;
         }
       },
       error: (error: HttpErrorResponse) => {

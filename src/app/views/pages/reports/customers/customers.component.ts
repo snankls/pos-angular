@@ -73,7 +73,7 @@ export class ReportsCustomersComponent {
         // Optionally, you can process image_url if necessary (e.g., fallback for missing images)
         this.rows.forEach((response) => {
           response.image = response.image_name
-            ? `${this.IMAGE_URL}/uploads/customers/${response.image_name}`
+            ? `${this.IMAGE_URL}/customers/${response.image_name}`
             : 'images/placeholder.png';
         });
 

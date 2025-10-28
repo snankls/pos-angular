@@ -24,12 +24,12 @@
             <input
               type="text"
               class="form-control"
-              name="invoice_count"
-              [(ngModel)]="currentRecord.invoice_count"
-              (input)="clearError('invoice_count')"
+              name="invoice_limit"
+              [(ngModel)]="currentRecord.invoice_limit"
+              (input)="clearError('invoice_limit')"
             >
-            <div class="text-danger mt-1" *ngIf="formErrors.invoice_count">
-              {{ formErrors.invoice_count[0] }}
+            <div class="text-danger mt-1" *ngIf="formErrors.invoice_limit">
+              {{ formErrors.invoice_limit[0] }}
             </div>
           </div>
 
@@ -38,12 +38,12 @@
             <input
               type="text"
               class="form-control"
-              name="currency_sign"
-              [(ngModel)]="currentRecord.currency_sign"
-              (input)="clearError('currency_sign')"
+              name="currency"
+              [(ngModel)]="currentRecord.currency"
+              (input)="clearError('currency')"
             >
-            <div class="text-danger mt-1" *ngIf="formErrors.currency_sign">
-              {{ formErrors.currency_sign[0] }}
+            <div class="text-danger mt-1" *ngIf="formErrors.currency">
+              {{ formErrors.currency[0] }}
             </div>
           </div>
 

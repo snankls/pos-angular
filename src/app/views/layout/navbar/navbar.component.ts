@@ -43,7 +43,7 @@ export class NavbarComponent implements OnInit {
       if (user) {
         this.user = user;
         this.user.imagePreview = user.images?.image_name
-          ? `${this.IMAGE_URL}/uploads/users/${user.images.image_name}`
+          ? `${this.IMAGE_URL}/users/${user.images.image_name}`
           : 'images/placeholder.png';
       } else {
         this.user = null;

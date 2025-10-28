@@ -76,7 +76,7 @@ export class StocksViewComponent implements OnInit {
   fetchCurrencySign(): void {
     this.http.get<any>(`${this.API_URL}/settings`).subscribe({
       next: (response) => {
-        this.currencySign = response.currency_sign.data_value || '';
+        this.currencySign = response.currency.data_value || '';
       },
       error: (err) => console.error('Failed to fetch currency sign:', err)
     });

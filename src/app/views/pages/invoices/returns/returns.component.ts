@@ -90,7 +90,7 @@ export class ReturnsComponent {
     this.http.get<any>(`${this.API_URL}/settings`).subscribe({
       next: (response) => {
         console.log(response)
-        this.currencySign = response.currency_sign.data_value || '';
+        this.currencySign = response.currency.data_value || '';
       },
       error: (err) => console.error('Failed to fetch currency sign:', err)
     });
