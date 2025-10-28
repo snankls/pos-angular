@@ -92,7 +92,8 @@
                           readonly>
                         </td>
                         <td>
-                          <button type="button" class="btn btn-sm btn-danger" (click)="deleteItemRow(i)">
+                          <button type="button" class="btn btn-sm btn-danger" (click)="deleteItemRow(i)" [disabled]="isLoading || currentRecord?.status === 'Posted'">
+                            <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
                             <i class="feather icon-trash-2"></i>
                           </button>
                         </td>
@@ -102,7 +103,13 @@
                 </table>
                 
                 <div class="col-md-4 mt-3 d-flex gap-2">
-                  <button class="btn btn-success btn-xs" type="button" (click)="addItemRow()">
+                  <button
+                    class="btn btn-success btn-xs"
+                    type="button"
+                    (click)="addItemRow()"
+                    [disabled]="isLoading || currentRecord?.status === 'Posted'">
+                    
+                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1"></span>
                     + Add Item
                   </button>
                 </div>
@@ -149,11 +156,11 @@
                 Stock Post
               </button>
               
-              <div class="alert alert-danger text-center" *ngIf="globalErrorMessage">
+              <div class="alert alert-danger text-center mt-3" *ngIf="globalErrorMessage">
                 {{ globalErrorMessage }}
               </div>
               
-              <div class="alert alert-danger text-center" *ngIf="currentRecord?.status === 'Posted'">
+              <div class="alert alert-danger text-center mt-3" *ngIf="currentRecord?.status === 'Posted'">
                 <p>Stock has been posted and cannot be changed.</p>
               </div>
             </div>

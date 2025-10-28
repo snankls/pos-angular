@@ -188,64 +188,63 @@ export class StocksSetupComponent {
   }
 
   loadStocks(id: number) {
-  this.isLoading = true;
+    this.isLoading = true;
 
-  this.http.get<any>(`${this.API_URL}/stocks/${id}`).subscribe({
-    next: (response) => {
-      // Merge and parse record
-      this.currentRecord = {
-        ...this.currentRecord,
-        ...response,
-        stock_date: this.parseDateFromBackend(
-          typeof response.stock_date === 'string' ? response.stock_date : undefined
-        ),
-      } as Stock;
+    this.http.get<any>(`${this.API_URL}/stocks/${id}`).subscribe({
+      next: (response) => {
+        // Merge and parse record
+        this.currentRecord = {
+          ...this.currentRecord,
+          ...response,
+          stock_date: this.parseDateFromBackend(
+            typeof response.stock_date === 'string' ? response.stock_date : undefined
+          ),
+        } as Stock;
 
-      // Map stock details -> itemsList
-      this.itemsList = (response.details || []).map((item: any) => ({
-        id: item.id ?? null,
-        product_id: item.product_id ?? null,
-        stock: item.stock ?? 0,
-        unit_id: item.unit_id ?? null,
-        unit_name: item.unit_name ?? '',
-        price: item.price ?? 0,
-        total_amount: item.total ?? 0
-      }));
+        // Map stock details -> itemsList
+        this.itemsList = (response.details || []).map((item: any) => ({
+          id: item.id ?? null,
+          product_id: item.product_id ?? null,
+          stock: item.stock ?? 0,
+          unit_id: item.unit_id ?? null,
+          unit_name: item.unit_name ?? '',
+          price: item.price ?? 0,
+          total_amount: item.total ?? 0
+        }));
 
-      // Recalculate totals
-      this.itemsList.forEach((_, i) => this.updateRowTotal(i));
-      this.updateTotals();
+        // Recalculate totals
+        this.itemsList.forEach((_, i) => this.updateRowTotal(i));
+        this.updateTotals();
 
-      // Assign summary fields
-      this.totalStock = response.total_stock ?? 0;
-      this.totalPrice = response.total_price ?? 0;
+        // Assign summary fields
+        this.totalStock = response.total_stock ?? 0;
+        this.totalPrice = response.total_price ?? 0;
 
-      // If status = "Posted" and not in dropdown, add it manually
-      const postedExists = this.status.some((s) => s.id === 'Posted');
-      if (this.currentRecord.status === 'Posted' && !postedExists) {
-        this.status.push({ id: 'Posted', name: 'Posted' });
-      }
+        // If status = "Posted" and not in dropdown, add it manually
+        const postedExists = this.status.some((s) => s.id === 'Posted');
+        if (this.currentRecord.status === 'Posted' && !postedExists) {
+          this.status.push({ id: 'Posted', name: 'Posted' });
+        }
 
-      // Optional: disable dropdown if Posted
-      this.statusDisabled = this.currentRecord.status === 'Posted';
+        // Optional: disable dropdown if Posted
+        this.statusDisabled = this.currentRecord.status === 'Posted';
 
-      this.isEditMode = true;
-      this.isLoading = false;
-    },
-    error: (error: HttpErrorResponse) => {
-      this.isLoading = false;
-      if (error.status === 403) {
-        this.router.navigate(['/dashboard']);
-      } else if (error.status === 404) {
-        this.errorMessage = 'Stock record not found';
-      } else {
-        this.errorMessage = 'Failed to load stock details';
-        console.error('Error loading stock:', error);
-      }
-    },
-  });
-}
-
+        this.isEditMode = true;
+        this.isLoading = false;
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isLoading = false;
+        if (error.status === 403) {
+          this.router.navigate(['/dashboard']);
+        } else if (error.status === 404) {
+          this.errorMessage = 'Stock record not found';
+        } else {
+          this.errorMessage = 'Failed to load stock details';
+          console.error('Error loading stock:', error);
+        }
+      },
+    });
+  }
 
   // compute a row total and update item.total_amount
   updateRowTotal(index: number) {
