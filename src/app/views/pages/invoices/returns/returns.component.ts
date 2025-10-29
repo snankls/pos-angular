@@ -36,7 +36,7 @@ export class ReturnsComponent {
 
   ngOnInit(): void {
     this.fetchReturns();
-    this.fetchCurrencySign();
+    this.fetchCurrency();
   }
 
   updateFilter(event: KeyboardEvent) {
@@ -74,7 +74,7 @@ export class ReturnsComponent {
   fetchReturns(): void {
     this.loadingIndicator = true;
   
-    this.http.get<any[]>(`${this.API_URL}/invoice-returns`).subscribe({
+    this.http.get<any[]>(`${this.API_URL}/invoice/returns`).subscribe({
       next: (response) => {
         this.rows = response;
         this.temp = [...response];
@@ -86,7 +86,7 @@ export class ReturnsComponent {
     });
   }
 
-  fetchCurrencySign(): void {
+  fetchCurrency(): void {
     this.http.get<any>(`${this.API_URL}/settings`).subscribe({
       next: (response) => {
         console.log(response)
@@ -99,7 +99,7 @@ export class ReturnsComponent {
   deleteSelectedRecords(): void {
     if (confirm('Are you sure you want to permanent delete the selected record(s)?')) {
       const ids = this.selected.map(row => row.id);
-      const deleteRequests = ids.map(id => this.http.delete(`${this.API_URL}/invoice-returns/${id}`).toPromise());
+      const deleteRequests = ids.map(id => this.http.delete(`${this.API_URL}/invoice/returns/${id}`).toPromise());
 
       Promise.all(deleteRequests)
         .then(() => {
@@ -116,7 +116,7 @@ export class ReturnsComponent {
 
   deleteRecord(row: any): void {
     if (confirm(`Are you sure you want to delete "${row.name}"?`)) {
-      this.http.delete(`${this.API_URL}/invoice-returns/${row.id}`).subscribe({
+      this.http.delete(`${this.API_URL}/invoice/returns/${row.id}`).subscribe({
         next: () => {
           this.rows = this.rows.filter(r => r.id !== row.id);
           this.temp = this.temp.filter(r => r.id !== row.id);

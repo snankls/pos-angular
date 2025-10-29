@@ -20,7 +20,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Returns',
     icon: 'grid',
-    link: '/invoices/returns'
+    link: '/invoice/returns'
   },
   {
     label: 'Customers',
@@ -62,7 +62,7 @@ export const MENU: MenuItem[] = [
   {
     label: 'Stocks',
     icon: 'home',
-    link: '/products/stocks',
+    link: '/stocks',
   },
 
   // Administration

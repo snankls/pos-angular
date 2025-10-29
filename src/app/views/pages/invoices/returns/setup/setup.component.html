@@ -144,30 +144,6 @@
                         <table class="table fw-bold">
                           <tbody>
                             <tr>
-                              <td>Discount</td>
-                              <td>
-                                <div class="d-flex gap-2">
-                                  <ng-select
-                                    [items]="discount"
-                                    name="discount_type"
-                                    [searchable]="false"
-                                    [(ngModel)]="selectedDiscount"
-                                    (change)="updateTotals()"
-                                    class="flex-grow-1 w-50"
-                                    readonly>
-                                  </ng-select>
-
-                                  <input
-                                    type="number"
-                                    name="discount_value"
-                                    class="form-control w-50"
-                                    [(ngModel)]="discountValue"
-                                    (ngModelChange)="updateTotals()"
-                                    readonly>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
                               <td>Total Quantity</td>
                               <td class="text-end">{{ totalQuantity | number:'1.2-2' }}</td>
                             </tr>

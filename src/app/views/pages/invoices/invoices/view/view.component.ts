@@ -83,7 +83,7 @@ export class InvoicesViewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fetchCurrencySign();
+    this.fetchCurrency();
     
     // Invoice Send List
     this.discount = ['Email', 'WhatsApp'];
@@ -102,7 +102,7 @@ export class InvoicesViewComponent implements OnInit {
     }
   }
 
-  fetchCurrencySign(): void {
+  fetchCurrency(): void {
     this.http.get<any>(`${this.API_URL}/settings`).subscribe({
       next: (response) => {
         console.log(response)

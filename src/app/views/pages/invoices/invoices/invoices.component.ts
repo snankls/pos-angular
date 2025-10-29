@@ -36,7 +36,7 @@ export class InvoicesComponent {
 
   ngOnInit(): void {
     this.fetchInvoices();
-    this.fetchCurrencySign();
+    this.fetchCurrency();
   }
 
   updateFilter(event: KeyboardEvent) {
@@ -86,7 +86,7 @@ export class InvoicesComponent {
     });
   }
 
-  fetchCurrencySign(): void {
+  fetchCurrency(): void {
     this.http.get<any>(`${this.API_URL}/settings`).subscribe({
       next: (response) => {
         console.log(response)

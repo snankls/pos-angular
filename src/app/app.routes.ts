@@ -77,28 +77,28 @@ export const routes: Routes = [
 
       // Invoice Returns
       {
-        path: 'invoices/returns',
+        path: 'invoice/returns',
         loadComponent: () => import('./views/pages/invoices/returns/returns.component').then(c => c.ReturnsComponent),
         data: { title: 'Invoice Returns' },
       },
 
       // Invoice Returns Add
       {
-        path: 'invoices/returns/add',
+        path: 'invoice/returns/add',
         loadComponent: () => import('./views/pages/invoices/returns/setup/setup.component').then(c => c.ReturnsSetupComponent),
         data: { title: 'Invoice Returns Add' },
       },
 
       // Invoice Returns Edit
       {
-        path: 'invoices/returns/edit/:id',
+        path: 'invoice/returns/edit/:id',
         loadComponent: () => import('./views/pages/invoices/returns/setup/setup.component').then(c => c.ReturnsSetupComponent),
         data: { title: 'Invoice Returns Edit' },
       },
 
       // Invoice Returns View
       {
-        path: 'invoices/returns/view/:id',
+        path: 'invoice/returns/view/:id',
         loadComponent: () => import('./views/pages/invoices/returns/view/view.component').then(c => c.ReturnsViewComponent),
         data: { title: 'Invoice Returns View' },
       },
@@ -154,7 +154,7 @@ export const routes: Routes = [
 
       // Stocks
       {
-        path: 'products/stocks',
+        path: 'stocks',
         loadComponent: () => import('./views/pages/stocks/stocks.component').then(c => c.StocksComponent),
         data: { title: 'Stocks' },
       },

@@ -7,12 +7,12 @@ import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
 import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import { lastValueFrom } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { BreadcrumbComponent } from '../../../../layout/breadcrumb/breadcrumb.component';
 
 interface Invoice {
   id?: number | null;
+  invoice_number?: string;
   customer_id?: string | null;
   invoice_date?: NgbDateStruct | string | null;
   status?: string | null;
@@ -94,7 +94,7 @@ export class InvoicesSetupComponent {
   ngOnInit(): void {
     this.fetchCustomers();
     this.fetchProducts();
-    this.fetchCurrencySign();
+    this.fetchCurrency();
     this.fetchStatus();
     this.setDefaultIssueDate();
 
@@ -144,7 +144,7 @@ export class InvoicesSetupComponent {
     });
   }
 
-  fetchCurrencySign(): void {
+  fetchCurrency(): void {
     this.http.get<any>(`${this.API_URL}/settings`).subscribe({
       next: (response) => {
         console.log(response)
@@ -227,6 +227,7 @@ export class InvoicesSetupComponent {
     this.isLoading = true;
     this.http.get<any>(`${this.API_URL}/invoices/${id}`).subscribe({
       next: (response) => {
+        console.log('Invoice response:', response);
         this.currentRecord = {
           ...this.currentRecord,
           ...response,

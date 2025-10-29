@@ -57,7 +57,7 @@ export class StocksViewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.fetchCurrencySign();
+    this.fetchCurrency();
     
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -73,7 +73,7 @@ export class StocksViewComponent implements OnInit {
     }
   }
 
-  fetchCurrencySign(): void {
+  fetchCurrency(): void {
     this.http.get<any>(`${this.API_URL}/settings`).subscribe({
       next: (response) => {
         this.currencySign = response.currency.data_value || '';

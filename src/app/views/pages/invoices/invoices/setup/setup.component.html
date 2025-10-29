@@ -10,7 +10,8 @@
             <div class="col-md-3 mb-3">
               <label class="form-label">Invoice Number</label>
               <input type="text" class="form-control"
-              placeholder="will be generate on save."
+              [value]="currentRecord.invoice_number || ''"
+              [placeholder]="!currentRecord.invoice_number ? 'will be generated on save.' : ''"
               readonly>
             </div>
             <div class="col-md-3 mb-3">

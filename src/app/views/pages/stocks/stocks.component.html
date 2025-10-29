@@ -45,6 +45,12 @@
               </ng-template>
             </ngx-datatable-column>
             
+            <ngx-datatable-column name="Stock Number">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.stock_number }}
+              </ng-template>
+            </ngx-datatable-column>
+            
             <ngx-datatable-column name="Stock Date">
               <ng-template ngx-datatable-cell-template let-row="row">
                 {{ row.stock_date }}

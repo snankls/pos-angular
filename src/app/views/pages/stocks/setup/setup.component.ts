@@ -11,6 +11,7 @@ import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.compo
 
 interface Stock {
   id?: number | null;
+  stock_number?: string | null;
   stock_date?: NgbDateStruct | string | null;
   status?: string | null;
 }
@@ -32,6 +33,8 @@ export class StocksSetupComponent {
   private API_URL = environment.API_URL;
 
   currentRecord: Stock = {
+    id: null,
+    stock_number: '',
     stock_date: '',
     status: 'Active',
   };
@@ -74,7 +77,7 @@ export class StocksSetupComponent {
 
   ngOnInit(): void {
     this.fetchProducts();
-    this.fetchCurrencySign();
+    this.fetchCurrency();
     this.setDefaultIssueDate();
     this.fetchStatus();
 
@@ -128,7 +131,7 @@ export class StocksSetupComponent {
     });
   }
 
-  fetchCurrencySign(): void {
+  fetchCurrency(): void {
     this.http.get<any>(`${this.API_URL}/settings`).subscribe({
       next: (response) => {
         console.log(response)
@@ -341,6 +344,13 @@ export class StocksSetupComponent {
   // Combined add / update submit (single method)
   onSubmit(event: Event, isPost: boolean = false): void {
     event.preventDefault();
+
+    // ✅ Show confirmation before posting
+    if (isPost) {
+      const confirmPost = confirm('Are you sure you want to post this stock? Once posted, it cannot be edited.');
+      if (!confirmPost) return; // stop execution if user cancels
+    }
+    
     this.isLoading = true;
     this.globalErrorMessage = '';
 
@@ -362,15 +372,17 @@ export class StocksSetupComponent {
     const newStatus = isPost ? 'Posted' : this.currentRecord.status;
 
     const payload = {
+      id: this.currentRecord.id,
+      stock_number: this.currentRecord.stock_number,
       stock_date: this.formatDate(this.currentRecord.stock_date),
       status: newStatus,
       total_stock: this.totalStock,
       total_price: this.totalPrice,
       items: this.itemsList.map(item => ({
+        id: item.id,
         product_id: item.product_id,
         stock: item.stock,
         unit_id: item.unit_id,
-        unit_name: item.unit_name,
         price: item.price,
         total_amount: item.total_amount,
       }))
@@ -386,7 +398,7 @@ export class StocksSetupComponent {
         if (isPost) {
           this.currentRecord.status = 'Posted';
         }
-        this.router.navigate(['/products/stocks']);
+        this.router.navigate(['/stocks']);
       },
       error: (error) => {
         this.isLoading = false;
@@ -410,7 +422,7 @@ export class StocksSetupComponent {
     const item = this.itemsList[index];
     if (!item) return;
 
-    if (!confirm('Are you sure do you want to delete this row permanently?')) return;
+    if (!confirm('Are you sure do you want to delete this record permanently?')) return;
 
     try {
       if (item.id) {

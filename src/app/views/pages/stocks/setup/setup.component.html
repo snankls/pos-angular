@@ -7,6 +7,16 @@
         <form class="forms-sample" (submit)="onSubmit($event)">
           <div class="row">
             <div class="col-md-3 mb-3">
+              <label class="form-label">Stock Number <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input class="form-control" name="stock_number" [(ngModel)]="currentRecord.stock_number" (ngModelChange)="clearError('stock_number')">
+              </div>
+              <div class="text-danger mt-1" *ngIf="formErrors.stock_number">
+                {{ formErrors.stock_number[0] }}
+              </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
               <label class="form-label">Stock Date <span class="text-danger">*</span></label>
               <div class="input-group">
                 <input class="form-control" placeholder="yyyy-mm-dd" name="stock_date" ngbDatepicker #idate="ngbDatepicker" [(ngModel)]="currentRecord.stock_date" (ngModelChange)="clearError('stock_date')">
@@ -21,7 +31,9 @@
 
             <div class="col-md-3 mb-3">
               <label class="form-label">Status <span class="text-danger">*</span></label>
+              <!-- Show dropdown if status is not "Posted" -->
               <ng-select
+                *ngIf="currentRecord?.status !== 'Posted'"
                 [items]="status"
                 bindLabel="name"
                 bindValue="id"
@@ -29,10 +41,20 @@
                 name="status"
                 placeholder="Select one"
                 [searchable]="false"
-                [disabled]="statusDisabled"
                 (change)="clearError('status')">
               </ng-select>
-              <div class="text-danger mt-1" *ngIf="formErrors.status">{{ formErrors.status[0] }}</div>
+
+              <!-- Show disabled field if status is "Posted" -->
+              <input
+                *ngIf="currentRecord?.status === 'Posted'"
+                type="text"
+                class="form-control"
+                [value]="currentRecord.status"
+                disabled
+              />
+              <div class="text-danger mt-1" *ngIf="formErrors.status">
+                {{ formErrors.status[0] }}
+              </div>
             </div>
 
             <div class="col-md-12 mb-3">
@@ -92,7 +114,7 @@
                           readonly>
                         </td>
                         <td>
-                          <button type="button" class="btn btn-sm btn-danger" (click)="deleteItemRow(i)" [disabled]="isLoading || currentRecord?.status === 'Posted'">
+                          <button type="button" class="btn btn-sm btn-danger" (click)="deleteItemRow(i)" [disabled]="isLoading || currentRecord.status === 'Posted'">
                             <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
                             <i class="feather icon-trash-2"></i>
                           </button>
@@ -107,7 +129,7 @@
                     class="btn btn-success btn-xs"
                     type="button"
                     (click)="addItemRow()"
-                    [disabled]="isLoading || currentRecord?.status === 'Posted'">
+                    [disabled]="isLoading || currentRecord.status === 'Posted'">
                     
                     <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1"></span>
                     + Add Item

@@ -96,7 +96,7 @@ export class ReturnsSetupComponent {
   ngOnInit(): void {
     this.fetchInvoiceNumber();
     this.fetchProducts();
-    this.fetchCurrencySign();
+    this.fetchCurrency();
     this.fetchStatus();
     this.setDefaultIssueDate();
 
@@ -145,7 +145,7 @@ export class ReturnsSetupComponent {
     });
   }
 
-  fetchCurrencySign(): void {
+  fetchCurrency(): void {
     this.http.get<any>(`${this.API_URL}/settings`).subscribe({
       next: (response) => {
         console.log(response)
@@ -219,10 +219,6 @@ export class ReturnsSetupComponent {
         this.currentRecord = {
           ...this.currentRecord,
           ...response,
-
-          // return_date: this.parseDateFromBackend(
-          //   typeof response.return_date === 'string' ? response.return_date : undefined
-          // ),
         } as Invoice;
 
         this.itemsList = (response.details || []).map((item: any) => ({
@@ -465,13 +461,13 @@ export class ReturnsSetupComponent {
     };
 
     const request$ = this.isEditMode && (this.currentRecord as any).id
-      ? this.http.put(`${this.API_URL}/invoice-returns/${(this.currentRecord as any).id}`, payload)
-      : this.http.post(`${this.API_URL}/invoice-returns`, payload);
+      ? this.http.put(`${this.API_URL}/invoice/returns/${(this.currentRecord as any).id}`, payload)
+      : this.http.post(`${this.API_URL}/invoice/returns`, payload);
 
     request$.subscribe({
       next: () => {
         this.isLoading = false;
-        //this.router.navigate(['/invoices/returns']);
+        //this.router.navigate(['/invoice/returns']);
       },
       error: (error) => {
         this.isLoading = false;
@@ -500,7 +496,7 @@ export class ReturnsSetupComponent {
 
     // If the item exists in the backend (has an ID)
     if (item.id) {
-      this.http.delete(`${this.API_URL}/invoice-returns/items/${item.id}`).subscribe({
+      this.http.delete(`${this.API_URL}/invoice/returns/items/${item.id}`).subscribe({
         next: (response: any) => {
           this.itemsList.splice(index, 1);
         },
