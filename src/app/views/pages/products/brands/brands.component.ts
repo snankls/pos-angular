@@ -126,7 +126,6 @@ export class BrandsComponent implements OnInit {
   fetchBrand(): void {
     this.http.get<Brand[]>(`${this.API_URL}/brands`).subscribe({
       next: (response) => {
-        console.log(response)
         this.rows = response.map(item => ({
           ...item,
           image_url: item.image_url

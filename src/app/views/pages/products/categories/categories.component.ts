@@ -126,7 +126,6 @@ export class CategoriesComponent implements OnInit {
   fetchCategory(): void {
     this.http.get<Category[]>(`${this.API_URL}/categories`).subscribe({
       next: (response) => {
-        console.log(response)
         this.rows = response.map(item => ({
           ...item,
           image_url: item.image_url

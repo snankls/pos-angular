@@ -105,7 +105,6 @@ export class InvoicesViewComponent implements OnInit {
   fetchCurrency(): void {
     this.http.get<any>(`${this.API_URL}/settings`).subscribe({
       next: (response) => {
-        console.log(response)
         this.currencySign = response.currency.data_value || '';
       },
       error: (err) => console.error('Failed to fetch currency sign:', err)
@@ -174,7 +173,6 @@ export class InvoicesViewComponent implements OnInit {
 
     this.http.post(`${this.API_URL}/invoices/send`, payload).subscribe({
       next: (res: any) => {
-        console.log('Send response:', res);
         modal.close('Invoice sent');
       },
       error: (err) => {

@@ -134,7 +134,6 @@ export class StocksSetupComponent {
   fetchCurrency(): void {
     this.http.get<any>(`${this.API_URL}/settings`).subscribe({
       next: (response) => {
-        console.log(response)
         this.currencySign = response.currency.data_value || '';
       },
       error: (err) => console.error('Failed to fetch currency sign:', err)

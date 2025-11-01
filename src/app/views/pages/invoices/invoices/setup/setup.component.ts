@@ -147,7 +147,6 @@ export class InvoicesSetupComponent {
   fetchCurrency(): void {
     this.http.get<any>(`${this.API_URL}/settings`).subscribe({
       next: (response) => {
-        console.log(response)
         this.currencySign = response.currency.data_value || '';
       },
       error: (err) => console.error('Failed to fetch currency sign:', err)
@@ -227,7 +226,6 @@ export class InvoicesSetupComponent {
     this.isLoading = true;
     this.http.get<any>(`${this.API_URL}/invoices/${id}`).subscribe({
       next: (response) => {
-        console.log('Invoice response:', response);
         this.currentRecord = {
           ...this.currentRecord,
           ...response,

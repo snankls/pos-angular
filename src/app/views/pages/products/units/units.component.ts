@@ -123,7 +123,6 @@ export class UnitsComponent implements OnInit {
   fetchUnit(): void {
     this.http.get<Unit[]>(`${this.API_URL}/units`).subscribe({
       next: (response) => {
-        console.log(response)
         this.rows = response.map(item => ({
           ...item,
         }));
