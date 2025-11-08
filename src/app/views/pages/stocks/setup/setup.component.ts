@@ -344,7 +344,7 @@ export class StocksSetupComponent {
   onSubmit(event: Event, isPost: boolean = false): void {
     event.preventDefault();
 
-    // ✅ Show confirmation before posting
+    // Show confirmation before posting
     if (isPost) {
       const confirmPost = confirm('Are you sure you want to post this stock? Once posted, it cannot be edited.');
       if (!confirmPost) return; // stop execution if user cancels
