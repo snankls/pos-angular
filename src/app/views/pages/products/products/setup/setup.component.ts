@@ -16,7 +16,7 @@ interface Product {
   unit_id: number | null;
   cost_price: number | null;
   sale_price: number | null;
-  stock: number | null;
+  stocks: number | null;
   status: string | null;
   description?: string;
   images?: {
@@ -43,7 +43,7 @@ export class ProductsSetupComponent {
     unit_id: null,
     cost_price: null,
     sale_price: null,
-    stock: null,
+    stocks: null,
     status: 'Active',
     description: '',
     images: null

@@ -100,7 +100,7 @@ export class StocksSetupComponent {
   }
 
   fetchProducts(): void {
-    this.http.get<any[]>(`${this.API_URL}/active/products`).subscribe({
+    this.http.get<any[]>(`${this.API_URL}/products`).subscribe({
       next: (response) => {
         this.products = response.map((product) => ({
           ...product,

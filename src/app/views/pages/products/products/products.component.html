@@ -45,18 +45,18 @@
               </ng-template>
             </ngx-datatable-column>
             
+            <ngx-datatable-column name="ID" [width]="50" [canAutoResize]="false">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.id }}
+              </ng-template>
+            </ngx-datatable-column>
+            
             <ngx-datatable-column name="Image" [sortable]="false" [width]="55">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <img [src]="row.employee_image"
                 alt="{{ row.full_name }}"
                 width="30"
                 height="30">
-              </ng-template>
-            </ngx-datatable-column>
-            
-            <ngx-datatable-column name="ID" [width]="55" [canAutoResize]="false">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.id }}
               </ng-template>
             </ngx-datatable-column>
             
@@ -90,9 +90,9 @@
               </ng-template>
             </ngx-datatable-column>
             
-            <ngx-datatable-column name="Stock">
+            <ngx-datatable-column name="Stocks">
               <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.stock }}
+                {{ row.stocks }}
               </ng-template>
             </ngx-datatable-column>
             

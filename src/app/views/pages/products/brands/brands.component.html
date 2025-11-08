@@ -45,18 +45,18 @@
               </ng-template>
             </ngx-datatable-column>
             
+            <ngx-datatable-column name="ID" [width]="50" [canAutoResize]="false">
+              <ng-template ngx-datatable-cell-template let-row="row">
+                {{ row.id }}
+              </ng-template>
+            </ngx-datatable-column>
+            
             <ngx-datatable-column name="Image" [width]="80" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <img [src]="row.image_url"
                 alt="{{ row.name }}"
                 width="40"
                 height="40">
-              </ng-template>
-            </ngx-datatable-column>
-            
-            <ngx-datatable-column name="ID" [width]="55" [canAutoResize]="false">
-              <ng-template ngx-datatable-cell-template let-row="row">
-                {{ row.id }}
               </ng-template>
             </ngx-datatable-column>
             

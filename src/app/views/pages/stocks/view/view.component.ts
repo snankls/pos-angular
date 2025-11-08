@@ -7,8 +7,9 @@ import { NgbNavContent, NgbNavModule, NgbNavOutlet } from '@ng-bootstrap/ng-boot
 import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
 import { environment } from '../../../../environments/environment';
 
-interface StockRecord {
+interface Stock {
   id: number;
+  stock_number: string;
   stock_date: string;
   total_stock: number;
   total_price: number;
@@ -44,7 +45,7 @@ export class StocksViewComponent implements OnInit {
   private API_URL = environment.API_URL;
 
   formErrors: any = {};
-  currentRecord: StockRecord | null = null;
+  currentRecord: Stock | null = null;
   itemsList: StockItem[] = [];
   isLoading = false;
   errorMessage = '';
@@ -87,7 +88,7 @@ export class StocksViewComponent implements OnInit {
     this.errorMessage = '';
     this.itemsList = [];
 
-    this.http.get<StockRecord>(`${this.API_URL}/stocks/${id}`).subscribe({
+    this.http.get<Stock>(`${this.API_URL}/stocks/${id}`).subscribe({
       next: (response) => {
         this.currentRecord = response;
         this.itemsList = response.details || [];

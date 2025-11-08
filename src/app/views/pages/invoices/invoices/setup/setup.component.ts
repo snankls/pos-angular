@@ -58,6 +58,7 @@ export class InvoicesSetupComponent {
   status: { id: string; name: string }[] = [];
   discount: string[] = ['Fixed', 'Percentage'];
   currencySign: string = '';
+  stockErrors: string[] = [];
 
   // default values
   selectedDiscount: string = 'Fixed';
@@ -459,17 +460,39 @@ export class InvoicesSetupComponent {
         this.isLoading = false;
         this.router.navigate(['/invoices']);
       },
-      error: (error) => {
+      error: (error: HttpErrorResponse) => {
         this.isLoading = false;
-        this.formErrors = error.error?.errors || {};
-
-        // If Laravel returned a custom error message (like stock issue), show it
-        if (error.error?.error) {
-          this.globalErrorMessage = error.error.error;
-        } else if (error.error?.message) {
-          this.globalErrorMessage = error.error.message;
-        } else {
-          this.globalErrorMessage = 'Please fill all required fields correctly.';
+        
+        if (error.status === 422) {
+          const errorResponse = error.error;
+          
+          // Handle stock validation errors (from your backend)
+          if (errorResponse.stock_errors && Array.isArray(errorResponse.stock_errors)) {
+            this.stockErrors = errorResponse.stock_errors;
+            this.globalErrorMessage = errorResponse.message || 'Stock validation failed. Please correct the following:';
+          } 
+          // Handle form validation errors
+          else if (errorResponse.errors) {
+            this.formErrors = errorResponse.errors;
+            this.globalErrorMessage = errorResponse.message || 'Please check your form inputs.';
+          }
+          // Handle other 422 errors
+          else if (errorResponse.message) {
+            this.globalErrorMessage = errorResponse.message;
+          }
+        } 
+        else if (error.status === 500) {
+          this.globalErrorMessage = error.error?.message || 'Server error occurred. Please try again.';
+        }
+        else if (error.status === 403) {
+          this.globalErrorMessage = 'You do not have permission to perform this action.';
+        }
+        else if (error.status === 404) {
+          this.globalErrorMessage = 'Invoice not found.';
+        }
+        else {
+          this.globalErrorMessage = 'An unexpected error occurred. Please try again.';
+          console.error('Error saving invoice:', error);
         }
 
         window.scrollTo({ top: 0, behavior: 'smooth' });

@@ -194,11 +194,21 @@
               </button>
             </div>
 
-            <div class="col-12 mt-3" *ngIf="globalErrorMessage">
+            <!-- Error Display Section -->
+            <div class="col-12 mt-3" *ngIf="globalErrorMessage || stockErrors?.length">
+              <div class="alert alert-danger">
+                <div *ngIf="globalErrorMessage" class="fw-bold mb-2">{{ globalErrorMessage }}</div>
+                <ul *ngIf="stockErrors?.length" class="mb-0">
+                  <li *ngFor="let err of stockErrors">{{ err }}</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- <div class="col-12 mt-3" *ngIf="globalErrorMessage">
               <div class="alert alert-danger text-center">
                 {{ globalErrorMessage }}
               </div>
-            </div>
+            </div> -->
           </div>
         </form>
       </div>

@@ -60,63 +60,67 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   onLogin(event?: Event): void {
-    const loginData = {
-      email: this.email,
-      password: this.password,
-      remember_me: this.rememberMe
-    };
+  const loginData = {
+    email: this.email,
+    password: this.password,
+    remember_me: this.rememberMe
+  };
 
-    // Reset previous messages
-    this.messageLogin = '';
-    this.messageTypeLogin = '';
-    this.loadingLogin = true;
+  this.messageLogin = '';
+  this.messageTypeLogin = '';
+  this.loadingLogin = true;
 
-    this.http.post<LoginResponse>(`${this.API_URL}/login`, loginData).subscribe({
-      next: (response) => {
-        this.loadingLogin = false;
-        if (response.data?.authorisation?.token) {
-          this.messageLogin = 'Login successful!';
-          this.messageTypeLogin = 'success';
-          
-          this.authService.setToken(response.data.authorisation.token);
-          
-          // Load current user info AFTER setting the token
-          this.authService.loadCurrentUser().subscribe({
-            next: (user) => {
-              // After user loaded, navigate to home or wherever you want
-              this.router.navigate(['/']);
-            },
-            error: (err) => {
-              console.error('Failed to load current user:', err);
-              // Still navigate or handle error
-              this.router.navigate(['/']);
-            }
-          });
-          
-          // Also store token in localStorage/sessionStorage as you do now
-          if (this.rememberMe) {
-            localStorage.setItem('token', response.data.authorisation.token);
-          } else {
-            sessionStorage.setItem('token', response.data.authorisation.token);
+  this.http.post<LoginResponse>(`${this.API_URL}/login`, loginData).subscribe({
+    next: (response) => {
+      this.loadingLogin = false;
+      if (response.data?.authorisation?.token) {
+        this.messageLogin = 'Login successful!';
+        this.messageTypeLogin = 'success';
+
+        this.authService.setToken(response.data.authorisation.token);
+
+        this.authService.loadCurrentUser().subscribe({
+          next: () => this.router.navigate(['/']),
+          error: (err) => {
+            console.error('Failed to load current user:', err);
+            this.router.navigate(['/']);
           }
+        });
+
+        if (this.rememberMe) {
+          localStorage.setItem('token', response.data.authorisation.token);
         } else {
-          this.messageLogin = 'Login failed. Please try again.';
-          this.messageTypeLogin = 'error';
+          sessionStorage.setItem('token', response.data.authorisation.token);
         }
-      },
-      error: (error) => {
-        this.loadingLogin = false;
-        this.messageTypeLogin = 'error';
-        
-        if (error.status === 403) {
-          this.messageLogin = error.error?.error || 'Access denied.';
-          this.contactInfo = error.error?.contact || '';
-        } else {
-          this.messageLogin = error.error?.message || 'Login failed. Please try again.';
-        }
+      } else {
+        this.messageLogin = 'Login failed. Please try again.';
         this.messageTypeLogin = 'error';
       }
-    });
-  }
+    },
+    error: (error) => {
+      this.loadingLogin = false;
+      this.messageTypeLogin = 'error';
+
+      // ✅ Detect server not reachable
+      if (error.status === 0 || error.status === 500 && error.error?.error?.includes('Cannot connect')) {
+        this.messageLogin = 'Unable to connect to server. Check your internet connection and try again.';
+      } 
+      else if (error.status === 403) {
+        this.messageLogin = error.error?.error || 'Access denied.';
+        this.contactInfo = error.error?.contact || '';
+      } 
+      else if (error.status === 401) {
+        this.messageLogin = error.error?.error || 'Invalid credentials.';
+      }
+      else if (error.status === 422) {
+        this.messageLogin = 'Please provide valid credentials.';
+      }
+      else {
+        this.messageLogin = error.error?.message || 'Login failed. Please try again.';
+      }
+    }
+  });
+}
+
 
 }
