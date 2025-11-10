@@ -13,7 +13,7 @@ import { AuthService } from '../../../auth/auth.service';
 interface Company {
   name: string | null;
   id?: number;
-  description: string;
+  address: string;
   image?: File | string | null;
   image_url?: string;
   images?: {
@@ -107,7 +107,7 @@ export class CompaniesSetupComponent {
 
     // Append standard fields
     formData.append('name', this.currentRecord.name || '');
-    formData.append('description', this.currentRecord.description || '');
+    formData.append('address', this.currentRecord.address || '');
 
     // Append image file if selected
     if (this.selectedFile) {

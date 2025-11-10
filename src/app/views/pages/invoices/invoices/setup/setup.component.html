@@ -139,7 +139,10 @@
                           readonly>
                         </td>
                         <td>
-                          <button type="button" class="btn btn-sm btn-danger" (click)="deleteItemRow(i)">
+                          <button type="button" 
+                              class="btn btn-sm btn-danger" 
+                              (click)="deleteItemRow(i)"
+                              [disabled]="currentRecord.status === 'Posted'">
                             <i class="feather icon-trash-2"></i>
                           </button>
                         </td>
@@ -187,28 +190,35 @@
         
             <!-- Form Actions -->
             <div class="col-12 mt-3">
-              <!-- <button type="submit" [disabled]="isLoading" class="btn btn-primary">Save Changes</button> -->
-              <button type="submit" [disabled]="isLoading || (!isAmountValid && itemsList.length > 0)" class="btn btn-primary">
+
+              <button type="submit"
+                  class="btn btn-primary me-3"
+                  [disabled]="isLoading || (!isAmountValid && itemsList.length > 0) || currentRecord.status === 'Posted'"
+                  (click)="onSubmit($event, false)">
                 <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
                 Save Changes
+              </button>
+
+              <!-- Stock Post -->
+              <button type="button"
+                  class="btn btn-dark"
+                  [disabled]="isLoading || currentRecord.status !== 'Active'"
+                  (click)="onSubmit($event, true)">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
+                Invoice Post
               </button>
             </div>
 
             <!-- Error Display Section -->
             <div class="col-12 mt-3" *ngIf="globalErrorMessage || stockErrors?.length">
               <div class="alert alert-danger">
-                <div *ngIf="globalErrorMessage" class="fw-bold mb-2">{{ globalErrorMessage }}</div>
+                <div *ngIf="globalErrorMessage" class="fw-bold">{{ globalErrorMessage }}</div>
                 <ul *ngIf="stockErrors?.length" class="mb-0">
                   <li *ngFor="let err of stockErrors">{{ err }}</li>
                 </ul>
               </div>
             </div>
 
-            <!-- <div class="col-12 mt-3" *ngIf="globalErrorMessage">
-              <div class="alert alert-danger text-center">
-                {{ globalErrorMessage }}
-              </div>
-            </div> -->
           </div>
         </form>
       </div>

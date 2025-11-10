@@ -89,7 +89,14 @@
             
             <ngx-datatable-column name="Status">
               <ng-template ngx-datatable-cell-template let-row="row">
-                <span [ngClass]="row.status == 'Active' ? 'badge bg-success text-white' : 'badge bg-danger text-white'">
+                <span 
+                [ngClass]="
+                  row.status === 'Active' 
+                    ? 'badge bg-success text-white' 
+                    : row.status === 'Posted' 
+                      ? 'badge bg-primary text-white' 
+                      : 'badge bg-danger text-white'
+                ">
                   {{ row.status }}
                 </span>
               </ng-template>
@@ -116,7 +123,9 @@
                     <i class="feather icon-edit"></i>
                   </a>
 
-                  <button class="btn btn-danger me-1 action-btn" (click)="deleteRecord(row)">
+                  <button class="btn btn-danger me-1 action-btn" 
+                      (click)="deleteRecord(row)"
+                      [disabled]="row.status === 'Posted'">
                     <i class="feather icon-trash-2"></i>
                   </button>
                 </span>

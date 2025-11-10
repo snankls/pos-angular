@@ -108,11 +108,11 @@
             <ngx-datatable-column name="Action" [sortable]="false">
               <ng-template ngx-datatable-cell-template let-row="row">
                 <span class="d-flex align-items-center">
-                  <a href="invoices/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
+                  <a href="invoice/returns/view/{{ row.id }}" class="btn btn-primary me-1 action-btn">
                     <i class="feather icon-eye"></i>
                   </a>
                   
-                  <a href="invoices/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
+                  <a href="invoice/returns/edit/{{ row.id }}" class="btn btn-warning me-1 action-btn">
                     <i class="feather icon-edit"></i>
                   </a>
 

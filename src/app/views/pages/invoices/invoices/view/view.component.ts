@@ -7,6 +7,7 @@ import { NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
 import { NgbDropdownModule, NgbNavContent, NgbNavModule, NgbModal, NgbModalRef, NgbTooltip, NgbNavOutlet } from '@ng-bootstrap/ng-bootstrap';
 import { BreadcrumbComponent } from '../../../../layout/breadcrumb/breadcrumb.component';
 import { environment } from '../../../../../environments/environment';
+import { AuthService } from '../../../../../auth/auth.service';
 
 interface Invoice {
   id: number;
@@ -35,10 +36,10 @@ interface InvoiceDetail {
   product_sku?: string;
   quantity: number;
   unit_name: string;
-  sale_price: number;
+  price: number;
   discount_type?: string | null;
   discount_value?: number;
-  total: number;
+  total_amount: number;
 }
 
 @Component({
@@ -59,6 +60,7 @@ interface InvoiceDetail {
 })
 export class InvoicesViewComponent implements OnInit {
   private API_URL = environment.API_URL;
+  private IMAGE_URL = environment.IMAGE_URL;
 
   formErrors: any = {};
   currentRecord: Invoice | null = null;
@@ -71,12 +73,14 @@ export class InvoicesViewComponent implements OnInit {
   selectedTypes: string[] = [];
   emailAddress: string = '';
   whatsappNumber: string = '';
+  user: any = null;
 
   @ViewChild('modalTemplate') modalTemplate!: TemplateRef<any>;
   activeModal: NgbModalRef | null = null;
 
   constructor(
     private http: HttpClient,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private modalService: NgbModal
@@ -84,6 +88,22 @@ export class InvoicesViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchCurrency();
+    
+    // Current User
+    this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.user = user;
+
+        // Safe navigation for company image
+        const companyImageName = user.company?.image?.image_name ?? null;
+
+        this.user.imagePreview = companyImageName
+          ? `${this.IMAGE_URL}/companies/${companyImageName}`
+          : 'images/placeholder.jpg';
+      } else {
+        this.user = null;
+      }
+    });
     
     // Invoice Send List
     this.discount = ['Email', 'WhatsApp'];
@@ -110,15 +130,6 @@ export class InvoicesViewComponent implements OnInit {
       error: (err) => console.error('Failed to fetch currency sign:', err)
     });
   }
-
-  openModal(): void {
-    this.activeModal = this.modalService.open(this.modalTemplate, { ariaLabelledBy: 'exampleModalLabel' });
-  }
-  // openModal(content: TemplateRef<any>) {
-  //   this.modalService.open(content, { size: 'md' }).result.then((result) => {
-  //     this.basicModalCloseResult = "Modal closed: " + result;
-  //   }).catch((res) => {});
-  // }
 
   loadInvoice(id: number): void {
     this.isLoading = true;
@@ -152,6 +163,15 @@ export class InvoicesViewComponent implements OnInit {
     });
   }
 
+  openModal(): void {
+    this.activeModal = this.modalService.open(this.modalTemplate, { ariaLabelledBy: 'exampleModalLabel' });
+  }
+  // openModal(content: TemplateRef<any>) {
+  //   this.modalService.open(content, { size: 'md' }).result.then((result) => {
+  //     this.basicModalCloseResult = "Modal closed: " + result;
+  //   }).catch((res) => {});
+  // }
+
   saveInvoiceSend(modal: any): void {
     this.formErrors = {};
 
@@ -177,6 +197,27 @@ export class InvoicesViewComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error sending invoice:', err);
+      }
+    });
+  }
+
+  downloadPDF(): void {
+    if (!this.currentRecord?.id) return;
+
+    const url = `${this.API_URL}/download/${this.currentRecord.id}`;
+    
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob: Blob) => {
+        const filename = 'invoice.pdf';
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+        window.URL.revokeObjectURL(link.href);
+      },
+      error: (err) => {
+        console.error('PDF download failed', err);
+        alert('Failed to download PDF.');
       }
     });
   }

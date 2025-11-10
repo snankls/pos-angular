@@ -227,6 +227,7 @@ export class InvoicesSetupComponent {
     this.isLoading = true;
     this.http.get<any>(`${this.API_URL}/invoices/${id}`).subscribe({
       next: (response) => {
+        console.log(response);
         this.currentRecord = {
           ...this.currentRecord,
           ...response,
@@ -243,10 +244,10 @@ export class InvoicesSetupComponent {
           quantity: item.quantity ?? 0,
           unit_id: item.unit_id ?? null,
           unit_name: item.unit_name ?? '',
-          price: item.sale_price ?? 0,
+          price: item.price ?? 0,
           discountType: item.discount_type ?? 'Fixed',
           discountValue: item.discount_value ?? 0,
-          total_amount: item.total ?? 0
+          total_amount: item.total_amount ?? 0
         }));
 
         // recalc row totals and summary
@@ -281,21 +282,17 @@ export class InvoicesSetupComponent {
 
     const qty = Number(item.quantity) || 0;
     const price = Number(item.price) || 0;
-    const discountValueRaw = Number(item.discountValue) || 0;
     let discountAmount = 0;
 
     if (item.discountType === 'Percentage') {
-      discountAmount = (price * qty * discountValueRaw) / 100;
+      discountAmount = (price * qty * (Number(item.discountValue) || 0)) / 100;
     } else {
-      // Fixed
-      discountAmount = discountValueRaw;
+      discountAmount = Number(item.discountValue) || 0;
     }
 
-    const total = (price * qty) - discountAmount;
-    item.total_amount = Math.max(0, Math.round((total + Number.EPSILON) * 100) / 100);
+    item.total_amount = Math.max(0, price * qty - discountAmount);
 
-    // recalc summary after updating row
-    this.updateTotals();
+    this.updateTotals(); // always update summary after row change
   }
 
   updateAvailableProducts() {
@@ -364,19 +361,24 @@ export class InvoicesSetupComponent {
   }
 
   updateTotals(): void {
-    // Sum quantity and gross total before discount
+    // Sum of quantities
     this.totalQuantity = this.itemsList.reduce((sum, item) => sum + (+item.quantity || 0), 0);
-    this.totalPrice = this.itemsList.reduce((sum, item) => sum + (+item.total_amount || 0), 0);
+
+    // Sum of total amounts (price * qty - row discount)
+    this.totalPrice = this.itemsList.reduce((sum, item) => sum + (+item.price * +item.quantity || 0), 0);
 
     let rowDiscountTotal = 0;
 
     // Calculate row discounts
     this.itemsList.forEach(item => {
+      const qty = +item.quantity || 0;
+      const price = +item.price || 0;
+      const discountValue = +item.discountValue || 0;
+
       if (item.discountType === 'Fixed') {
-        rowDiscountTotal += +item.discountValue || 0;
+        rowDiscountTotal += discountValue;
       } else if (item.discountType === 'Percentage') {
-        const rowTotal = (+item.quantity || 0) * (+item.price || 0);
-        rowDiscountTotal += (rowTotal * (+item.discountValue || 0)) / 100;
+        rowDiscountTotal += (price * qty * discountValue) / 100;
       }
     });
 
@@ -385,13 +387,13 @@ export class InvoicesSetupComponent {
     if (this.selectedDiscount === 'Fixed') {
       footerDiscount = +this.discountValue || 0;
     } else if (this.selectedDiscount === 'Percentage') {
-      footerDiscount = (this.totalPrice * (+this.discountValue || 0)) / 100;
+      footerDiscount = ((this.totalPrice - rowDiscountTotal) * (+this.discountValue || 0)) / 100;
     }
 
-    // Sum up all discounts
+    // Total discount = row discount + footer discount
     this.totalDiscount = rowDiscountTotal + footerDiscount;
 
-    // Final grand total
+    // Grand total = total price - total discount
     this.grandTotal = this.totalPrice - this.totalDiscount;
     if (this.grandTotal < 0) this.grandTotal = 0;
   }
@@ -404,42 +406,45 @@ export class InvoicesSetupComponent {
   }
 
   // Combined add / update submit (single method)
-  onSubmit(event: Event): void {
+  onSubmit(event: Event, isPost: boolean = false): void {
     event.preventDefault();
-    this.isLoading = true;
 
-    // final validation (optional) -> ensure items exist etc.
+    // Confirm before posting
+    if (isPost) {
+      const confirmPost = confirm('Are you sure you want to post this invoice? Once posted, it cannot be edited.');
+      if (!confirmPost) return;
+    }
+
+    this.isLoading = true;
+    this.globalErrorMessage = '';
+
     if (this.itemsList.length === 0) {
       this.globalErrorMessage = 'At least one item is required.';
       this.isLoading = false;
       return;
     }
 
-    // Ensure latest totals are calculated
     this.itemsList.forEach((_, i) => this.updateRowTotal(i));
 
     if (!this.isAmountValid) {
-      this.globalErrorMessage = 'Total amount must exactly match the loan amount.';
       this.isLoading = false;
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
     const payload = {
+      id: this.currentRecord.id,
+      invoice_number: this.currentRecord.invoice_number,
       customer_id: this.currentRecord.customer_id,
       invoice_date: this.formatDate(this.currentRecord.invoice_date),
-      status: this.currentRecord.status,
-      description: this.currentRecord.description || '',
-
-      // Add missing summary fields
+      status: isPost ? 'Posted' : this.currentRecord.status,
+      description: this.currentRecord.description,
       total_quantity: this.totalQuantity,
       total_price: this.totalPrice,
       total_discount: this.totalDiscount,
       grand_total: this.grandTotal,
-
-      // Map items
       items: this.itemsList.map(item => ({
-        id: item.id ?? null,
+        id: item.id,
         product_id: item.product_id,
         quantity: item.quantity,
         unit_id: item.unit_id,
@@ -456,43 +461,35 @@ export class InvoicesSetupComponent {
       : this.http.post(`${this.API_URL}/invoices`, payload);
 
     request$.subscribe({
-      next: () => {
+      next: (response: any) => {
         this.isLoading = false;
+        if (isPost) {
+          this.currentRecord.status = 'Posted';
+        }
         this.router.navigate(['/invoices']);
       },
-      error: (error: HttpErrorResponse) => {
+      error: (error) => {
         this.isLoading = false;
-        
+
+        this.formErrors = {};
+        this.stockErrors = [];
+
         if (error.status === 422) {
-          const errorResponse = error.error;
-          
-          // Handle stock validation errors (from your backend)
-          if (errorResponse.stock_errors && Array.isArray(errorResponse.stock_errors)) {
-            this.stockErrors = errorResponse.stock_errors;
-            this.globalErrorMessage = errorResponse.message || 'Stock validation failed. Please correct the following:';
+          const err = error.error;
+
+          // Stock errors
+          if (err.stock_errors && Array.isArray(err.stock_errors)) {
+            this.stockErrors = err.stock_errors; // array of messages
           } 
-          // Handle form validation errors
-          else if (errorResponse.errors) {
-            this.formErrors = errorResponse.errors;
-            this.globalErrorMessage = errorResponse.message || 'Please check your form inputs.';
+          // Regular form validation errors
+          else if (err.errors) {
+            this.formErrors = err.errors;
+          } 
+          else if (err.message) {
+            this.globalErrorMessage = err.message;
           }
-          // Handle other 422 errors
-          else if (errorResponse.message) {
-            this.globalErrorMessage = errorResponse.message;
-          }
-        } 
-        else if (error.status === 500) {
-          this.globalErrorMessage = error.error?.message || 'Server error occurred. Please try again.';
-        }
-        else if (error.status === 403) {
-          this.globalErrorMessage = 'You do not have permission to perform this action.';
-        }
-        else if (error.status === 404) {
-          this.globalErrorMessage = 'Invoice not found.';
-        }
-        else {
+        } else {
           this.globalErrorMessage = 'An unexpected error occurred. Please try again.';
-          console.error('Error saving invoice:', error);
         }
 
         window.scrollTo({ top: 0, behavior: 'smooth' });

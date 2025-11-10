@@ -368,13 +368,11 @@ export class StocksSetupComponent {
       return;
     }
 
-    const newStatus = isPost ? 'Posted' : this.currentRecord.status;
-
     const payload = {
       id: this.currentRecord.id,
       stock_number: this.currentRecord.stock_number,
       stock_date: this.formatDate(this.currentRecord.stock_date),
-      status: newStatus,
+      status: isPost ? 'Posted' : this.currentRecord.status,
       total_stock: this.totalStock,
       total_price: this.totalPrice,
       items: this.itemsList.map(item => ({

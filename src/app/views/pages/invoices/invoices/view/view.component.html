@@ -7,7 +7,7 @@
         <div class="container-fluid d-flex justify-content-between">
           <!-- Left side: Company Info -->
           <div class="col-lg-3 ps-0">
-            <a routerLink="." class="nobleui-logo d-block mt-3">Noble<span>UI</span></a>                 
+            <img [src]="user?.imagePreview" class="w-100px h-100px mb-2" alt="{{ user?.company.name }}">
             
             <p>108,<br> Great Russell St,<br>London, WC1B 3NA.</p>
 
@@ -24,7 +24,7 @@
             <h6 class="text-end mb-5 pb-4"># {{ currentRecord?.invoice_number }}</h6>
             <p class="text-end mb-1">Balance Due</p>
             <h4 class="text-end fw-normal">
-              {{ currencySign }}{{ currentRecord?.grand_total }}
+              {{ currencySign }}{{ currentRecord?.grand_total | number }}
             </h4>
             <h6 class="mb-0 mt-3 text-end fw-normal mb-2">
               <span class="text-secondary">Invoice Date :</span> 
@@ -52,11 +52,11 @@
                 <tr *ngFor="let item of itemsList; let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>{{ item?.product_name }}</td>
-                  <td>{{ item?.quantity }}</td>
+                  <td>{{ item?.quantity | number }}</td>
                   <td>{{ item?.unit_name }}</td>
-                  <td>{{ item?.discount_type }}: {{ item?.discount_value }}</td>
-                  <td>{{ item?.sale_price }}</td>
-                  <td>{{ item?.total }}</td>
+                  <td>{{ item?.discount_type }}: {{ item?.discount_value | number }}</td>
+                  <td>{{ item?.price | number }}</td>
+                  <td>{{ item?.total_amount | number }}</td>
                 </tr>
               </tbody>
             </table>
@@ -66,30 +66,30 @@
         <!-- Totals -->
         <div class="container-fluid mt-5 w-100">
           <div class="row">
-            <div class="col-md-6 ms-auto">
+            <div class="col-md-5 ms-auto">
               <div class="table-responsive">
                 <table class="table fw-bold">
                   <tbody>
                     <tr>
                       <td>Total Quantity</td>
-                      <td class="text-end">{{ currentRecord?.total_quantity }}</td>
+                      <td class="text-end">{{ currentRecord?.total_quantity | number }}</td>
                     </tr>
                     <tr>
                       <td>Sub Total</td>
                       <td class="text-end">
-                        {{ currencySign }}{{ currentRecord?.total_price }}
+                        {{ currencySign }}{{ currentRecord?.total_price | number }}
                       </td>
                     </tr>
                     <tr>
                       <td>Total Discount</td>
                       <td class="text-end">
-                        {{ currencySign }}{{ currentRecord?.total_discount }}
+                        {{ currencySign }}{{ currentRecord?.total_discount | number }}
                       </td>
                     </tr>
                     <tr class="bg-light">
                       <td class="text-bold-800">Grand Total</td>
                       <td class="text-bold-800 text-end">
-                        {{ currencySign }}{{ currentRecord?.grand_total }}
+                        {{ currencySign }}{{ currentRecord?.grand_total | number }}
                       </td>
                     </tr>
                   </tbody>
@@ -101,13 +101,17 @@
 
         <!-- Action Buttons -->
         <div class="container-fluid w-100">
-          <a routerLink="." class="btn btn-primary float-end mt-4 ms-2" (click)="openModal()">
+          <a class="btn btn-primary float-end mt-4 ms-2" (click)="openModal()">
             <i data-feather="send" appFeatherIcon class="me-2 icon-md"></i>
             Send Invoice
           </a>
           <a routerLink="." class="btn btn-outline-primary float-end mt-4">
             <i data-feather="printer" appFeatherIcon class="me-2 icon-md"></i>
             Print
+          </a>
+          <a class="btn btn-dark float-end mt-4 me-2" (click)="downloadPDF()">
+            <i data-feather="download" appFeatherIcon class="me-2 icon-md"></i>
+            Download
           </a>
         </div>
       </div>
