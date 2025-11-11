@@ -152,7 +152,7 @@
                 </table>
                 
                 <div class="col-md-4 mt-3 d-flex gap-2">
-                  <button class="btn btn-success btn-xs" type="button" (click)="addItemRow()">
+                  <button class="btn btn-success btn-xs" type="button" (click)="addItemRow()" [disabled]="isLoading || currentRecord.status === 'Posted'">
                     + Add Item
                   </button>
                 </div>
@@ -190,7 +190,6 @@
         
             <!-- Form Actions -->
             <div class="col-12 mt-3">
-
               <button type="submit"
                   class="btn btn-primary me-3"
                   [disabled]="isLoading || (!isAmountValid && itemsList.length > 0) || currentRecord.status === 'Posted'"
@@ -199,7 +198,7 @@
                 Save Changes
               </button>
 
-              <!-- Stock Post -->
+              <!-- Invoice Post -->
               <button type="button"
                   class="btn btn-dark"
                   [disabled]="isLoading || currentRecord.status !== 'Active'"
@@ -220,6 +219,11 @@
             </div>
 
           </div>
+
+          <ngb-alert class="mt-3" [dismissible]="false" [type]="'danger'" *ngIf="currentRecord?.status === 'Posted'">
+            <i class="feather icon-alert-triangle"></i>
+            Invoice has been posted and cannot be changed.
+          </ngb-alert>
         </form>
       </div>
     </div>

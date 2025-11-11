@@ -129,8 +129,8 @@
                     class="btn btn-success btn-xs"
                     type="button"
                     (click)="addItemRow()"
-                    [disabled]="isLoading || currentRecord.status === 'Posted'">
-                    
+                    [disabled]="isLoading || currentRecord.status === 'Posted'"
+                  >
                     <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-1"></span>
                     + Add Item
                   </button>
@@ -182,9 +182,10 @@
                 {{ globalErrorMessage }}
               </div>
               
-              <div class="alert alert-danger text-center mt-3" *ngIf="currentRecord?.status === 'Posted'">
-                <p>Stock has been posted and cannot be changed.</p>
-              </div>
+              <ngb-alert class="mt-3" [dismissible]="false" [type]="'danger'" *ngIf="currentRecord?.status === 'Posted'">
+                <i class="feather icon-alert-triangle"></i>
+                Stocks has been posted and cannot be changed.
+              </ngb-alert>
             </div>
           </div>
         </form>

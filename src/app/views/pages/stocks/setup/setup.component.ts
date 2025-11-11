@@ -6,6 +6,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
 import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../environments/environment';
 import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
 
@@ -25,7 +26,8 @@ interface Stock {
     CommonModule,
     FormsModule,
     NgbDatepickerModule,
-    MyNgSelectComponent
+    MyNgSelectComponent,
+    NgbAlertModule
   ],
   templateUrl: './setup.component.html'
 })
@@ -142,7 +144,11 @@ export class StocksSetupComponent {
 
   // TAB on last total field -> add new row
   onTabKey(event: KeyboardEvent, index: number) {
-    if ((event.key === 'Tab' || event.keyCode === 9) && index === this.itemsList.length - 1) {
+    // Do nothing if status is 'Posted'
+    if (this.currentRecord.status === 'Posted') return;
+
+    // Modern way to detect Tab key
+    if (event.key === 'Tab' && index === this.itemsList.length - 1) {
       this.addItemRow();
     }
   }

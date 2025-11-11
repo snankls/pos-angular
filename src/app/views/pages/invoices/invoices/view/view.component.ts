@@ -93,13 +93,6 @@ export class InvoicesViewComponent implements OnInit {
     this.authService.currentUser$.subscribe(user => {
       if (user) {
         this.user = user;
-
-        // Safe navigation for company image
-        const companyImageName = user.company?.image?.image_name ?? null;
-
-        this.user.imagePreview = companyImageName
-          ? `${this.IMAGE_URL}/companies/${companyImageName}`
-          : 'images/placeholder.jpg';
       } else {
         this.user = null;
       }

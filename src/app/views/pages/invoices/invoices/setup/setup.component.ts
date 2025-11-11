@@ -7,6 +7,7 @@ import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
 import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../environments/environment';
 import { BreadcrumbComponent } from '../../../../layout/breadcrumb/breadcrumb.component';
 
@@ -30,7 +31,8 @@ interface Invoice {
     FormsModule,
     NgbDatepickerModule,
     MyNgSelectComponent,
-    SweetAlert2Module
+    SweetAlert2Module,
+    NgbAlertModule
   ],
   templateUrl: './setup.component.html'
 })
@@ -174,7 +176,11 @@ export class InvoicesSetupComponent {
 
   // TAB on last total field -> add new row
   onTabKey(event: KeyboardEvent, index: number) {
-    if ((event.key === 'Tab' || event.keyCode === 9) && index === this.itemsList.length - 1) {
+    // Do nothing if status is 'Posted'
+    if (this.currentRecord.status === 'Posted') return;
+
+    // Modern way to detect Tab key
+    if (event.key === 'Tab' && index === this.itemsList.length - 1) {
       this.addItemRow();
     }
   }

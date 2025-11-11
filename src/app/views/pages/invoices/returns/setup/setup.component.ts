@@ -7,6 +7,7 @@ import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
 import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../../../../environments/environment';
 import { BreadcrumbComponent } from '../../../../layout/breadcrumb/breadcrumb.component';
 
@@ -30,7 +31,8 @@ interface Invoice {
     FormsModule,
     NgbDatepickerModule,
     MyNgSelectComponent,
-    SweetAlert2Module
+    SweetAlert2Module,
+    NgbAlertModule
   ],
   templateUrl: './setup.component.html'
 })
@@ -59,6 +61,7 @@ export class ReturnsSetupComponent {
   status: { id: string; name: string }[] = [];
   discount: string[] = ['Fixed', 'Percentage'];
   currencySign: string = '';
+  itemErrors: { [key: string]: any } = {};
 
   // default values
   selectedDiscount: string = '';
@@ -303,6 +306,7 @@ export class ReturnsSetupComponent {
         this.currentRecord.customer_id = response.customer_id;
         this.currentRecord.customer_name = response.customer_name;
         this.currentRecord.status = response.status;
+        this.currentRecord.return_date = this.parseDateFromBackend(response.return_date);
 
         // Normalize itemsList from return details
         this.itemsList = (response.details || []).map((item: any) => {
@@ -382,6 +386,13 @@ export class ReturnsSetupComponent {
       month: today.getMonth() + 1,
       day: today.getDate()
     };
+  }
+
+  // format return_date yyyy-mm-dd
+  formatDate(return_date: any): string {
+    if (!return_date) return '';
+    if (typeof return_date === 'string') return return_date;
+    return `${return_date.year}-${String(return_date.month).padStart(2, '0')}-${String(return_date.day).padStart(2, '0')}`;
   }
 
   updateRowTotal(index: number) {
@@ -502,16 +513,16 @@ export class ReturnsSetupComponent {
     if (this.grandTotal < 0) this.grandTotal = 0;
   }
 
-  // format return_date yyyy-mm-dd
-  formatDate(return_date: any): string {
-    if (!return_date) return '';
-    if (typeof return_date === 'string') return return_date;
-    return `${return_date.year}-${String(return_date.month).padStart(2, '0')}-${String(return_date.day).padStart(2, '0')}`;
-  }
-
   // Combined add / update submit (single method)
-  onSubmit(event: Event): void {
+  onSubmit(event: Event, isPost: boolean = false): void {
     event.preventDefault();
+
+    // Confirm before posting
+    if (isPost) {
+      const confirmPost = confirm('Are you sure you want to post this invoice return? Once posted, it cannot be edited.');
+      if (!confirmPost) return;
+    }
+
     this.isLoading = true;
     this.globalErrorMessage = '';
 
@@ -534,7 +545,7 @@ export class ReturnsSetupComponent {
         invoice_id: this.currentRecord.invoice_id,
         customer_id: this.currentRecord.customer_id,
         return_date: returnDate,
-        status: this.currentRecord.status || 'Active',
+        status: isPost ? 'Posted' : this.currentRecord.status,
         total_quantity: this.totalQuantity,
         total_price: this.totalPrice,
         total_discount: this.totalDiscount,
@@ -560,14 +571,38 @@ export class ReturnsSetupComponent {
     request$.subscribe({
         next: (response: any) => {
             this.isLoading = false;
+
+            // Update current record status in UI
+            if (isPost) {
+                this.currentRecord.status = 'Posted';
+            }
+            
             this.router.navigate(['/invoice/returns']);
         },
         error: (error) => {
-            this.isLoading = false;
-            this.formErrors = error.error?.errors || {};
-            this.globalErrorMessage = error.error?.message || 'Please fill all required fields correctly.';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        },
+          this.isLoading = false;
+          
+          // Capture global error message
+          this.globalErrorMessage = error.error?.message || 'Something went wrong.';
+          
+          // Capture detailed field errors
+          const errors = error.error?.errors || {};
+          this.formErrors = errors;
+
+          // Optional: create a simplified per-item error mapping for easier display
+          this.itemErrors = {}; // reset
+          Object.keys(errors).forEach(key => {
+            if (key.startsWith('items.')) {
+              const parts = key.split('.');
+              const itemIndex = parts[1]; // e.g., "1" or "2"
+              if (!this.itemErrors[itemIndex]) this.itemErrors[itemIndex] = {};
+              this.itemErrors[itemIndex][parts[2]] = errors[key][0]; // quantity → message
+            }
+          });
+
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
     });
   }
 
@@ -583,6 +618,7 @@ export class ReturnsSetupComponent {
       this.http.delete(`${this.API_URL}/invoice/returns/items/${item.id}`).subscribe({
         next: (response: any) => {
           this.itemsList.splice(index, 1);
+          this.updateTotals(); // ✅ recalc totals after delete
         },
         error: (error) => {
           console.error('Error deleting item:', error);
@@ -592,6 +628,7 @@ export class ReturnsSetupComponent {
     } else {
       // Just remove from UI if it's a new unsaved item
       this.itemsList.splice(index, 1);
+      this.updateTotals(); // ✅ recalc totals after delete
     }
   }
 

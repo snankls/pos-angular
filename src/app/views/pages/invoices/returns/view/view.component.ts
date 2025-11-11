@@ -120,7 +120,7 @@ export class ReturnsViewComponent implements OnInit {
     this.errorMessage = '';
     this.itemsList = [];
 
-    this.http.get<Invoice>(`${this.API_URL}/invoices/${id}`).subscribe({
+    this.http.get<Invoice>(`${this.API_URL}/invoice/returns/${id}`).subscribe({
       next: (response) => {
         this.currentRecord = response;
         this.itemsList = response.details || [];

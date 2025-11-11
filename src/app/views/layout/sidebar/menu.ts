@@ -46,12 +46,12 @@ export const MENU: MenuItem[] = [
         link: '/products/add'
       },
       {
-        label: 'Categories',
-        link: '/products/categories'
-      },
-      {
         label: 'Brands',
         link: '/products/brands'
+      },
+      {
+        label: 'Categories',
+        link: '/products/categories'
       },
       {
         label: 'Units',
