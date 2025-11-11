@@ -100,7 +100,7 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="container-fluid w-100">
+        <div class="container-fluid w-100" *ngIf="currentRecord?.status === 'Posted'">
           <a class="btn btn-primary float-end mt-4 ms-2" (click)="openModal()">
             <i data-feather="send" appFeatherIcon class="me-2 icon-md"></i>
             Send Invoice

@@ -3,16 +3,16 @@ import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
-import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
+// import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
+// import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+// import { NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
 import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.component';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../../auth/auth.service';
 
 interface Company {
-  name: string | null;
   id?: number;
+  name: string | null;
   address: string;
   image?: File | string | null;
   image_url?: string;
@@ -27,11 +27,11 @@ interface Company {
   imports: [
     BreadcrumbComponent,
     RouterLink,
-    NgxDatatableModule,
+    //NgxDatatableModule,
     CommonModule,
     FormsModule,
-    NgbDatepickerModule,
-    MyNgSelectComponent,
+    //NgbDatepickerModule,
+    //MyNgSelectComponent,
   ],
   templateUrl: './setup.component.html'
 })
@@ -40,7 +40,7 @@ export class CompaniesSetupComponent {
   private IMAGE_URL = environment.IMAGE_URL;
 
   currentRecord: any = {};
-
+  userId: number | null = null;
   successMessage: string = '';
   globalError: string = '';
   globalErrorMessage: string = '';
@@ -59,7 +59,12 @@ export class CompaniesSetupComponent {
   ) {}
 
   ngOnInit(): void {
-    this.loadCompany();
+    this.authService.currentUser$.subscribe(user => {
+      if (user?.company?.id && typeof user?.company?.id === 'number') {
+        this.userId = user?.company?.id;
+        this.loadCompany(this.userId);
+      }
+    });
   }
 
   clearError(field: string): void {
@@ -68,11 +73,15 @@ export class CompaniesSetupComponent {
     }
   }
 
-  loadCompany() {
-    this.http.get<any>(`${this.API_URL}/user/companies`).subscribe({
+  loadCompany(userId: number | null): void {
+    if (!userId) {
+      console.error('User ID is null');
+      return;
+    }
+    
+    this.http.get<any>(`${this.API_URL}/user/companies/${userId}`).subscribe({
       next: (user) => {
         this.currentRecord = { ...user };
-
         if (user.images?.image_name) {
           this.imagePreview = `${this.IMAGE_URL}/companies/${user.images.image_name}`;
         }

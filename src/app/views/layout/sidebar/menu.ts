@@ -3,7 +3,7 @@ import { MenuItem } from './menu.model';
 export const MENU: MenuItem[] = [
   {
     label: 'Dashboard',
-    icon: 'disc',
+    icon: 'activity', // analytics / overview
     link: '/dashboard'
   },
 
@@ -14,17 +14,17 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Invoices',
-    icon: 'grid',
+    icon: 'file-text', // document/invoice icon
     link: '/invoices'
   },
   {
     label: 'Returns',
-    icon: 'grid',
+    icon: 'rotate-ccw', // return/refund icon
     link: '/invoice/returns'
   },
   {
     label: 'Customers',
-    icon: 'users',
+    icon: 'users', // customers/people
     link: '/customers',
   },
 
@@ -35,7 +35,7 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Products',
-    icon: 'codesandbox',
+    icon: 'package', // box/package for products
     subItems: [
       {
         label: 'Listing',
@@ -61,7 +61,7 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Stocks',
-    icon: 'home',
+    icon: 'layers', // stacked layers for inventory/stock
     link: '/stocks',
   },
 
@@ -72,53 +72,53 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Company',
-    icon: 'home',
+    icon: 'briefcase', // business/company
     link: '/companies',
   },
   {
     label: 'Bank A/C',
-    icon: 'dollar-sign',
+    icon: 'credit-card', // finance/bank account
     link: '/banks',
   },
   {
     label: 'Cities',
-    icon: 'map',
+    icon: 'map-pin', // locations/cities
     link: '/cities',
   },
   {
     label: 'Import / Export',
-    icon: 'git-pull-request',
+    icon: 'refresh-cw', // sync/import-export
     link: '/import-export',
   },
 
   // Reports & Analytics
-  {
-    label: 'Reports & Analytics',
-    isTitle: true
-  },
-  {
-    label: 'Reports',
-    icon: 'file-text',
-    subItems: [
-      {
-        label: 'Customers',
-        link: '/reports/customers',
-      },
-      {
-        label: 'Customers',
-        subItems: [
-          {
-            label: 'Card',
-            link: '/reports/employees/card'
-          },
-          {
-            label: 'Salaries',
-            link: '/reports/employees/salaries'
-          },
-        ]
-      },
-    ]
-  },
+  // {
+  //   label: 'Reports & Analytics',
+  //   isTitle: true
+  // },
+  // {
+  //   label: 'Reports',
+  //   icon: 'file-text',
+  //   subItems: [
+  //     {
+  //       label: 'Customers',
+  //       link: '/reports/customers',
+  //     },
+  //     {
+  //       label: 'Customers',
+  //       subItems: [
+  //         {
+  //           label: 'Card',
+  //           link: '/reports/employees/card'
+  //         },
+  //         {
+  //           label: 'Salaries',
+  //           link: '/reports/employees/salaries'
+  //         },
+  //       ]
+  //     },
+  //   ]
+  // },
 
   // System
   {
@@ -127,7 +127,7 @@ export const MENU: MenuItem[] = [
   },
   {
     label: 'Settings',
-    icon: 'settings',
+    icon: 'settings', // cog/settings
     link: '/settings',
   },
 ];
