@@ -3,9 +3,6 @@ import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-// import { ColumnMode, NgxDatatableModule } from '@siemens/ngx-datatable';
-// import { NgbDateStruct, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
-// import { NgSelectComponent as MyNgSelectComponent } from '@ng-select/ng-select';
 import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.component';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../../auth/auth.service';
@@ -13,7 +10,7 @@ import { AuthService } from '../../../auth/auth.service';
 interface Company {
   id?: number;
   name: string | null;
-  address: string;
+  description: string;
   image?: File | string | null;
   image_url?: string;
   images?: {
@@ -27,11 +24,8 @@ interface Company {
   imports: [
     BreadcrumbComponent,
     RouterLink,
-    //NgxDatatableModule,
     CommonModule,
     FormsModule,
-    //NgbDatepickerModule,
-    //MyNgSelectComponent,
   ],
   templateUrl: './setup.component.html'
 })
@@ -116,14 +110,14 @@ export class CompaniesSetupComponent {
 
     // Append standard fields
     formData.append('name', this.currentRecord.name || '');
-    formData.append('address', this.currentRecord.address || '');
+    formData.append('description', this.currentRecord.description || '');
 
     // Append image file if selected
     if (this.selectedFile) {
       formData.append('company_image', this.selectedFile);
     }
 
-    // Submit with method spoofing (_method=PUT)
+    // Submit with method spoofing
     this.http.post(`${this.API_URL}/companies/${this.currentRecord.id}?_method=PUT`, formData).subscribe({
       next: (response) => {
         this.isLoading = false;

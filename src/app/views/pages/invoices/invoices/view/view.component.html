@@ -4,20 +4,34 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-body">
-        <div class="container-fluid">
-          <div class="col-lg-12 ps-0 mb-3 text-center">
-            <h1>{{ user?.company.name }}</h1>
-            <p>{{ user?.company.address }}</p>
+        <div class="row">
+          <!-- Action Buttons -->
+          <div class="container-fluid d-flex justify-content-end w-100">
+            <!-- <a class="btn btn-primary float-end mt-4 ms-2" (click)="openModal()">
+              <i data-feather="send" appFeatherIcon class="me-2 icon-md"></i>
+              Send Invoice
+            </a>
+            <a routerLink="." class="btn btn-outline-primary float-end mt-4">
+              <i data-feather="printer" appFeatherIcon class="me-2 icon-md"></i>
+              Print
+            </a> -->
+
+            <a class="btn btn-dark btn-xs" (click)="downloadPDF()">
+              <i data-feather="download-cloud" appFeatherIcon class="icon-md"></i>
+              &nbsp;PDF
+            </a>
           </div>
         </div>
-
-        <div class="container-fluid d-flex justify-content-between">
+        
+        <div class="container-fluid d-flex justify-content-between mt-3">
           <!-- Left side: Company Info -->
           <div class="col-lg-3 ps-0">
-            <h5 class="mb-2 text-secondary">Invoice to :</h5>
+            <h2>{{ user?.company.name }}</h2>
+            <h5 class="mt-2 text-secondary">Invoice to :</h5>
             <p>
               {{ currentRecord?.customer_name }} <br>
-              # {{ currentRecord?.invoice_number }}
+              # {{ currentRecord?.invoice_number }} <br>
+              {{ currentRecord?.customer_address }} <br>
             </p>
           </div>
 
@@ -98,22 +112,6 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="container-fluid w-100">
-          <a class="btn btn-primary float-end mt-4 ms-2" (click)="openModal()">
-            <i data-feather="send" appFeatherIcon class="me-2 icon-md"></i>
-            Send Invoice
-          </a>
-          <a routerLink="." class="btn btn-outline-primary float-end mt-4">
-            <i data-feather="printer" appFeatherIcon class="me-2 icon-md"></i>
-            Print
-          </a>
-          <a class="btn btn-dark float-end mt-4 me-2" (click)="downloadPDF()">
-            <i data-feather="download" appFeatherIcon class="me-2 icon-md"></i>
-            Download
-          </a>
         </div>
       </div>
     </div>

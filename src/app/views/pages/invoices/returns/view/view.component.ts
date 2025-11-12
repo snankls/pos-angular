@@ -13,10 +13,9 @@ interface Invoice {
   customer_id: number;
   customer_name?: string;
   customer_address?: string;
-  customer_email?: string;
-  customer_whatsapp?: string;
+  customer_mobile?: string;
   invoice_number: string;
-  invoice_date: string;
+  return_date: string;
   description?: string;
   total_quantity: number;
   total_price: number;
@@ -124,10 +123,6 @@ export class ReturnsViewComponent implements OnInit {
       next: (response) => {
         this.currentRecord = response;
         this.itemsList = response.details || [];
-        
-        // Auto-fill email & WhatsApp from currentRecord
-        this.emailAddress = this.currentRecord.customer_email || '';
-        this.whatsappNumber = this.currentRecord.customer_whatsapp || '';
       },
       error: (error: HttpErrorResponse) => {
         this.isLoading = false;
@@ -172,6 +167,27 @@ export class ReturnsViewComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error sending invoice:', err);
+      }
+    });
+  }
+
+  downloadPDF(): void {
+    if (!this.currentRecord?.id) return;
+
+    const url = `${this.API_URL}/invoices/returns/download/${this.currentRecord.id}`;
+    
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob: Blob) => {
+        const filename = 'invoice.pdf';
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+        window.URL.revokeObjectURL(link.href);
+      },
+      error: (err) => {
+        console.error('PDF download failed', err);
+        alert('Failed to download PDF.');
       }
     });
   }

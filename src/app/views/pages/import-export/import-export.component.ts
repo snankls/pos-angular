@@ -16,7 +16,7 @@ import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.componen
 })
 export class ImportExportComponent implements OnInit {
   private API_URL = environment.API_URL;
-  private DOWNLOAD_CSV_URL = environment.IMAGE_URL;
+  private DOWNLOAD_CSV_URL = environment.LIVE_URL;
 
   // Common state
   isLoading = false;
@@ -60,7 +60,7 @@ export class ImportExportComponent implements OnInit {
 
   // 📦 Download CSV Template
   downloadCSV(type: string): void {
-    const apiUrl = `${this.DOWNLOAD_CSV_URL}/download/${type}`;
+    const apiUrl = `${this.DOWNLOAD_CSV_URL}/csv/download/${type}`;
     const link = document.createElement('a');
     link.href = apiUrl;
     link.download = `${type}.csv`;

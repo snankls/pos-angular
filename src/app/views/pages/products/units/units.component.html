@@ -36,7 +36,7 @@
             rowHeight="auto"
             [scrollbarH]="true"
           >
-            <ngx-datatable-column [width]="50" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false">
+            <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false">
               <ng-template ngx-datatable-header-template>
                 <input type="checkbox" [checked]="selected.length === rows.length" (change)="selectAll($event)" />
               </ng-template>
@@ -45,7 +45,7 @@
               </ng-template>
             </ngx-datatable-column>
 
-            <ngx-datatable-column name="ID" [width]="55" [canAutoResize]="false">
+            <ngx-datatable-column name="ID" [width]="50" [canAutoResize]="false">
               <ng-template ngx-datatable-cell-template let-row="row">
                 {{ row.id }}
               </ng-template>

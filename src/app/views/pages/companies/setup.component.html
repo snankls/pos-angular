@@ -16,9 +16,9 @@
             </div>
         
             <div class="col-md-12 mb-3">
-              <label class="form-label">Address</label>
-              <textarea class="form-control" name="address" rows="3" [(ngModel)]="currentRecord.address" (ngModelChange)="clearError('address')"></textarea>
-              <div class="text-danger mt-1" *ngIf="formErrors.address">{{ formErrors.address[0] }}</div>
+              <label class="form-label">Description</label>
+              <textarea class="form-control" name="description" rows="3" [(ngModel)]="currentRecord.description" (ngModelChange)="clearError('description')"></textarea>
+              <div class="text-danger mt-1" *ngIf="formErrors.description">{{ formErrors.description[0] }}</div>
             </div>
         
             <!-- Image Upload -->

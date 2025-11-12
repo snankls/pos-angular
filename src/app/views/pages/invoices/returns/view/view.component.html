@@ -4,9 +4,55 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-body">
-        <div class="container-fluid d-flex justify-content-between">
+        <div class="row">
+          <!-- Action Buttons -->
+          <div class="container-fluid d-flex justify-content-end w-100">
+            <!-- <a class="btn btn-primary float-end mt-4 ms-2" (click)="openModal()">
+              <i data-feather="send" appFeatherIcon class="me-2 icon-md"></i>
+              Send Invoice
+            </a>
+            <a routerLink="." class="btn btn-outline-primary float-end mt-4">
+              <i data-feather="printer" appFeatherIcon class="me-2 icon-md"></i>
+              Print
+            </a> -->
+
+            <a class="btn btn-dark btn-xs" (click)="downloadPDF()">
+              <i data-feather="download-cloud" appFeatherIcon class="icon-md"></i>
+              &nbsp;PDF
+            </a>
+          </div>
+        </div>
+        
+        <div class="container-fluid d-flex justify-content-between mt-3">
           <!-- Left side: Company Info -->
           <div class="col-lg-3 ps-0">
+            <!-- <h2>{{ user?.company.name }}</h2> -->
+            <h5 class="mt-2 text-secondary">Invoice to :</h5>
+            <p>
+              <strong *ngIf="currentRecord?.invoice_number"># {{ currentRecord?.invoice_number }}</strong> <br>
+              {{ currentRecord?.customer_name }}
+              <span *ngIf="currentRecord?.customer_mobile">
+                (Mobile: {{ currentRecord?.customer_mobile }})
+              </span>
+              <br>
+              {{ currentRecord?.customer_address }}
+            </p>
+          </div>
+
+          <!-- Right side: Invoice Info -->
+          <div class="col-lg-3 pe-0">
+            <p class="text-end mb-1">Balance Due</p>
+            <h4 class="text-end fw-normal">
+              {{ currencySign }}{{ currentRecord?.grand_total | number }}
+            </h4>
+            <h6 class="mb-0 mt-3 text-end fw-normal mb-2">
+              <span class="text-secondary">Invoice Date :</span> 
+              {{ currentRecord?.return_date | date }}
+            </h6>
+          </div>
+
+          <!-- Left side: Company Info -->
+          <!-- <div class="col-lg-3 ps-0">
             <a routerLink="." class="nobleui-logo d-block mt-3">Noble<span>UI</span></a>                 
             
             <p>108,<br> Great Russell St,<br>London, WC1B 3NA.</p>
@@ -16,10 +62,10 @@
               {{ currentRecord?.customer_name }} <br>
               {{ currentRecord?.customer_address }}
             </p>
-          </div>
+          </div> -->
 
           <!-- Right side: Invoice Info -->
-          <div class="col-lg-3 pe-0">
+          <!-- <div class="col-lg-3 pe-0">
             <h4 class="fw-bold text-uppercase text-end mt-4 mb-2">Invoice</h4>
             <h6 class="text-end mb-5 pb-4"># {{ currentRecord?.invoice_number }}</h6>
             <p class="text-end mb-1">Balance Due</p>
@@ -30,7 +76,7 @@
               <span class="text-secondary">Invoice Date :</span> 
               {{ currentRecord?.invoice_date | date }}
             </h6>
-          </div>
+          </div> -->
         </div>
 
         <!-- Items Table -->
@@ -66,7 +112,7 @@
         <!-- Totals -->
         <div class="container-fluid mt-5 w-100">
           <div class="row">
-            <div class="col-md-6 ms-auto">
+            <div class="col-md-5 ms-auto">
               <div class="table-responsive">
                 <table class="table fw-bold">
                   <tbody>
@@ -99,17 +145,6 @@
           </div>
         </div>
 
-        <!-- Action Buttons -->
-        <div class="container-fluid w-100">
-          <a routerLink="." class="btn btn-primary float-end mt-4 ms-2" (click)="openModal()">
-            <i data-feather="send" appFeatherIcon class="me-2 icon-md"></i>
-            Send Invoice
-          </a>
-          <a routerLink="." class="btn btn-outline-primary float-end mt-4">
-            <i data-feather="printer" appFeatherIcon class="me-2 icon-md"></i>
-            Print
-          </a>
-        </div>
       </div>
     </div>
   </div>

@@ -60,7 +60,6 @@ interface InvoiceDetail {
 })
 export class InvoicesViewComponent implements OnInit {
   private API_URL = environment.API_URL;
-  private IMAGE_URL = environment.IMAGE_URL;
 
   formErrors: any = {};
   currentRecord: Invoice | null = null;
@@ -197,7 +196,7 @@ export class InvoicesViewComponent implements OnInit {
   downloadPDF(): void {
     if (!this.currentRecord?.id) return;
 
-    const url = `${this.API_URL}/download/${this.currentRecord.id}`;
+    const url = `${this.API_URL}/invoices/download/${this.currentRecord.id}`;
     
     this.http.get(url, { responseType: 'blob' }).subscribe({
       next: (blob: Blob) => {
