@@ -23,8 +23,8 @@ export const MENU: MenuItem[] = [
     link: '/invoice/returns'
   },
   {
-    label: 'Customers',
-    icon: 'users', // customers/people
+  label: 'Customers',
+    icon: 'users',
     link: '/customers',
   },
 
@@ -92,33 +92,20 @@ export const MENU: MenuItem[] = [
   },
 
   // Reports & Analytics
-  // {
-  //   label: 'Reports & Analytics',
-  //   isTitle: true
-  // },
-  // {
-  //   label: 'Reports',
-  //   icon: 'file-text',
-  //   subItems: [
-  //     {
-  //       label: 'Customers',
-  //       link: '/reports/customers',
-  //     },
-  //     {
-  //       label: 'Customers',
-  //       subItems: [
-  //         {
-  //           label: 'Card',
-  //           link: '/reports/employees/card'
-  //         },
-  //         {
-  //           label: 'Salaries',
-  //           link: '/reports/employees/salaries'
-  //         },
-  //       ]
-  //     },
-  //   ]
-  // },
+  {
+    label: 'Reports & Analytics',
+    isTitle: true
+  },
+  {
+    label: 'Reports',
+    icon: 'file-text',
+    subItems: [
+      {
+        label: 'Customer Ledgers',
+        link: '/reports/customer-ledgers',
+      },
+    ]
+  },
 
   // System
   {

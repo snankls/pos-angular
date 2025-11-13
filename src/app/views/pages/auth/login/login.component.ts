@@ -70,69 +70,53 @@ export class LoginComponent implements OnInit {
     this.messageTypeLogin = '';
     this.loadingLogin = true;
 
-    console.log('Sending login request to:', `${this.API_URL}/login`);
-    console.log('Login data:', loginData);
-
-    this.http.post<any>(`${this.API_URL}/login`, loginData).subscribe({
+    this.http.post<LoginResponse>(`${this.API_URL}/login`, loginData).subscribe({
       next: (response) => {
-        console.log('Login successful:', response);
         this.loadingLogin = false;
-        
-        if (response.success && response.data?.authorisation?.token) {
-          this.messageLogin = response.message || 'Login successful!';
+        if (response.data?.authorisation?.token) {
+          this.messageLogin = 'Login successful!';
           this.messageTypeLogin = 'success';
 
-          const token = response.data.authorisation.token;
-          const user = response.data.user;
+          this.authService.setToken(response.data.authorisation.token);
 
-          this.authService.setToken(token);
-          this.authService.setUser(user);
+          this.authService.loadCurrentUser().subscribe({
+            next: () => this.router.navigate(['/']),
+            error: (err) => {
+              console.error('Failed to load current user:', err);
+              this.router.navigate(['/']);
+            }
+          });
 
           if (this.rememberMe) {
-            localStorage.setItem('access_token', token);
-            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('token', response.data.authorisation.token);
           } else {
-            sessionStorage.setItem('access_token', token);
-            sessionStorage.setItem('user', JSON.stringify(user));
+            sessionStorage.setItem('token', response.data.authorisation.token);
           }
-
-          this.router.navigate(['/']);
-
         } else {
-          this.messageLogin = response.message || 'Login failed. Please try again.';
+          this.messageLogin = 'Login failed. Please try again.';
           this.messageTypeLogin = 'error';
         }
       },
       error: (error) => {
-        console.error('Login error details:', error);
         this.loadingLogin = false;
         this.messageTypeLogin = 'error';
 
-        // Enhanced error logging
-        if (error.status === 0) {
-          console.error('Network error - server unreachable');
-          this.messageLogin = 'Unable to connect to server. Make sure Laravel is running on http://127.0.0.1:8000';
-        } 
-        else if (error.error instanceof ErrorEvent) {
-          // Client-side error
-          console.error('Client-side error:', error.error.message);
-          this.messageLogin = 'A client error occurred. Check console for details.';
-        }
-        else if (error.status === 500 && error.error?.error?.includes('Cannot connect')) {
-          this.messageLogin = 'Server connection failed. Check if Laravel is running.';
+        // ✅ Detect server not reachable
+        if (error.status === 0 || error.status === 500 && error.error?.error?.includes('Cannot connect')) {
+          this.messageLogin = 'Unable to connect to server. Check your internet connection and try again.';
         } 
         else if (error.status === 403) {
           this.messageLogin = error.error?.error || 'Access denied.';
           this.contactInfo = error.error?.contact || '';
         } 
         else if (error.status === 401) {
-          this.messageLogin = error.error?.error || 'Invalid email/username or password.';
+          this.messageLogin = error.error?.error || 'Invalid credentials.';
         }
         else if (error.status === 422) {
           this.messageLogin = 'Please provide valid credentials.';
         }
         else {
-          this.messageLogin = error.error?.error || error.error?.message || 'Login failed. Please try again.';
+          this.messageLogin = error.error?.message || 'Login failed. Please try again.';
         }
       }
     });

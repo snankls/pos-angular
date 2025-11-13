@@ -208,13 +208,6 @@ export const routes: Routes = [
         data: { title: 'Customers View' },
       },
 
-      // Reports
-      {
-        path: 'reports/customers',
-        loadComponent: () => import('./views/pages/reports/customers/customers.component').then(c => c.ReportsCustomersComponent),
-        data: { title: 'Customer Report' },
-      },
-
       // Banks A/C
       {
         path: 'banks',
@@ -234,6 +227,14 @@ export const routes: Routes = [
         path: 'import-export',
         loadComponent: () => import('./views/pages/import-export/import-export.component').then(c => c.ImportExportComponent),
         data: { title: 'Import/Export' },
+      },
+
+      // Reports
+      // Customers Ledgers
+      {
+        path: 'reports/customer-ledgers',
+        loadComponent: () => import('./views/pages/reports/customer-ledgers/customer-ledgers.component').then(c => c.CustomersLedgersComponent),
+        data: { title: 'Customers Ledgers' },
       },
 
       // Settings

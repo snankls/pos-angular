@@ -11,23 +11,21 @@ import { CookieService } from 'ngx-cookie-service';
 export class AuthService {
   private API_URL = environment.API_URL;
   private userIdSubject = new BehaviorSubject<number | null>(null);
+
+  //private loggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isLoggedIn());
+  //public loggedIn$ = this.loggedInSubject.asObservable();
+
+  constructor(private http: HttpClient, private cookieService: CookieService) { } // Inject CookieService
+  
+
   private currentUserSubject = new BehaviorSubject<any | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
-
-  constructor(private http: HttpClient, private cookieService: CookieService) { }
-
-  // Add this missing method
-  setUser(user: any): void {
-    this.currentUserSubject.next(user);
-    if (user && user.id) {
-      this.userIdSubject.next(user.id);
-    }
-  }
 
   login(username: string, password: string): Observable<any> {
     return this.http.post(`${this.API_URL}/login`, { username, password }).pipe(
       tap((response: any) => {
         this.setToken(response.token);
+        //this.loggedInSubject.next(true);
         this.loadCurrentUser();
       })
     );
@@ -79,7 +77,6 @@ export class AuthService {
 
   logout(): void {
     this.cookieService.delete('token', '/'); // Delete token from cookies
-    this.currentUserSubject.next(null);
-    this.userIdSubject.next(null);
+    //this.loggedInSubject.next(false);
   }
 }

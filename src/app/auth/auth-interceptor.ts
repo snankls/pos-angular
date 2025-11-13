@@ -5,20 +5,14 @@ import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 
 export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) {
-    const authService = inject(AuthService);
-    const router = inject(Router);
-    
-    // Get token from both localStorage and sessionStorage
-    const token = localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
+    const authService = inject(AuthService);  // Inject the AuthService
+    const router = inject(Router);  // Inject the Router for navigation
+    const authToken = authService.getToken();  // Get the authentication token
 
-    let newReq = req;
-    
-    // Clone the request to add the Authorization header if token exists
-    if (token) {
-        newReq = req.clone({
-            headers: req.headers.set('Authorization', `Bearer ${token}`),
-        });
-    }
+    // Clone the request to add the Authorization header with the token.
+    const newReq = req.clone({
+        headers: req.headers.append('Authorization', `Bearer ${authToken}`),
+    });
 
     // Handle request and catch errors (e.g., token expiration)
     return next(newReq).pipe(
@@ -26,13 +20,6 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn) 
             if (error.status === 401) {
                 // Token has expired or user is unauthorized
                 authService.logout();  // Log out the user
-                
-                // Clear both storage types
-                localStorage.removeItem('access_token');
-                localStorage.removeItem('user');
-                sessionStorage.removeItem('access_token');
-                sessionStorage.removeItem('user');
-                
                 router.navigate(['/login']);
             }
             return throwError(() => error);  // Pass error to the next handler
