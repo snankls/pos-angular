@@ -208,6 +208,13 @@ export const routes: Routes = [
         data: { title: 'Customers View' },
       },
 
+      // Customers Payments
+      {
+        path: 'customer-payments',
+        loadComponent: () => import('./views/pages/customer-payments/customer-payments.component').then(c => c.CustomersPaymentsComponent),
+        data: { title: 'Customers Payments' },
+      },
+
       // Banks A/C
       {
         path: 'banks',
@@ -235,6 +242,13 @@ export const routes: Routes = [
         path: 'reports/customer-ledgers',
         loadComponent: () => import('./views/pages/reports/customer-ledgers/customer-ledgers.component').then(c => c.CustomersLedgersComponent),
         data: { title: 'Customers Ledgers' },
+      },
+
+      // Product Stocks
+      {
+        path: 'reports/product-stocks',
+        loadComponent: () => import('./views/pages/reports/product-stocks/product-stocks.component').then(c => c.ProductStocksComponent),
+        data: { title: 'Product Stocks' },
       },
 
       // Settings

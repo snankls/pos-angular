@@ -7,13 +7,13 @@
         <form class="row" (submit)="onAdvancedSearch($event)">
           <div class="row">
             <div class="col-md-3 mb-3">
-              <label class="form-label">Select Employee</label>
+              <label class="form-label">Select Products</label>
               <ng-select
-                [items]="customers"
+                [items]="products"
                 bindLabel="name"
                 bindValue="id"
-                [(ngModel)]="searchModel.customer_id"
-                name="customer_id"
+                [(ngModel)]="searchModel.product_id"
+                name="product_id"
                 placeholder="Select one"
                 [searchable]="true"
                 [clearable]="true"
@@ -108,65 +108,29 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Customer Name</th>
-                <th scope="col">Date</th>
-                <th scope="col">Debit</th>
-                <th scope="col">Credit</th>
-                <th scope="col">Balance</th>
-                <th scope="col">Description</th>
+                <th scope="col">SKU</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Stocks</th>
+                <th scope="col">Cost Price</th>
+                <th scope="col">Sale Price</th>
+                <th scope="col">Create Date</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let ledger of rows; let i = index">
                 <th scope="row">{{ i + 1 }}</th>
-                <td>{{ ledger.customer_name }}</td>
-                <td>{{ ledger.ledger_date | date:'yyyy-MM-dd' }}</td>
-                <td>{{ ledger.debit | number:'1.2-2' }}</td>
-                <td>{{ ledger.credit | number:'1.2-2' }}</td>
-                <td>{{ ledger.balance | number:'1.2-2' }}</td>
-                <td>{{ ledger.description }}</td>
+                <td>{{ ledger.sku }}</td>
+                <td>{{ ledger.product_name }}</td>
+                <td>{{ ledger.stocks }}</td>
+                <td>{{ ledger.cost_price }}</td>
+                <td>{{ ledger.sale_price }}</td>
+                <td>{{ ledger.create }}</td>
               </tr>
               <tr *ngIf="rows.length === 0">
                 <td colspan="6" class="text-center">No records found.</td>
               </tr>
             </tbody>
-            <tfoot *ngIf="rows.length > 0">
-              <tr class="fw-bold table-light">
-                <td colspan="3" class="text-end">Total:</td>
-                <td>{{ totalDebit | number:'1.2-2' }}</td>
-                <td>{{ totalCredit | number:'1.2-2' }}</td>
-                <td>{{ balance | number:'1.2-2' }}</td>
-                <td>&nbsp;</td>
-              </tr>
-            </tfoot>
           </table>
-        </div>
-
-        <div class="row mt-3" *ngIf="rows.length > 0">
-          <div class="col-md-4">
-            <div class="card bg-light border-0">
-              <div class="card-body text-center">
-                <h6>Total Debit</h6>
-                <h5 class="text-success">{{ totalDebit | number:'1.2-2' }}</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card bg-light border-0">
-              <div class="card-body text-center">
-                <h6>Total Credit</h6>
-                <h5 class="text-danger">{{ totalCredit | number:'1.2-2' }}</h5>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card bg-light border-0">
-              <div class="card-body text-center">
-                <h6>Balance</h6>
-                <h5 class="text-primary">{{ balance | number:'1.2-2' }}</h5>
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>
@@ -175,6 +139,6 @@
 </div>
 
 <!-- Optional: message when no data -->
-<div class="text-center text-muted mt-4" *ngIf="rows.length === 0 && !loading && !customerError">
+<div class="text-center text-muted mt-4" *ngIf="rows.length === 0 && !loading && !productError">
   No records found.
 </div>

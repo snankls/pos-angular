@@ -27,6 +27,11 @@ export const MENU: MenuItem[] = [
     icon: 'users',
     link: '/customers',
   },
+  {
+    label: 'Customer Payments',
+    icon: 'credit-card', 
+    link: '/customer-payments',
+  },
 
   // Inventory
   {
@@ -103,6 +108,10 @@ export const MENU: MenuItem[] = [
       {
         label: 'Customer Ledgers',
         link: '/reports/customer-ledgers',
+      },
+      {
+        label: 'Product Stocks',
+        link: '/reports/product-stocks',
       },
     ]
   },

@@ -9,7 +9,7 @@ import { environment } from '../../../../environments/environment';
 import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.component';
 
 @Component({
-  selector: 'app-customer-ledgers',
+  selector: 'app-product-stocks',
   standalone: true,
   imports: [
     CommonModule,
@@ -19,16 +19,16 @@ import { BreadcrumbComponent } from '../../../layout/breadcrumb/breadcrumb.compo
     NgbDatepickerModule,
     BreadcrumbComponent
   ],
-  templateUrl: './customer-ledgers.component.html'
+  templateUrl: './product-stocks.component.html'
 })
-export class CustomersLedgersComponent {
+export class ProductStocksComponent {
   private API_URL = environment.API_URL;
   
-  customers: any[] = [];
+  products: any[] = [];
   rows: any[] = [];
   loadingIndicator = false;
   loading = false;
-  customerError = false;
+  productError = false;
   ColumnMode = ColumnMode;
   calendar = inject(NgbCalendar);
   formatter = inject(NgbDateParserFormatter);
@@ -37,13 +37,13 @@ export class CustomersLedgersComponent {
   totalDebit = 0;
   totalCredit = 0;
   balance = 0;
-  customerInfo: any = {};
+  productInfo: any = {};
   creditBalance: number = 0;
   formErrors: any = {};
   hoveredDate: NgbDate | null = null;
 
   searchModel = {
-    customer_id: null,
+    product_id: null,
     from_date: null,
     to_date: null,
   };
@@ -51,14 +51,14 @@ export class CustomersLedgersComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.fetchCustomers();
+    this.fetchProducts();
     this.onAdvancedSearch();
   }
 
-  fetchCustomers(): void {
-    this.http.get<any[]>(`${this.API_URL}/active/customers`).subscribe({
+  fetchProducts(): void {
+    this.http.get<any[]>(`${this.API_URL}/active/products`).subscribe({
       next: (response) => {
-        this.customers = response.map(emp => ({
+        this.products = response.map(emp => ({
           ...emp,
         }));
       },
@@ -68,7 +68,7 @@ export class CustomersLedgersComponent {
   
   resetSearch(): void {
     this.searchModel = {
-      customer_id: null,
+      product_id: null,
       from_date: null,
       to_date: null,
     };
@@ -78,7 +78,7 @@ export class CustomersLedgersComponent {
     this.toDate = null;
     
     this.rows = [];
-    this.customerInfo = {};
+    this.productInfo = {};
     this.creditBalance = 0;
     this.totalDebit = 0;
     this.totalCredit = 0;
@@ -142,28 +142,17 @@ export class CustomersLedgersComponent {
     this.loading = true;
     const params: any = {};
 
-    if (this.searchModel.customer_id) params.customer_id = this.searchModel.customer_id;
+    // Add filters only if selected
+    if (this.searchModel.product_id) params.product_id = this.searchModel.product_id;
 
     const from = this.formatDate(this.fromDate);
     const to = this.formatDate(this.toDate);
-
     if (from) params.from_date = from;
     if (to) params.to_date = to;
 
-    this.http.get<any>(`${this.API_URL}/customer/ledgers`, { params }).subscribe({
+    this.http.get<any>(`${this.API_URL}/product/ledgers`, { params }).subscribe({
       next: res => {
         this.rows = res.ledgers || [];
-        this.customerInfo = res.customer || {};
-        this.creditBalance = res.credit_balance ?? 0;
-
-        // Add running balance
-        let runningBalance = 0;
-        this.rows = this.rows.map(r => {
-          runningBalance += (r.debit || 0) - (r.credit || 0);
-          return { ...r, balance: runningBalance };
-        });
-
-        this.calculateSummary();
         this.loading = false;
       },
       error: () => this.loading = false
@@ -173,7 +162,7 @@ export class CustomersLedgersComponent {
   downloadFile(type: 'csv' | 'pdf'): void {
     const params: any = {};
 
-    if (this.searchModel.customer_id) params.product_id = this.searchModel.customer_id;
+    if (this.searchModel.product_id) params.product_id = this.searchModel.product_id;
 
     const from = this.formatDate(this.fromDate);
     const to = this.formatDate(this.toDate);
@@ -181,7 +170,7 @@ export class CustomersLedgersComponent {
     if (from) params.from_date = from;
     if (to) params.to_date = to;
 
-    this.http.get(`${this.API_URL}/customer/ledger/download/${type}`, { 
+    this.http.get(`${this.API_URL}/product/ledger/download/${type}`, { 
       params,
       responseType: 'blob'
     }).subscribe({
@@ -201,46 +190,5 @@ export class CustomersLedgersComponent {
       }
     });
   }
-
-  // downloadFile(type: 'csv' | 'pdf'): void {
-  //   const params: any = {
-  //     customer_id: this.searchModel.customer_id
-  //   };
-
-  //   const from = this.formatDate(this.fromDate);
-  //   const to = this.formatDate(this.toDate);
-    
-  //   if (from) params.from_date = from;
-  //   if (to) params.to_date = to;
-
-  //   // Use HttpClient to download the file
-  //   this.http.get(`${this.API_URL}/customer/ledger/download/${type}`, { 
-  //     params: params,
-  //     responseType: 'blob'  // Important for file downloads
-  //   }).subscribe({
-  //     next: (blob: Blob) => {
-  //       // Create download link
-  //       const url = window.URL.createObjectURL(blob);
-  //       const a = document.createElement('a');
-  //       a.href = url;
-        
-  //       // Set filename based on type
-  //       const extension = type === 'csv' ? 'csv' : 'pdf';
-  //       a.download = `customer-ledgers-${new Date().toISOString().split('T')[0]}.${extension}`;
-        
-  //       // Trigger download
-  //       document.body.appendChild(a);
-  //       a.click();
-        
-  //       // Clean up
-  //       window.URL.revokeObjectURL(url);
-  //       document.body.removeChild(a);
-  //     },
-  //     error: (error) => {
-  //       console.error('Download failed:', error);
-  //       alert('Download failed. Please try again.');
-  //     }
-  //   });
-  // }
 
 }

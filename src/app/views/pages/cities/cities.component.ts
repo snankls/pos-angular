@@ -60,10 +60,13 @@ export class CitiesComponent implements OnInit {
   isEditMode = false;
   errorMessage: string | null = null;
 
-  constructor(private http: HttpClient, private modalService: NgbModal) {}
+  constructor(
+    private http: HttpClient,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {
-    this.fetchCities();
+    this.fetchRecords();
     this.fetchStatus();
   }
 
@@ -115,7 +118,7 @@ export class CitiesComponent implements OnInit {
     });
   }
 
-  fetchCities(): void {
+  fetchRecords(): void {
     this.http.get<City[]>(`${this.API_URL}/cities`).subscribe({
       next: (response) => {
         this.rows = response;
@@ -123,7 +126,7 @@ export class CitiesComponent implements OnInit {
         this.loadingIndicator = false;
       },
       error: (error) => {
-        console.error('Error fetching cities:', error);
+        console.error('Error fetching records:', error);
         this.loadingIndicator = false;
       }
     });
@@ -167,7 +170,7 @@ export class CitiesComponent implements OnInit {
     request$.subscribe({
       next: (response) => {
         this.isLoading = false;
-        this.fetchCities();
+        this.fetchRecords();
         this.activeModal?.close();
         this.resetForm();
       },

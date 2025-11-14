@@ -196,7 +196,6 @@ export class BrandsComponent implements OnInit {
 
   // Remove Image Function
   removeImage(): void {
-    // Only clear preview and mark it deleted
     this.imagePreview = null;
     this.currentRecord.image = '';
     this.isImageDeleted = true;

@@ -6,24 +6,10 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 
-interface Authorisation {
-  token: string;
-  type: string;
-}
-
 interface User {
   id: number;
   full_name: string;
   email: string;
-}
-
-interface LoginResponse {
-  status: string;
-  message: string;
-  data: {
-    user: User;
-    authorisation: Authorisation;
-  };
 }
 
 @Component({
@@ -37,6 +23,7 @@ interface LoginResponse {
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss'
 })
+
 export class ForgotPasswordComponent implements OnInit {
   private API_URL = environment.API_URL;
   private NG_URL = environment.NG_URL;
@@ -49,7 +36,10 @@ export class ForgotPasswordComponent implements OnInit {
   message: string = '';
   messageType: string = '';
   
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit(): void { }
 
