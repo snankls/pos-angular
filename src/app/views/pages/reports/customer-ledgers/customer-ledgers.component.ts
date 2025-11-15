@@ -189,7 +189,7 @@ export class CustomersLedgersComponent {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `product-stocks-${new Date().toISOString().split('T')[0]}.${type === 'csv' ? 'csv' : 'pdf'}`;
+        a.download = `customer-ledgers-${new Date().toISOString().split('T')[0]}.${type === 'csv' ? 'csv' : 'pdf'}`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -201,46 +201,5 @@ export class CustomersLedgersComponent {
       }
     });
   }
-
-  // downloadFile(type: 'csv' | 'pdf'): void {
-  //   const params: any = {
-  //     customer_id: this.searchModel.customer_id
-  //   };
-
-  //   const from = this.formatDate(this.fromDate);
-  //   const to = this.formatDate(this.toDate);
-    
-  //   if (from) params.from_date = from;
-  //   if (to) params.to_date = to;
-
-  //   // Use HttpClient to download the file
-  //   this.http.get(`${this.API_URL}/customer/ledger/download/${type}`, { 
-  //     params: params,
-  //     responseType: 'blob'  // Important for file downloads
-  //   }).subscribe({
-  //     next: (blob: Blob) => {
-  //       // Create download link
-  //       const url = window.URL.createObjectURL(blob);
-  //       const a = document.createElement('a');
-  //       a.href = url;
-        
-  //       // Set filename based on type
-  //       const extension = type === 'csv' ? 'csv' : 'pdf';
-  //       a.download = `customer-ledgers-${new Date().toISOString().split('T')[0]}.${extension}`;
-        
-  //       // Trigger download
-  //       document.body.appendChild(a);
-  //       a.click();
-        
-  //       // Clean up
-  //       window.URL.revokeObjectURL(url);
-  //       document.body.removeChild(a);
-  //     },
-  //     error: (error) => {
-  //       console.error('Download failed:', error);
-  //       alert('Download failed. Please try again.');
-  //     }
-  //   });
-  // }
 
 }
