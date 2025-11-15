@@ -23,6 +23,7 @@ export const routes: Routes = [
     loadComponent: () => import('./views/pages/auth/change-password/change-password.component').then(c => c.ChangePasswordComponent),
     data: { title: 'Change Password' },
   },
+  
   {
     path: '',
     component: BaseComponent,
