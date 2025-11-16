@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { environment } from '../../../../../environments/environment';
@@ -49,6 +50,10 @@ export class ProductsSetupComponent {
     images: null
   };
 
+  saveRecord = {
+    name: '',
+  };
+
   isEditMode = false;
   isLoading = false;
   formErrors: any = {};
@@ -63,8 +68,19 @@ export class ProductsSetupComponent {
   brands: any[] = [];
   units: any[] = [];
   status: { id: string; name: string }[] = [];
+  errorMessage: string | null = null;
+  formErrorsRecord: any = {};
+  modalType: 'brand' | 'category' | 'unit' = 'brand';
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router,
+    private modalService: NgbModal
+  ) {}
+
+  @ViewChild('modalTemplate') modalTemplate!: TemplateRef<any>;
+  activeModal: NgbModalRef | null = null;
 
   ngOnInit(): void {
     this.fetchCategories();
@@ -164,6 +180,64 @@ export class ProductsSetupComponent {
     this.currentRecord.images = null;
     this.selectedFile = null;
     this.isImageDeleted = true;
+  }
+  
+  handleBrandError(error: any) {
+    if (error.status === 422) {
+      this.formErrorsRecord = error.error.errors || {};
+    } else {
+      console.error(error);
+    }
+  }
+
+  openBrandModal(): void {
+    this.modalType = 'brand';
+    this.saveRecord = { name: '' };
+    this.formErrorsRecord = {};
+    this.activeModal = this.modalService.open(this.modalTemplate, { size: 'md' });
+  }
+
+  openCategoryModal(): void {
+    this.modalType = 'category';
+    this.saveRecord = { name: '' };
+    this.formErrorsRecord = {};
+    this.activeModal = this.modalService.open(this.modalTemplate, { size: 'md' });
+  }
+
+  openUnitModal(): void {
+    this.modalType = 'unit';
+    this.saveRecord = { name: '' };
+    this.formErrorsRecord = {};
+    this.activeModal = this.modalService.open(this.modalTemplate, { size: 'md' });
+  }
+
+  saveModalRecord(event: Event): void {
+    event.preventDefault();
+    this.isLoading = true;
+    this.formErrorsRecord = {};
+
+    let apiUrl = '';
+
+    if (this.modalType === 'brand') apiUrl = `${this.API_URL}/brands`;
+    if (this.modalType === 'category') apiUrl = `${this.API_URL}/categories`;
+    if (this.modalType === 'unit') apiUrl = `${this.API_URL}/units`;
+
+    this.http.post(apiUrl, this.saveRecord).subscribe({
+      next: () => {
+        this.isLoading = false;
+
+        if (this.modalType === 'brand') this.fetchBrands();
+        if (this.modalType === 'category') this.fetchCategories();
+        if (this.modalType === 'unit') this.fetchUnits();
+
+        this.activeModal?.close();
+        this.saveRecord = { name: '' };
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.handleBrandError(error);
+      }
+    });
   }
 
   onSubmit(event: Event): void {

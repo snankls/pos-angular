@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { environment } from '../../../../environments/environment';
@@ -53,6 +54,10 @@ export class CustomersSetupComponent {
     images: null
   };
 
+  cityRecord = {
+    name: '',
+  };
+
   isEditMode = false;
   isLoading = false;
   formErrors: any = {};
@@ -60,6 +65,7 @@ export class CustomersSetupComponent {
   imagePreview: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
   isImageDeleted = false;
+  formErrorsCity: any = {};
 
   selected: { id: number; [key: string]: any }[] = [];
   rows: { id: number; [key: string]: any }[] = [];
@@ -67,7 +73,15 @@ export class CustomersSetupComponent {
   cities: { id: string; name: string }[] = [];
   status: { id: string; name: string }[] = [];
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router,
+    private modalService: NgbModal
+  ) {}
+  
+  @ViewChild('modalTemplate') modalTemplate!: TemplateRef<any>;
+  activeModal: NgbModalRef | null = null;
 
   ngOnInit(): void {
     this.fetchCities();
@@ -151,6 +165,39 @@ export class CustomersSetupComponent {
     this.currentRecord.images = null;
     this.selectedFile = null;
     this.isImageDeleted = true;
+  }
+  
+  handleCityError(error: any) {
+    if (error.status === 422) {
+      this.formErrorsCity = error.error.errors || {};
+    } else {
+      console.error(error);
+    }
+  }
+
+  openCityModal(): void {
+    this.cityRecord = { name: '' };
+    this.formErrors = {};
+    this.activeModal = this.modalService.open(this.modalTemplate, { size: 'md' });
+  }
+
+  citySubmit(event: Event): void {
+    event.preventDefault();
+    this.isLoading = true;
+    this.formErrorsCity = {};
+
+    this.http.post(`${this.API_URL}/cities`, this.cityRecord).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.fetchCities();
+        this.activeModal?.close();
+        this.cityRecord = { name: '' };
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.handleCityError(error); // NEW
+      }
+    });
   }
 
   onSubmit(event: Event): void {

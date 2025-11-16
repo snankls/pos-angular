@@ -21,7 +21,10 @@
             </div>
 
             <div class="col-md-3 mb-3">
-              <label class="form-label">Brand</label>
+              <div class="d-flex justify-content-between align-items-center">
+                <label class="form-label">Select Brand <span class="text-danger">*</span></label>
+                <a href="javascript:;" class="text-primary small" (click)="openBrandModal()">Add New Brand</a>
+              </div>
               <ng-select
                 [items]="brands"
                 bindLabel="name"
@@ -36,7 +39,10 @@
             </div>
 
             <div class="col-md-3 mb-3">
-              <label class="form-label">Category <span class="text-danger">*</span></label>
+              <div class="d-flex justify-content-between align-items-center">
+                <label class="form-label">Select Category <span class="text-danger">*</span></label>
+                <a href="javascript:;" class="text-primary small" (click)="openCategoryModal()">Add New Category</a>
+              </div>
               <ng-select
                 [items]="categories"
                 bindLabel="name"
@@ -51,7 +57,10 @@
             </div>
 
             <div class="col-md-3 mb-3">
-              <label class="form-label">Unit <span class="text-danger">*</span></label>
+              <div class="d-flex justify-content-between align-items-center">
+                <label class="form-label">Select Unit <span class="text-danger">*</span></label>
+                <a href="javascript:;" class="text-primary small" (click)="openUnitModal()">Add New Unit</a>
+              </div>
               <ng-select
                 [items]="units"
                 bindLabel="name"
@@ -133,3 +142,28 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<ng-template #modalTemplate let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Add New Brand</h5>
+    <button type="button" class="btn-close" (click)="modal.close()" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <form (submit)="saveModalRecord($event)">
+      <div class="mb-3">
+        <label class="form-label">Name <span class="text-danger">*</span></label>
+        <input type="text" class="form-control" name="name"
+          [(ngModel)]="saveRecord.name" (input)="clearError('name')">
+        <div class="text-danger mt-1" *ngIf="formErrorsRecord.name">{{ formErrorsRecord.name[0] }}</div>
+      </div>
+
+      <div class="text-end">
+        <button type="submit" [disabled]="isLoading" class="btn btn-primary">
+          <span *ngIf="!isLoading">Save</span>
+          <span *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i> Saving...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
