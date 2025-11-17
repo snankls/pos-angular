@@ -91,17 +91,12 @@
         <li class="nav-item nav-category">Download Apps</li>
         <li class="download-apps">
           <div class="d-flex justify-content-between align-items-center flex-wrap gap-1">
-            <a 
-              [href]="apkUrl" 
-              title="Download Android App" 
-              target="_blank" 
-              download="android_app.apk"
-              (click)="downloadAPK($event)"
-              class="nav-link-ref"
-            > 
+            <a href="javascript:;" (click)="openAndroidModal()">
               <img src="images/icons/play-store.png" alt="Play Store">
             </a>
-            <!-- <img src="images/icons/app-store.png" alt="App Store"> -->
+            <a href="javascript:;" (click)="openAppleModal()">
+              <img src="images/icons/app-store.png" alt="Apple Store">
+            </a>
           </div>
         </li>
       </ul>
@@ -110,3 +105,14 @@
 
   </div>
 </nav>
+
+<!-- Modal -->
+<ng-template #modalTemplate let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ modalType }}</h5>
+    <button type="button" class="btn-close" (click)="modal.close()" aria-label="Close"></button>
+  </div>
+  <div class="modal-body">
+    <img src="{{ modalImage }}" alt="Android App" class="w-100">
+  </div>
+</ng-template>

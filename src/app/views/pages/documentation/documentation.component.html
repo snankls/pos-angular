@@ -1,26 +1,293 @@
 <app-breadcrumb></app-breadcrumb>
 
 <div class="row">
-  <div class="col-md-12 stretch-card">
+  <div class="col-md-12">
     <div class="card">
       <div class="card-body">
-        <div class="">
-          <div class="modal-body">
-            <h4 class="mb-3">Documentation</h4>
-            <ol>
-              <li>You can update the company name and logo for use in reports.</li>
-              <li>Before creating an employee, you must first create departments, designations, and job types.</li>
-              <li>To mark attendance, the employee must be created first.</li>
-              <li>You can create employee attendance records only once; to modify them later, use the edit option.</li>
-              <li>The salary wizard operates based on attendance records.</li>
-              <li>Deleted records cannot be recovered.</li>
-              <li>If an employee is marked as inactive or deleted, all related records (attendance, leave applications, company assets, asset returns, and loans) will also be marked inactive or deleted accordingly.</li>
-              <li>Loans, company assets, asset returns, leave applications, and attendance records can only be created for active employees.</li>
-              <li>Images for users, employees, leave applications, and companies can be uploaded up to 5MB in PNG, JPG, JPEG, or WEBP format.</li>
-              <li>You can generate reports only from the "Reports" menu.</li>
-              <li>Reports can be downloaded in PDF and Excel formats.</li>
-              <li>If you need assistance, feel free to contact our support team by clicking on <a href="support">Support</a>.</li>
-            </ol>
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="mb-3">
+              <h3 class="font-weight-bold mb-2">POS Software Documentation</h3>
+              <p class="text-muted mb-0">Complete guide to using your Point of Sale system</p>
+            </div>
+
+            <!-- Quick Start Section -->
+            <div class="mb-5">
+              <h5 class="text-primary mb-3">
+                <i class="fas fa-rocket mr-2"></i>Quick Start Guide
+              </h5>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <div class="card h-100 border-left-primary">
+                    <div class="card-body">
+                      <h6 class="card-title">
+                        <i class="fas fa-cog text-primary mr-2"></i>1. Setup & Configuration
+                      </h6>
+                      <p class="card-text small">Start with Company setup, then configure Products, Categories, and Units before processing sales.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <div class="card h-100 border-left-success">
+                    <div class="card-body">
+                      <h6 class="card-title">
+                        <i class="fas fa-shopping-cart text-success mr-2"></i>2. Daily Operations
+                      </h6>
+                      <p class="card-text small">Process sales through Invoices, manage Customers, and handle Returns as needed.</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <div class="card h-100 border-left-info">
+                    <div class="card-body">
+                      <h6 class="card-title">
+                        <i class="fas fa-chart-bar text-info mr-2"></i>3. Monitor & Report
+                      </h6>
+                      <p class="card-text small">Track Stocks, generate Reports, and analyze business performance regularly.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main Documentation -->
+            <div class="mb-4">
+              <h5 class="text-primary mb-3">
+                <i class="fas fa-list-alt mr-2"></i>Detailed Documentation
+              </h5>
+              
+              <div ngbAccordion [closeOthers]="true">
+                
+                <!-- Dashboard Section -->
+                <div ngbAccordionItem [collapsed]="false">
+                  <h2 ngbAccordionHeader>
+                    <button ngbAccordionButton>
+                      <i class="fas fa-tachometer-alt mr-2"></i>Dashboard
+                    </button>
+                  </h2>
+                  <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                      <ng-template>
+                        <p><strong>Dashboard Overview:</strong> Your central hub for business insights and quick access to key metrics.</p>
+                        <ul>
+                          <li><strong>Real-time Analytics:</strong> View daily sales performance, inventory status, and customer activity at a glance</li>
+                          <li><strong>Quick Actions:</strong> Access frequently used features directly from the dashboard</li>
+                          <li><strong>Performance Metrics:</strong> Monitor key business indicators to make informed decisions</li>
+                        </ul>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sales Management Section -->
+                <div ngbAccordionItem>
+                  <h2 ngbAccordionHeader>
+                    <button ngbAccordionButton>
+                      <i class="fas fa-shopping-cart mr-2"></i>Sales Management
+                    </button>
+                  </h2>
+                  <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                      <ng-template>
+                        <h6>Invoices</h6>
+                        <ul>
+                          <li>Create and manage sales transactions with detailed invoice generation</li>
+                          <li>Add multiple products, apply discounts, and calculate taxes automatically</li>
+                          <li>Print or email invoices directly to customers</li>
+                          <li>Track invoice status (paid, unpaid, partially paid)</li>
+                        </ul>
+
+                        <h6>Returns</h6>
+                        <ul>
+                          <li>Process product returns and issue refunds efficiently</li>
+                          <li>Automatically update inventory levels when returns are processed</li>
+                          <li>Generate return receipts for customer records</li>
+                          <li>Track return reasons and patterns for business analysis</li>
+                        </ul>
+
+                        <h6>Customers</h6>
+                        <ul>
+                          <li>Maintain comprehensive customer database with contact information</li>
+                          <li>Track customer purchase history and preferences</li>
+                          <li>Segment customers for targeted marketing and service</li>
+                          <li>Manage customer credit limits and payment terms</li>
+                        </ul>
+
+                        <h6>Customer Payments</h6>
+                        <ul>
+                          <li>Record customer payments against outstanding invoices</li>
+                          <li>Handle partial payments and payment plans</li>
+                          <li>Track payment methods (cash, card, bank transfer, etc.)</li>
+                          <li>Generate payment receipts and update customer balances automatically</li>
+                        </ul>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Inventory Management Section -->
+                <div ngbAccordionItem>
+                  <h2 ngbAccordionHeader>
+                    <button ngbAccordionButton>
+                      <i class="fas fa-boxes mr-2"></i>Inventory Management
+                    </button>
+                  </h2>
+                  <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                      <ng-template>
+                        <h6>Products Management</h6>
+                        <ul>
+                          <li><strong>Product Listing:</strong> View and manage all products in your inventory</li>
+                          <li><strong>Add New Products:</strong> Create new product entries with detailed information including SKU, pricing, and descriptions</li>
+                          <li><strong>Brands Management:</strong> Organize products by brands for better categorization</li>
+                          <li><strong>Categories Management:</strong> Create product categories and subcategories for easy navigation</li>
+                          <li><strong>Units Management:</strong> Define measurement units (pieces, kg, liters, boxes, etc.) for products</li>
+                        </ul>
+
+                        <h6>Stocks Management</h6>
+                        <ul>
+                          <li>Real-time inventory tracking with automatic updates on sales and returns</li>
+                          <li>Set low stock alerts to prevent inventory shortages</li>
+                          <li>Track stock movement history and valuation</li>
+                          <li>Manage multiple warehouse locations if applicable</li>
+                        </ul>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Administration Section -->
+                <div ngbAccordionItem>
+                  <h2 ngbAccordionHeader>
+                    <button ngbAccordionButton>
+                      <i class="fas fa-cogs mr-2"></i>Administration
+                    </button>
+                  </h2>
+                  <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                      <ng-template>
+                        <h6>Company Setup</h6>
+                        <ul>
+                          <li>Configure your business information (name, address, contact details)</li>
+                          <li>Upload company logo for professional invoices and reports</li>
+                          <li>Set up tax information and business registration details</li>
+                          <li>Configure default currency and other business preferences</li>
+                        </ul>
+
+                        <h6>Bank Accounts</h6>
+                        <ul>
+                          <li>Manage multiple bank accounts for different payment methods</li>
+                          <li>Track bank transactions and reconciliations</li>
+                          <li>Set up account details for electronic payments</li>
+                        </ul>
+
+                        <h6>Cities/Locations</h6>
+                        <ul>
+                          <li>Manage business locations and branches</li>
+                          <li>Set up delivery areas and service locations</li>
+                          <li>Configure location-specific pricing and taxes</li>
+                        </ul>
+
+                        <h6>Import / Export</h6>
+                        <ul>
+                          <li>Bulk import products using CSV or Excel templates</li>
+                          <li>Export sales data, inventory reports, and customer information</li>
+                          <li>Backup and restore business data for security</li>
+                          <li>Migrate data between different system instances</li>
+                        </ul>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Reports & Analytics Section -->
+                <div ngbAccordionItem>
+                  <h2 ngbAccordionHeader>
+                    <button ngbAccordionButton>
+                      <i class="fas fa-chart-line mr-2"></i>Reports & Analytics
+                    </button>
+                  </h2>
+                  <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                      <ng-template>
+                        <h6>Customer Ledgers</h6>
+                        <ul>
+                          <li>Generate detailed customer transaction histories</li>
+                          <li>View outstanding balances and payment due dates</li>
+                          <li>Track customer credit utilization and payment patterns</li>
+                          <li>Export ledger reports for accounting purposes</li>
+                        </ul>
+
+                        <h6>Product Stocks Reports</h6>
+                        <ul>
+                          <li>View current stock levels across all products</li>
+                          <li>Generate stock valuation reports</li>
+                          <li>Identify slow-moving and fast-moving items</li>
+                          <li>Track inventory turnover rates</li>
+                          <li>Monitor stock aging and expiration dates</li>
+                        </ul>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- System Settings Section -->
+                <div ngbAccordionItem>
+                  <h2 ngbAccordionHeader>
+                    <button ngbAccordionButton>
+                      <i class="fas fa-sliders-h mr-2"></i>System Settings
+                    </button>
+                  </h2>
+                  <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                      <ng-template>
+                        <h6>Global Configuration</h6>
+                        <ul>
+                          <li>Configure system preferences and default settings</li>
+                          <li>Set up tax rates and calculation methods</li>
+                          <li>Manage invoice numbering formats and sequences</li>
+                          <li>Configure receipt printing settings</li>
+                          <li>Set up user permissions and access controls</li>
+                          <li>Manage backup schedules and data retention policies</li>
+                        </ul>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Important Notes -->
+            <div class="alert alert-dark mt-4">
+              <h6 class="alert-heading">
+                <i class="fas fa-exclamation-circle mr-2"></i>Important Notes & Best Practices
+              </h6>
+              <ul class="mb-0 pl-3">
+                <li><strong>Setup Order:</strong> Configure Company settings first, then set up Products with Categories and Brands before processing sales</li>
+                <li><strong>Data Integrity:</strong> Always use the Returns feature instead of deleting invoices to maintain accurate financial records</li>
+                <li><strong>Inventory Accuracy:</strong> Regular stock counts help maintain accurate inventory levels in the system</li>
+                <li><strong>Customer Management:</strong> Add customers before creating invoices to track customer history and outstanding balances</li>
+                <li><strong>Backup Regularly:</strong> Use the Export feature to regularly backup your business data</li>
+                <li><strong>Report Generation:</strong> All business reports are available in the Reports section with PDF and Excel export options</li>
+                <li><strong>Support:</strong> For technical assistance, visit our <a href="/support" class="alert-link">Support page</a></li>
+              </ul>
+            </div>
+
+            <!-- Workflow Tips -->
+            <div class="alert alert-success mt-3">
+              <h6 class="alert-heading">
+                <i class="fas fa-lightbulb mr-2"></i>Recommended Workflow
+              </h6>
+              <ol class="mb-0 pl-3">
+                <li>Start with Administration → Company setup</li>
+                <li>Configure Inventory → Products (Categories, Brands, Units)</li>
+                <li>Add your Customers database</li>
+                <li>Process daily Sales through Invoices</li>
+                <li>Record Customer Payments as received</li>
+                <li>Monitor Stocks and generate Reports regularly</li>
+                <li>Use System Settings to customize according to your business needs</li>
+              </ol>
+            </div>
           </div>
         </div>
       </div>

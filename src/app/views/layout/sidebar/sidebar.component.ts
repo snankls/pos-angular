@@ -1,7 +1,8 @@
+import { AfterViewInit, Component, ElementRef, Inject, OnInit, Renderer2, ViewChild, TemplateRef } from '@angular/core';
 import { DOCUMENT, NgClass } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NgScrollbar } from 'ngx-scrollbar';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import MetisMenu from 'metismenujs';
 import { MENU } from './menu';
 import { MenuItem } from './menu.model';
@@ -23,12 +24,18 @@ import { environment } from '../../../environments/environment';
 export class SidebarComponent implements OnInit, AfterViewInit {
   private LIVE_URL = environment.IMAGE_URL;
 
+  modalType: string;
+  modalImage: string;
+
   @ViewChild('sidebarToggler') sidebarToggler: ElementRef;
 
   menuItems: MenuItem[] = [];
   @ViewChild('sidebarMenu') sidebarMenu: ElementRef;
+    
+  @ViewChild('modalTemplate') modalTemplate!: TemplateRef<any>;
+  activeModal: NgbModalRef | null = null;
 
-  constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, router: Router) { 
+  constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, router: Router, private modalService: NgbModal) { 
     router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
 
@@ -236,49 +243,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
   };
 
-  apkUrl = this.LIVE_URL + '/apps/android.apk';
-  private isMobileDevice(): boolean {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  }
-  
-  private isAndroid(): boolean {
-    return /Android/i.test(navigator.userAgent);
+  openAndroidModal(): void {
+    this.modalType = 'Download Android App';
+    this.modalImage = 'images/qrcode_android.png';
+    this.activeModal = this.modalService.open(this.modalTemplate, { size: 'sm' });
   }
 
-  private triggerMobileDownload() {
-    // Create temporary link for download
-    const link = document.createElement('a');
-    link.href = this.apkUrl;
-    link.download = 'android_app.apk';
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    
-    this.showDownloadMessage();
-  }
-
-  private showDownloadMessage() {
-    // Use alert or implement a better notification system
-    alert('APK download started! Check your notifications or downloads folder.');
-
-  }
-
-  downloadAPK(event: Event) {
-    const isMobile = this.isMobileDevice();
-    
-    if (isMobile) {
-      event.preventDefault();
-      
-      if (this.isAndroid()) {
-        this.triggerMobileDownload();
-      } else {
-        // For iOS or other mobile devices
-        window.open(this.apkUrl, '_blank');
-        this.showDownloadMessage();
-      }
-    }
-    // For desktop, let default behavior continue
+  openAppleModal(): void {
+    this.modalType = 'Download IOS App';
+    this.modalImage = 'images/qrcode_ios.png';
+    this.activeModal = this.modalService.open(this.modalTemplate, { size: 'sm' });
   }
 
 }
