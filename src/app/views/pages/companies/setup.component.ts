@@ -54,8 +54,9 @@ export class CompaniesSetupComponent {
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
-      if (user?.company?.id && typeof user?.company?.id === 'number') {
-        this.userId = user?.company?.id;
+      const companyId = Number(user?.company?.id);
+      if (companyId) {
+        this.userId = companyId;
         this.loadCompany(this.userId);
       }
     });

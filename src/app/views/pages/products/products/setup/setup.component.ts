@@ -182,7 +182,7 @@ export class ProductsSetupComponent {
     this.isImageDeleted = true;
   }
   
-  handleBrandError(error: any) {
+  handleRecordError(error: any) {
     if (error.status === 422) {
       this.formErrorsRecord = error.error.errors || {};
     } else {
@@ -235,7 +235,7 @@ export class ProductsSetupComponent {
       },
       error: (error) => {
         this.isLoading = false;
-        this.handleBrandError(error);
+        this.handleRecordError(error);
       }
     });
   }
