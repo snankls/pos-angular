@@ -391,11 +391,11 @@ export class StocksSetupComponent {
       }))
     };
 
-    const request$ = this.isEditMode && (this.currentRecord as any).id
+    const request = this.isEditMode && (this.currentRecord as any).id
       ? this.http.put(`${this.API_URL}/stocks/${(this.currentRecord as any).id}`, payload)
       : this.http.post(`${this.API_URL}/stocks`, payload);
 
-    request$.subscribe({
+    request.subscribe({
       next: (response: any) => {
         this.isLoading = false;
         if (isPost) {

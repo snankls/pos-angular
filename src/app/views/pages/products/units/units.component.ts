@@ -221,11 +221,11 @@ export class UnitsComponent implements OnInit {
       formData.append('delete_image', '1');
     }
 
-    const request$ = this.isEditMode
+    const request = this.isEditMode
       ? this.http.post(`${this.API_URL}/units/${this.currentRecord.id}?_method=PUT`, formData)
       : this.http.post(`${this.API_URL}/units`, formData);
 
-    request$.subscribe({
+    request.subscribe({
       next: () => {
         this.isLoading = false;
         this.fetchUnit();

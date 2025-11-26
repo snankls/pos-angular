@@ -132,7 +132,7 @@
     <button type="button" class="btn-close" (click)="modal.close('by: close icon')" aria-label="Close"></button>
   </div>
   <div class="modal-body">
-    <form class="forms-sample" (submit)="isEditMode ? updateRecord($event) : onSubmit($event)">
+    <form class="forms-sample" (submit)="onSubmit($event)">
       <div class="mb-3">
         <label class="form-label">Account Title <span class="text-danger">*</span></label>
         <input type="text" class="form-control" name="account_title" [(ngModel)]="currentRecord.account_title" (input)="clearError('account_title')">

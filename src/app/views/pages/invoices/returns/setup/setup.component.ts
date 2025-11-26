@@ -564,11 +564,11 @@ export class ReturnsSetupComponent {
     };
 
     // Determine POST or PUT
-    const request$ = this.isEditMode
+    const request = this.isEditMode
         ? this.http.put(`${this.API_URL}/invoice/returns/${this.currentRecord.id}`, payload)
         : this.http.post(`${this.API_URL}/invoice/returns`, payload);
 
-    request$.subscribe({
+    request.subscribe({
         next: (response: any) => {
             this.isLoading = false;
 

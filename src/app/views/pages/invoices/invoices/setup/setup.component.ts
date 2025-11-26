@@ -462,11 +462,11 @@ export class InvoicesSetupComponent {
       }))
     };
 
-    const request$ = this.isEditMode && (this.currentRecord as any).id
+    const request = this.isEditMode && (this.currentRecord as any).id
       ? this.http.put(`${this.API_URL}/invoices/${(this.currentRecord as any).id}`, payload)
       : this.http.post(`${this.API_URL}/invoices`, payload);
 
-    request$.subscribe({
+    request.subscribe({
       next: (response: any) => {
         this.isLoading = false;
         if (isPost) {

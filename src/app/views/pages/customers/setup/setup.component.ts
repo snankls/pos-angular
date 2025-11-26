@@ -228,11 +228,11 @@ export class CustomersSetupComponent {
       formData.append('isImageDeleted', '1');
     }
 
-    const request$ = this.currentRecord.id
+    const request = this.currentRecord.id
       ? this.http.post(`${this.API_URL}/customers/${this.currentRecord.id}?_method=PUT`, formData)
       : this.http.post(`${this.API_URL}/customers`, formData);
 
-    request$.subscribe({
+    request.subscribe({
       next: () => {
         this.isLoading = false;
         this.router.navigate(['/customers']);

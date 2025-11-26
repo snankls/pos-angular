@@ -163,11 +163,11 @@ export class CitiesComponent implements OnInit {
     this.isLoading = true;
 
     // Decide whether to add or update
-    const request$ = this.currentRecord.id
+    const request = this.currentRecord.id
       ? this.http.put(`${this.API_URL}/cities/${this.currentRecord.id}`, this.currentRecord)
       : this.http.post(`${this.API_URL}/cities`, this.currentRecord);
 
-    request$.subscribe({
+    request.subscribe({
       next: (response) => {
         this.isLoading = false;
         this.fetchRecords();

@@ -220,11 +220,11 @@ export class CategoriesComponent implements OnInit {
       formData.append('delete_image', '1');
     }
 
-    const request$ = this.isEditMode
+    const request = this.isEditMode
       ? this.http.post(`${this.API_URL}/categories/${this.currentRecord.id}?_method=PUT`, formData)
       : this.http.post(`${this.API_URL}/categories`, formData);
 
-    request$.subscribe({
+    request.subscribe({
       next: () => {
         this.isLoading = false;
         this.fetchCategory();
